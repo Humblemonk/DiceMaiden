@@ -1,0 +1,6 @@
+main.db
+nohup.out
+dice_maiden*.pill
+dice_maiden*.log*
+dice_rolls.log*
+.env
