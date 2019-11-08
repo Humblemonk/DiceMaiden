@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 3.1.2
+# Version: 3.2.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -22,6 +22,9 @@ end
 def check_comment
   if @input.include?('!')
     @comment = @input.partition('!').last
+    if @comment.include? 'unsort'
+      @do_tally_shuffle = 1
+    end
     @roll = @input[/(^.*)!/]
     @roll.slice! @comment
     @roll.slice! '!'
@@ -78,6 +81,10 @@ def do_roll(event)
   @tally = parsed.scan(/tally=\[.*?\]/)
   @tally = String(@tally)
   @tally.gsub!(/\[*("tally=)|\"\]|\"/, '')
+  if @do_tally_shuffle == 1
+    @tally_array = @tally.split(', ').map(&:to_i)
+    @tally = @tally_array.shuffle!
+  end
 end
 
 def log_roll(event)
@@ -248,6 +255,7 @@ $db = SQLite3::Database.new "main.db"
   @roll = @input
   @comment = ''
   @test_status = ''
+  @do_tally_shuffle = 0
   # check user
   check_user_or_nick(event)
   # check for comment
@@ -266,7 +274,6 @@ $db = SQLite3::Database.new "main.db"
       @roll_set_results = ''
       roll_count= 0
       while roll_count < @roll_set.to_i
-        do_roll(event)
         break if do_roll(event) == true
         @roll_set_results << "`#{@tally}` #{@dice_result}\n"
         roll_count += 1
@@ -279,7 +286,6 @@ $db = SQLite3::Database.new "main.db"
       end
       break
     else
-      do_roll(event)
       break if do_roll(event) == true
     end
 

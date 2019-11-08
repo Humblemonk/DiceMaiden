@@ -1,3 +1,9 @@
+## 3.2.0 - 2019-11-8
+### Added
+- Fixed an issue where roll set value can sometimes be set incorrectly
+- Fixed an issue where the server may roll multiple instances of the same roll
+- Add support for unsorting rolls! Check readme for more information
+
 ## 3.1.2 - 2019-11-3
 ### Added
 - 26k servers using the bot! Increased shard capacity to support them 
