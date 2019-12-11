@@ -1,3 +1,7 @@
+## 3.2.1 - 2019-12-11
+### Added
+- Fixed an issue with unsort command that would cause the tally to contain a zero value
+
 ## 3.2.0 - 2019-11-8
 ### Added
 - Fixed an issue where roll set value can sometimes be set incorrectly

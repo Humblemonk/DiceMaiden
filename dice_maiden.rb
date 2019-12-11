@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 3.2.0
+# Version: 3.2.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -82,6 +82,7 @@ def do_roll(event)
   @tally = String(@tally)
   @tally.gsub!(/\[*("tally=)|\"\]|\"/, '')
   if @do_tally_shuffle == 1
+    @tally.gsub!("[",'')
     @tally_array = @tally.split(', ').map(&:to_i)
     @tally = @tally_array.shuffle!
   end
