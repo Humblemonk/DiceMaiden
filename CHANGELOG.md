@@ -1,3 +1,7 @@
+## 3.2.2 - 2020-01-14
+### Added
+- Increaased server count means more shards required! Updated shard count
+
 ## 3.2.1 - 2019-12-11
 ### Added
 - Fixed an issue with unsort command that would cause the tally to contain a zero value
