@@ -1,3 +1,7 @@
+## 3.3.0 - 2020-2-23
+### Added
+- Added logging verbosity command 
+
 ## 3.2.2 - 2020-01-14
 ### Added
 - Increaased server count means more shards required! Updated shard count

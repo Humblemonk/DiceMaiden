@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 3.2.2
+# Version: 3.3.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -218,6 +218,7 @@ Dotenv.load
 @bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: 50 , shard_id: ARGV[0].to_i, compress_mode: :large, ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
+@logging = ARGV[1].to_s
 $db = SQLite3::Database.new "main.db"
 # Check for command
 @bot.message(start_with: '!roll') do |event|
@@ -279,7 +280,9 @@ $db = SQLite3::Database.new "main.db"
         @roll_set_results << "`#{@tally}` #{@dice_result}\n"
         roll_count += 1
       end
-      log_roll(event)
+      if @logging == "debug"
+        log_roll(event)
+      end
       if @comment.to_s.empty? || @comment.to_s.nil?
         event.respond "#{@user} Rolls:\n#{@roll_set_results}"
       else
@@ -291,7 +294,9 @@ $db = SQLite3::Database.new "main.db"
     end
 
     # Grab event user name, server name and timestamp for roll and log it
-    log_roll(event)
+    if @logging == "debug"
+      log_roll(event)
+    end
     # Print dice result to Discord channel
     if @comment.to_s.empty? || @comment.to_s.nil?
       if check_wrath == true
