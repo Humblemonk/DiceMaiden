@@ -21,7 +21,7 @@ end
 
 def check_comment
   if @input.include?('!')
-    @comment = @input.partition('!').last
+    @comment = @input.partition('!').last.lstrip
     if @comment.include? 'unsort'
       @do_tally_shuffle = 1
     end
@@ -281,9 +281,9 @@ $db = SQLite3::Database.new "main.db"
       end
       log_roll(event)
       if @comment.to_s.empty? || @comment.to_s.nil?
-        event.respond "#{@user} Rolls:\n #{@roll_set_results}"
+        event.respond "#{@user} Rolls:\n#{@roll_set_results}"
       else
-        event.respond "#{@user} Rolls:\n #{@roll_set_results} Reason: `#{@comment}`"
+        event.respond "#{@user} Rolls:\n#{@roll_set_results}Reason: `#{@comment}`"
       end
       break
     else
