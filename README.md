@@ -55,6 +55,12 @@ These commands can be combined. For example:
 
 `!roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
 
+# Game Systems Specific Rolls
+Warhammer 40k Wrath and Glory example syntaxes: 
+
+`!roll wng 4d6` : Roll four six-sided dice with a wrath dice.
+
+`!roll wng 4d6 !soak` or `!roll wng 4d6 !exempt` or `!roll wng 4d6 !dmg` : Roll four six-sided dice without a wrath dice. 
 
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
