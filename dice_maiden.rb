@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 3.3.1
+# Version: 3.4.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -53,8 +53,8 @@ def check_roll(event)
 end
 
 def check_wrath
-  if (@special_check == 6) && (@event_server_check.include? 'FMK') && ((@comment.include? 'soak') || (@comment.include? 'exempt') || (@comment.include? 'dmg'))
-  elsif (@special_check == 6) && (@event_server_check.include? 'FMK')
+  if (@special_check == 6) && (@wng == true) && ((@comment.include? 'soak') || (@comment.include? 'exempt') || (@comment.include? 'dmg'))
+  elsif (@special_check == 6) && (@wng == true)
     @roll = "#{@dice_check - 1}d6"
     wstr = '(Wrath Dice) 1d6'
     wroll = DiceBag::Roll.new(wstr)
@@ -225,6 +225,13 @@ $db = SQLite3::Database.new "main.db"
   @input = event.content
   @event_server_check = event.server.name
   @simple_output = false
+  @wng = false
+
+  # check for wrath and glory game mode for roll
+  if @input.match(/!roll\s(wng)\s/)
+    @wng = true
+    @input.sub!("wng","")
+  end
 
   if @input.match(/!roll\s(s)\s/)
     @simple_output = true
