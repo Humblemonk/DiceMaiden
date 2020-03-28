@@ -23,7 +23,7 @@ Below are examples of the dice roll syntax.
 
 `!roll 2d6 + 3d10` : Roll two six-sided dice and three ten-sided dice.
 
-`!roll 3d6 + 5` : Roll three six-sided dice and add five. Other supported static modifiers are add (+), subtract (-), multiply (*), and divide (/).
+`!roll 3d6 + 5` : Roll three six-sided dice and add five. Other supported static modifiers are add (+), subtract (-), multiply (*), and divide (/). **NOTE:** These static modifiers must be applied to the end of the roll syntax and after other modifiers.
 
 `!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. 
 

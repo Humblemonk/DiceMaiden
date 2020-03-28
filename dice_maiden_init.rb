@@ -19,5 +19,5 @@ loop do
   `bluepill dice_maiden start dice_maiden#{i}`
   i += 1
   break if i == ARGV[0].to_i
-  sleep 30
+  sleep 10
 end
