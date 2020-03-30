@@ -1,3 +1,7 @@
+## 3.4.0 - 2020-3-28
+### Added
+- Added support for game system Wrath and Glory
+
 ## 3.3.0 - 2020-2-23
 ### Added
 - Added logging verbosity command 
