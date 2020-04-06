@@ -32,23 +32,26 @@ def check_comment
 end
 
 def check_roll(event)
-  # Check that the dice is not greater than D100
-  @special_check = @roll.scan(/d(\d+)/).first.join.to_i
-  @dice_check = @roll.scan(/d(\d+)/).first.join.to_i
+  dice_requests = @roll.scan(/\dd\d+/i)
 
-  if @dice_check <= 1
-    event.respond 'Please roll a dice value 2 or greater'
-    return true
-  end
-  if @dice_check > 100
-    event.respond 'Please roll dice up to d100'
-    return true
-  end
-  # Check for too large of dice pools
-  @dice_check = @roll.scan(/(\d+)d/).first.join.to_i
-  if @dice_check > 500
-    event.respond 'Please keep the dice pool below 500'
-    return true
+  for dice_request in dice_requests
+    @special_check = dice_request.scan(/d(\d+)/i).first.join.to_i
+    @dice_check = dice_request.scan(/d(\d+)/i).first.join.to_i
+
+    if @dice_check <= 2
+      event.respond 'Please roll a dice value 2 or greater'
+      return true
+    end
+    if @dice_check > 100
+      event.respond 'Please roll dice up to d100'
+      return true
+    end
+    # Check for too large of dice pools
+    @dice_check = dice_request.scan(/(\d+)d/i).first.join.to_i
+    if @dice_check > 500
+      event.respond 'Please keep the dice pool below 500'
+      return true
+    end
   end
 end
 
@@ -65,27 +68,161 @@ def check_wrath
   end
 end
 
-def do_roll(event)
-  dstr = "(Result) #{@roll}"
-  begin
-    dice_roll = DiceBag::Roll.new(dstr)
-    # Rescue on bad dice roll syntaxs
-    rescue Exception
-      event.respond 'Incorrect format'
-      return true
+# Takes raw input and returns a reverse polish notation queue of operators and Integers
+def convert_input_to_RPN_queue(event, input)
+  split_input = input.scan(/\b(?:\d+[d]\d+\s?(?:\w\d+)*)|[\+\-\*\/]|(?:\b\d+\b)|[\(\)]/i)# This is the tokenization string for our input
+
+  # change to read left to right order
+  input_queue = []
+  while split_input.length > 0
+    input_queue.push(split_input.pop)
   end
-  @dice_result = dice_roll.result
+
+  operator_priority = {
+      "+" => 1,
+      "-" => 1,
+      "*" => 2,
+      "/" => 2
+  }
+
+  output_queue = []
+  operator_stack = []
+
+  # Use the shunting yard algorithm to get our order of operations right
+  while input_queue.length > 0
+    input_queue_peek = input_queue.last
+
+    if input_queue_peek.match?(/\b\d+\b/)# If constant in string form
+      output_queue.prepend(Integer(input_queue.pop))
+
+    elsif input_queue_peek.match?(/\b\d+[d]\w+/i)# If dice roll
+      output_queue.prepend(process_roll_token(event, input_queue.pop))
+
+    elsif input_queue_peek.match?(/[\+\-\*\/]/)
+      # If the peeked operator is not higher priority than the top of the stack, pop the stack operator down
+      if operator_stack.length == 0 || operator_stack.last == "(" || operator_priority[input_queue_peek] > operator_priority[operator_stack.last]
+        operator_stack.push(input_queue.pop)
+      else
+        output_queue.prepend(operator_stack.pop)
+        operator_stack.push(input_queue.pop)
+      end
+
+    elsif input_queue_peek == "("
+      operator_stack.push( input_queue.pop )
+
+    elsif input_queue_peek == ")"
+      while operator_stack.last != '('
+        output_queue.prepend(operator_stack.pop)
+
+        if operator_stack.length == 0
+          raise "Extra ')' found!"
+        end
+      end
+      operator_stack.pop # Dispose of the closed "("
+      input_queue.pop # Dispose of the closing ")"
+    else
+      raise "Invalid token! (#{input_queue_peek})"
+    end
+  end
+
+  while operator_stack.length > 0
+    if operator_stack.last == '('
+      raise "Extra '(' found!"
+    end
+    output_queue.prepend(operator_stack.pop)
+  end
+
+  return output_queue
+end
+
+# Process a stack of tokens in reverse polish notation completely and return the result
+def process_RPN_token_queue(input_queue)
+  output_stack = []
+
+  while input_queue.length > 0
+    input_queue_peek = input_queue.last
+
+    if input_queue_peek.is_a?(Integer)
+      output_stack.push(input_queue.pop)
+
+    else # Must be an operator
+      operator = input_queue.pop
+      operand_B = output_stack.pop
+      operand_A = output_stack.pop
+      output_stack.push(process_operator_token(operator, operand_A, operand_B))
+    end
+  end
+
+  return output_stack[0]# There can be only one!
+end
+
+# Takes a operator token (e.g. '+') and return the result of the operation on the given operands
+def process_operator_token(token, operand_A, operand_B)
+  if token == '+'
+    return operand_A + operand_B
+  elsif token == '-'
+    return operand_A - operand_B
+  elsif token == '*'
+    return operand_A - operand_B
+  elsif token == '/'
+    if operand_B == 0
+      raise 'Tried to divide by zero!'
+    end
+    return operand_A / operand_B
+  else
+    raise "Invalid Operator: #{token}"
+  end
+end
+
+# Takes a roll token, appends the roll results, and returns the total
+def process_roll_token(event, token)
+  begin
+    dice_roll = DiceBag::Roll.new(token + @dice_modifiers)
+      # Rescue on bad dice roll syntax
+  rescue Exception
+    event.respond 'Roller encountered error: ' + $!
+    return 'BAD ROLL'
+  end
+  token_total = dice_roll.result.total
   # Parse the roll and grab the total tally
   parse_roll = dice_roll.tree
   parsed = parse_roll.inspect
-  @tally = parsed.scan(/tally=\[.*?\]/)
-  @tally = String(@tally)
-  @tally.gsub!(/\[*("tally=)|\"\]|\"/, '')
+  roll_tally = parsed.scan(/tally=\[.*?\]/)
+  roll_tally = String(roll_tally)
+  roll_tally.gsub!(/\[*("tally=)|\"\]|\"/, '')
   if @do_tally_shuffle == 1
-    @tally.gsub!("[",'')
-    @tally_array = @tally.split(', ').map(&:to_i)
-    @tally = @tally_array.shuffle!
+    roll_tally.gsub!("[",'')
+    roll_tally_array = roll_tally.split(', ').map(&:to_i)
+    roll_tally = roll_tally_array.shuffle!
+    roll_tally = String(roll_tally)
   end
+  @tally += roll_tally
+
+  return token_total
+end
+
+def do_roll(event)
+  roll_result = nil
+  @tally = ""
+
+  # Read universal dice modifiers
+  @dice_modifiers = @input.scan(/\s(?:(?:\b[edkrtfl]+\d+)|\s)+(?:$|!)/i).first # Grab all options and whitespace at end of input and seperated
+  if @dice_modifiers == nil
+    @dice_modifiers = ""
+  end
+
+  if @dice_modifiers[-1] == '!'
+    @dice_modifiers.chop! # Remove the bang if needed
+  end
+
+  begin
+    roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @input))
+  rescue RuntimeError
+    event.respond 'Error: ' + $!.message
+    return true
+  end
+
+  @dice_result = "Result: #{roll_result}"
 end
 
 def log_roll(event)
@@ -193,18 +330,18 @@ def check_purge(event)
   end
 end
 
-def check_latency(event)
-  if @roll.include? 'ping'
-    @icmp = Net::Ping::ICMP.new('www.discordapp.com')
-    if @icmp.ping
-      @duration = @icmp.duration * 1000.0
-      @round_trip = @duration.round(2)
-      event.respond "Discord API endpoint replied in #{@round_trip} ms"
-    else
-      event.respond 'Discord API endpoint timedout'
-    end
-  end
-end
+# def check_latency(event)
+#   if @roll.include? 'ping'
+#     @icmp = Net::Ping::ICMP.new('www.discordapp.com')
+#     if @icmp.ping
+#       @duration = @icmp.duration * 1000.0
+#       @round_trip = @duration.round(2)
+#       event.respond "Discord API endpoint replied in #{@round_trip} ms"
+#     else
+#       event.respond 'Discord API endpoint timedout'
+#     end
+#   end
+# end
 
 def check_bot_info(event)
   if @roll.include? 'bot-info'
@@ -212,7 +349,6 @@ def check_bot_info(event)
     event.respond "| Dice Maiden | - #{servers.join.to_i} active servers"
   end
 end
-
 Dotenv.load
 # Add API token
 @bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: 80 , shard_id: ARGV[0].to_i, compress_mode: :large, ignore_bots: true, fancy_log: true
@@ -239,7 +375,7 @@ $db = SQLite3::Database.new "main.db"
   end
 
   @roll_set = nil
-  @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s(\d+)d/)
+  @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s(\d+)/)
 
   unless @roll_set.nil?
     if (@roll_set <=1) || (@roll_set > 20)
@@ -273,7 +409,7 @@ $db = SQLite3::Database.new "main.db"
   dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
 
   # Check for correct input
-  if @roll =~ /^\s*\d*[d]\d/
+  if @roll.match?(/\dd\d/i)
     break if check_roll(event) == true
 
     # Check for wrath roll
@@ -309,31 +445,31 @@ $db = SQLite3::Database.new "main.db"
       if check_wrath == true
         event_no_comment_wrath(event, dnum)
       else
-	if @simple_output == true
-	  event.respond "#{@user} Roll #{@dice_result}"
-	  check_fury(event)
-	else
-          event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}"
+        if @simple_output == true
+          event.respond "#{@user} Roll #{@dice_result}"
           check_fury(event)
-	end
+        else
+                event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}"
+                check_fury(event)
+        end
       end
     else
-      if check_wrath == true
-        event_comment_wrath(event, dnum)
-      else
-        if @simple_output == true
-	  event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
-	  check_fury(event)
-	else
-        event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
-        check_fury(event)
-	end
-      end
+        if check_wrath == true
+          event_comment_wrath(event, dnum)
+        else
+          if @simple_output == true
+      event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
+      check_fury(event)
+    else
+          event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
+          check_fury(event)
+    end
+        end
     end
   end
   check_donate(event)
   check_help(event)
-  check_latency(event)
+  # check_latency(event)
   check_bot_info(event)
   break if check_purge(event) == false
 end
