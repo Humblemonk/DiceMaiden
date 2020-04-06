@@ -205,7 +205,7 @@ def do_roll(event)
   @tally = ""
 
   # Read universal dice modifiers
-  @dice_modifiers = @input.scan(/\s(?:(?:\b[edkrtfl]+\d+)|\s)+(?:$|!)/i).first # Grab all options and whitespace at end of input and seperated
+  @dice_modifiers = @roll.scan(/\s(?:(?:\b[edkrtfl]+\d+)|\s)+(?:$|!)/i).first # Grab all options and whitespace at end of input and seperated
   if @dice_modifiers == nil
     @dice_modifiers = ""
   end
@@ -215,7 +215,7 @@ def do_roll(event)
   end
 
   begin
-    roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @input))
+    roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @roll))
   rescue RuntimeError
     event.respond 'Error: ' + $!.message
     return true
