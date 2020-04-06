@@ -1,6 +1,8 @@
 ## 4.0.1 - 2020-4-05
 ### Added
 - Moved shard count to env variable
+- Removed check ping command
+- Updated purge roll functionality
 
 ## 4.0.0 - 2020-4-05
 ### Added
