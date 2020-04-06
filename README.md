@@ -39,7 +39,7 @@ Below are examples of the dice roll syntax.
 
 `!roll 4d10 kl3` : Roll four ten-sided dice and keep the lowest three dice rolled. **NOTE:** This modifier will only work with comments and math modifiers
 
-`!roll purge 10`: Purge the last 10 messages from channel. The purge value can be between 2 to 100 messages and requires the user to have the "manage messages" role.
+`!roll purge 10`: Purge the last 10 messages from channel. The purge value can be between 2 to 100 messages and requires the user to have the "manage messages" or "administrator" role.
 
 `!roll 4d6 ! Hello World!`: Roll four six-sided dice and add comment to the roll.
 
