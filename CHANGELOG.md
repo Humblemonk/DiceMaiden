@@ -1,3 +1,7 @@
+## 4.0.1 - 2020-4-05
+### Added
+- Moved shard count to env variable
+
 ## 4.0.0 - 2020-4-05
 ### Added
 - Add full math engine. Support for more advanced rolls!

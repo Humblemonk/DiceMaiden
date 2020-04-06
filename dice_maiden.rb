@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.0.0
+# Version: 4.0.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -337,7 +337,7 @@ def check_bot_info(event)
 end
 Dotenv.load
 # Add API token
-@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: 80 , shard_id: ARGV[0].to_i, compress_mode: :large, ignore_bots: true, fancy_log: true
+@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: ENV['SHARD'], shard_id: ARGV[0].to_i, compress_mode: :large, ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
 @logging = ARGV[1].to_s
@@ -472,5 +472,5 @@ loop do
   else
     File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
   end
-    RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {'shard_id': ARGV[0].to_i , "shard_count": 80, "server_count": server_parse}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
+    RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {'shard_id': ARGV[0].to_i , "shard_count": ENV['SHARD'], "server_count": server_parse}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
 end
