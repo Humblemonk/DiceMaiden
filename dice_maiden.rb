@@ -1,13 +1,12 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 3.4.0
+# Version: 4.0.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
 require 'discordrb'
 require '../Dice-Bag/lib/dicebag.rb'
 require 'dotenv'
-require 'net/ping'
 require 'rest-client'
 require 'sqlite3'
 
@@ -330,19 +329,6 @@ def check_purge(event)
   end
 end
 
-# def check_latency(event)
-#   if @roll.include? 'ping'
-#     @icmp = Net::Ping::ICMP.new('www.discordapp.com')
-#     if @icmp.ping
-#       @duration = @icmp.duration * 1000.0
-#       @round_trip = @duration.round(2)
-#       event.respond "Discord API endpoint replied in #{@round_trip} ms"
-#     else
-#       event.respond 'Discord API endpoint timedout'
-#     end
-#   end
-# end
-
 def check_bot_info(event)
   if @roll.include? 'bot-info'
     servers = $db.execute "select sum(server_count) from shard_stats;"
@@ -469,7 +455,6 @@ $db = SQLite3::Database.new "main.db"
   end
   check_donate(event)
   check_help(event)
-  # check_latency(event)
   check_bot_info(event)
   break if check_purge(event) == false
 end

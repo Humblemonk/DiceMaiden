@@ -1,3 +1,8 @@
+## 4.0.0 - 2020-4-05
+### Added
+- Add full math engine. Support for more advanced rolls!
+- Removed check latency feature
+
 ## 3.4.0 - 2020-3-28
 ### Added
 - Added support for game system Wrath and Glory
