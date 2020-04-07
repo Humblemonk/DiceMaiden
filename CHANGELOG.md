@@ -1,3 +1,7 @@
+## 4.0.2 - 2020-4-07
+## Added
+- Fixed an issue with d2 rolls
+
 ## 4.0.1 - 2020-4-05
 ### Added
 - Moved shard count to env variable
