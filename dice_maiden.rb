@@ -408,7 +408,7 @@ $db = SQLite3::Database.new "main.db"
   end
 
   @roll_set = nil
-  @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s(\d+)/)
+  @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s/)
 
   unless @roll_set.nil?
     if (@roll_set <=1) || (@roll_set > 20)
