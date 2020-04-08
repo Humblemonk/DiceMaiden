@@ -10,6 +10,52 @@ require 'dotenv'
 require 'rest-client'
 require 'sqlite3'
 
+# Returns an input string after it's been put through the aliases
+def alias_input_pass(input)
+  # Each entry is formatted [/Alias match regex/, "Alias Name", /gsub replacement regex/, "replace with string"]
+  alias_input_map = [
+      [/\b\d+WoD\d+\b/i, "WoD", /\b(\d+)WoD(\d+)\b/i, "\\1d10 f1 t\\2"], # World of Darkness 4th edition (note: explosions are left off for now)
+      [/\b\d+dF\b/i, "Fudge", /\b(\d+)dF\b/i, "\\1d3 f1 t3"], # Fate fudge dice
+      [/\b\d+wh\d+\+/i, "Warhammer", /\b(\d+)wh(\d+)\+/i, "\\1d6 t\\2"], # Warhammer (AoS/40k)
+      [/\bdd\d\d\b/i, "Double Digit", /\bdd(\d)(\d)\b/i, "(1d\\1 * 10) + 1d\\2"], # Rolling one dice for each digit
+  ]
+
+  @alias_types = []
+  new_input = input
+
+  # Run through all aliases and record which ones we use
+  for alias_entry in alias_input_map do
+    if input.match?(alias_entry[0])
+      @alias_types.append(alias_entry[1])
+      new_input.gsub!(alias_entry[2], alias_entry[3])
+    end
+  end
+
+  return new_input
+end
+
+# Returns dice string after it's been put through the aliases
+def alias_output_pass(roll_tally)
+  # Each entry is formatted "Alias Name":[[]/gsub replacement regex/, "replace with string", etc]
+  # Not all aliases will have an output hash
+  alias_output_hash = {
+      "Fudge" => [[/\b1\b/, "-"], [/\b2\b/, " "], [/\b3\b/, "+"]]
+  }
+
+  new_tally = roll_tally
+
+  for alias_type in @alias_types do
+    if alias_output_hash.has_key?(alias_type)
+      alias_output = alias_output_hash[alias_type]
+      for replacement in alias_output do
+        new_tally.gsub!(replacement[0], replacement[1])
+      end
+    end
+  end
+
+  return new_tally
+end
+
 def check_user_or_nick(event)
   if event.user.nick != nil
     @user = event.user.nick
@@ -345,7 +391,7 @@ Dotenv.load
 $db = SQLite3::Database.new "main.db"
 # Check for command
 @bot.message(start_with: '!roll') do |event|
-  @input = event.content
+  @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
   @event_server_check = event.server.name
   @simple_output = false
   @wng = false
@@ -362,7 +408,7 @@ $db = SQLite3::Database.new "main.db"
   end
 
   @roll_set = nil
-  @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s(\d+)/)
+  @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s/)
 
   unless @roll_set.nil?
     if (@roll_set <=1) || (@roll_set > 20)
@@ -392,6 +438,7 @@ $db = SQLite3::Database.new "main.db"
   check_user_or_nick(event)
   # check for comment
   check_comment
+
   # Check for dn
   dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
 
@@ -422,6 +469,9 @@ $db = SQLite3::Database.new "main.db"
     else
       break if do_roll(event) == true
     end
+
+    # Output aliasing
+    @tally = alias_output_pass(@tally)
 
     # Grab event user name, server name and timestamp for roll and log it
     if @logging == "debug"
