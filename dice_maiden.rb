@@ -1,13 +1,12 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 3.3.0
+# Version: 4.0.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
 require 'discordrb'
 require '../Dice-Bag/lib/dicebag.rb'
 require 'dotenv'
-#require 'net/ping' TODO: comment back in
 require 'rest-client'
 require 'sqlite3'
 
@@ -102,8 +101,8 @@ def check_roll(event)
 end
 
 def check_wrath
-  if (@special_check == 6) && (@event_server_check.include? 'FMK') && ((@comment.include? 'soak') || (@comment.include? 'exempt') || (@comment.include? 'dmg'))
-  elsif (@special_check == 6) && (@event_server_check.include? 'FMK')
+  if (@special_check == 6) && (@wng == true) && ((@comment.include? 'soak') || (@comment.include? 'exempt') || (@comment.include? 'dmg'))
+  elsif (@special_check == 6) && (@wng == true)
     @roll = "#{@dice_check - 1}d6"
     wstr = '(Wrath Dice) 1d6'
     wroll = DiceBag::Roll.new(wstr)
@@ -356,7 +355,7 @@ end
 
 def check_help(event)
   if @roll.include? 'help'
-    event.respond "``` Synopsis:\n\t!roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n !roll donate : Care to support the bot? Get donation information here. Thanks!\n ```"
+    event.respond "``` Synopsis:\n\t!roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n !roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```"
   end
 end
 
@@ -368,26 +367,13 @@ def check_purge(event)
       event.respond 'Amount must be between 2-100'
       return false
     end
-    if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true
+    if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
       event.channel.prune(amount)
     else
       event.respond "#{@user} does not have permissions for this command"
     end
   end
 end
-
-# def check_latency(event)
-#   if @roll.include? 'ping'
-#     @icmp = Net::Ping::ICMP.new('www.discordapp.com')
-#     if @icmp.ping
-#       @duration = @icmp.duration * 1000.0
-#       @round_trip = @duration.round(2)
-#       event.respond "Discord API endpoint replied in #{@round_trip} ms"
-#     else
-#       event.respond 'Discord API endpoint timedout'
-#     end
-#   end
-# end
 
 def check_bot_info(event)
   if @roll.include? 'bot-info'
@@ -396,10 +382,9 @@ def check_bot_info(event)
   end
 end
 Dotenv.load
+@total_shards = ENV['SHARD'].to_i
 # Add API token
-# # TODO change the lower line back to:
-# @bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: 50 , shard_id: ARGV[0].to_i, compress_mode: :large, ignore_bots: true, fancy_log: true
-@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: 1 , shard_id: 0, compress_mode: :large, ignore_bots: true, fancy_log: true
+@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, compress_mode: :large, ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
 @logging = ARGV[1].to_s
@@ -409,6 +394,13 @@ $db = SQLite3::Database.new "main.db"
   @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
   @event_server_check = event.server.name
   @simple_output = false
+  @wng = false
+
+  # check for wrath and glory game mode for roll
+  if @input.match(/!roll\s(wng)\s/)
+    @wng = true
+    @input.sub!("wng","")
+  end
 
   if @input.match(/!roll\s(s)\s/)
     @simple_output = true
@@ -514,7 +506,6 @@ $db = SQLite3::Database.new "main.db"
   end
   check_donate(event)
   check_help(event)
-  # check_latency(event)
   check_bot_info(event)
   break if check_purge(event) == false
 end
@@ -532,5 +523,5 @@ loop do
   else
     File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
   end
-    RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {'shard_id': ARGV[0].to_i , "shard_count": 50, "server_count": server_parse}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
+    RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {'shard_id': ARGV[0].to_i , "shard_count": @total_shards, "server_count": server_parse}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
 end

@@ -23,12 +23,11 @@ Below are examples of the dice roll syntax.
 
 `!roll 2d6 + 3d10` : Roll two six-sided dice and three ten-sided dice.
 
-`!roll 3d6 + 5` : Roll three six-sided dice and add five. Other supported static modifiers are add (+), subtract (-), multiply (*), and divide (/).
+`!roll 3d6 + 5` : Roll three six-sided dice and add five. Other supported static modifiers are add (+), subtract (-), multiply (*), and divide (/). **NOTE:** These static modifiers must be applied to the end of the roll syntax and after other modifiers.
 
 `!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. 
 
 `!roll 3d10 d1` : Roll three ten-sided dice and drop one die. The lowest value will be dropped first.  **NOTE:** These dice are dropped before any dice are kept with the following `k` command. Order of operations is : roll dice, drop dice, keep dice
-
 
 `!roll 3d10 k2` : Roll three ten-sided dice and keep two. The highest value rolled will be kept. 
 
@@ -36,9 +35,11 @@ Below are examples of the dice roll syntax.
 
 `!roll 6d10 t7` : Roll six ten-sided dice and any that are seven or higher are counted as a success. The dice in the roll are not added together for a total. Any die that meets or exceeds the target number is added to a total of successes. 
 
+`!roll 5d10 t8 f1` : f# denotes a failure number that each dice must match or be beneath in order to count against successes. These work as a sort of negative success and are totaled together as described above. In the example roll, roll five ten-sided dice and each dice that is 8 or higher is a success and subtract each one. The total may be negative. If the option is given a 0 value, that is the same as not having the option at all thus a normal sum of all dice in the roll is performed instead.
+
 `!roll 4d10 kl3` : Roll four ten-sided dice and keep the lowest three dice rolled. **NOTE:** This modifier will only work with comments and math modifiers
 
-`!roll purge 10`: Purge the last 10 messages from channel. The purge value can be between 2 to 100 messages and requires the user to have the "manage messages" role.
+`!roll purge 10`: Purge the last 10 messages from channel. The purge value can be between 2 to 100 messages and requires the user to have the "manage messages" or "administrator" role.
 
 `!roll 4d6 ! Hello World!`: Roll four six-sided dice and add comment to the roll.
 
@@ -47,14 +48,19 @@ Below are examples of the dice roll syntax.
 `!roll s 4d6` : Simplify roll output by not showing the tally.
 
 `!roll 4d6 ! unsort` : Roll four six-sided dice and unsort the tally.
- 
-`!roll help` : Displays basic usage instructions.
 
+`!roll help` : Displays basic usage instructions.
 
 These commands can be combined. For example: 
 
 `!roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
 
+# Game Systems Specific Rolls
+Warhammer 40k Wrath and Glory example syntaxes: 
+
+`!roll wng 4d6` : Roll four six-sided dice with a wrath dice.
+
+`!roll wng 4d6 !soak` or `!roll wng 4d6 !exempt` or `!roll wng 4d6 !dmg` : Roll four six-sided dice without a wrath dice. 
 
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!

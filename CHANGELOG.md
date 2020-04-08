@@ -1,3 +1,22 @@
+## 4.0.2 - 2020-4-07
+## Added
+- Fixed an issue with d2 rolls
+
+## 4.0.1 - 2020-4-05
+### Added
+- Moved shard count to env variable
+- Removed check ping command
+- Updated purge roll functionality
+
+## 4.0.0 - 2020-4-05
+### Added
+- Add full math engine. Support for more advanced rolls!
+- Removed check latency feature
+
+## 3.4.0 - 2020-3-28
+### Added
+- Added support for game system Wrath and Glory
+
 ## 3.3.0 - 2020-2-23
 ### Added
 - Added logging verbosity command 
