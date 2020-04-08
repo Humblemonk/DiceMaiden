@@ -62,6 +62,18 @@ Warhammer 40k Wrath and Glory example syntaxes:
 
 `!roll wng 4d6 !soak` or `!roll wng 4d6 !exempt` or `!roll wng 4d6 !dmg` : Roll four six-sided dice without a wrath dice. 
 
+## Alias Rolls
+Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
+in most cases. Below is the complete list of aliases currently in Dice Maiden. Have a game system that you want turned into an alias? Create an issue on github to get it added to this list.
+
+`4Wod8` -> `4d10 f1 t8` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check. Exploding 10s will be added to this alias soon when Dice Maiden's exploding dice function is a bit better.
+
+`3dF` -> `3d3 t3 f1` Fudge dice from the fate RPG system. The number is the number of dice to roll. This alias also outputs the dice faces as `+`/` `/`-`.
+
+`3wh4+` -> `3d6 t4` Warhammer Age of Sigmar/40k style rolls. The first number is the amount of dice to roll and the second number is the target number.
+
+`dd34` -> `(1d3 * 10) + 1d4` Double digit rolls. Uses the first number for the first digit and the second number for the second digit. This is sometimes used in warhammer as a "d66". (The Dice maiden is still for this is still `dd66` to set it apart from a 66 sided die.)
+
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
 
