@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.0.1
+# Version: 4.0.2
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -37,7 +37,7 @@ def check_roll(event)
     @special_check = dice_request.scan(/d(\d+)/i).first.join.to_i
     @dice_check = dice_request.scan(/d(\d+)/i).first.join.to_i
 
-    if @dice_check <= 2
+    if @dice_check < 2
       event.respond 'Please roll a dice value 2 or greater'
       return true
     end
@@ -162,7 +162,7 @@ def process_operator_token(token, operand_A, operand_B)
   elsif token == '-'
     return operand_A - operand_B
   elsif token == '*'
-    return operand_A - operand_B
+    return operand_A * operand_B
   elsif token == '/'
     if operand_B == 0
       raise 'Tried to divide by zero!'
