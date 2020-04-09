@@ -3,6 +3,6 @@
 
 require 'dotenv'
 
-Dotenv.load
+Dotenv.load('../.env')
 token = ENV['TOKEN']
 exec("curl -s -H \"Authorization: Bot #{token}\" https://discordapp.com/api/v6/gateway/bot | jq")
