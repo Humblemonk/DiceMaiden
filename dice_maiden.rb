@@ -225,7 +225,7 @@ def process_roll_token(event, token)
     dice_roll = DiceBag::Roll.new(token + @dice_modifiers)
       # Rescue on bad dice roll syntax
   rescue Exception
-    event.respond 'Roller encountered error: ' + $!
+    event.respond 'Roller encountered error. Invalid format!'
     return 'BAD ROLL'
   end
   token_total = dice_roll.result.total
@@ -281,7 +281,7 @@ def log_roll(event)
 end
 
 def check_fury(event)
-  if (@special_check == 10) && (@tally.include? '10') && (@event_server_check.include? 'FMK')
+  if (@special_check == 10) && (@tally.include? '10') && (@dh == true)
     event.respond '`Righteous Fury Activated!` Purge the Heretic!'
   end
 end
@@ -386,19 +386,29 @@ Dotenv.load
 # Add API token
 @bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, ignore_bots: true, fancy_log: true
 @shard = ARGV[0].to_i
-@logging = ARGV[1].to_s
+@logging = ARGV[1].to_si
+
+# open connection to sqlite db and set timeout to 10s if the database is busy
 $db = SQLite3::Database.new "main.db"
+$db.busy_timeout=(10000)
+
 # Check for command
 @bot.message(start_with: '!roll') do |event|
   @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
-  @event_server_check = event.server.name
   @simple_output = false
   @wng = false
+  @dh = false
 
   # check for wrath and glory game mode for roll
   if @input.match(/!roll\s(wng)\s/)
     @wng = true
     @input.sub!("wng","")
+  end
+
+  # check for Dark heresy game mode for roll
+  if @input.match(/!roll\s(dh)\s/)
+    @dh = true
+    @input.sub!("dh","")
   end
 
   if @input.match(/!roll\s(s)\s/)
@@ -522,5 +532,8 @@ loop do
   else
     File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
   end
-    RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {'shard_id': ARGV[0].to_i , "shard_count": @total_shards, "server_count": server_parse}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
+  # Limit HTTP POST to shard 0. We do not need every shard hitting the discorbots API
+  if @shard == 0
+    RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {"shard_count": @total_shards, "server_count": server_parse}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
+  end
 end
