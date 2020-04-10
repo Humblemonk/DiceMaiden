@@ -1,3 +1,7 @@
+## 4.0.3 - 2020-4-10
+### Added
+- Cleaned up ruby gems and discordbots API
+
 ## 4.0.2 - 2020-4-07
 ## Added
 - Fixed an issue with d2 rolls
