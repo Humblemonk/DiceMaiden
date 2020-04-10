@@ -386,7 +386,7 @@ Dotenv.load
 # Add API token
 @bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, ignore_bots: true, fancy_log: true
 @shard = ARGV[0].to_i
-@logging = ARGV[1].to_si
+@logging = ARGV[1].to_i
 
 # open connection to sqlite db and set timeout to 10s if the database is busy
 $db = SQLite3::Database.new "main.db"
