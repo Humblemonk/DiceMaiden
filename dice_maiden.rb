@@ -423,7 +423,7 @@ $db.busy_timeout=(10000)
     unless @roll_set.nil?
       if (@roll_set <=1) || (@roll_set > 20)
         event.respond "Roll set must be between 2-20"
-        break
+        next
       end
     end
 
@@ -454,7 +454,7 @@ $db.busy_timeout=(10000)
 
     # Check for correct input
     if @roll.match?(/\dd\d/i)
-      break if check_roll(event) == true
+      next if check_roll(event) == true
 
       # Check for wrath roll
       check_wrath
@@ -463,7 +463,7 @@ $db.busy_timeout=(10000)
         @roll_set_results = ''
         roll_count= 0
         while roll_count < @roll_set.to_i
-          break if do_roll(event) == true
+          next if do_roll(event) == true
           @roll_set_results << "`#{@tally}` #{@dice_result}\n"
           roll_count += 1
         end
@@ -475,9 +475,9 @@ $db.busy_timeout=(10000)
         else
           event.respond "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`"
         end
-        break
+        next
       else
-        break if do_roll(event) == true
+        next if do_roll(event) == true
       end
 
       # Output aliasing
@@ -517,7 +517,7 @@ $db.busy_timeout=(10000)
     check_donate(event)
     check_help(event)
     check_bot_info(event)
-    break if check_purge(event) == false
+    next if check_purge(event) == false
   rescue StandardError => error ## The worst that should happen is that we catch the error and return its message.
     if(error.message == nil )
       error.message = "NIL MESSAGE!"
