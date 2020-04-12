@@ -191,6 +191,10 @@ def process_RPN_token_queue(input_queue)
       output_stack.push(input_queue.pop)
 
     else # Must be an operator
+      if output_stack.length < 2
+        raise input_queue.pop + " is not between two numbers!"
+      end
+
       operator = input_queue.pop
       operand_B = output_stack.pop
       operand_A = output_stack.pop
@@ -262,8 +266,8 @@ def do_roll(event)
 
   begin
     roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @roll))
-  rescue RuntimeError
-    event.respond 'Error: ' + $!.message
+  rescue RuntimeError => error
+    event.respond 'Error: ' + error.message
     return true
   end
 
@@ -454,7 +458,7 @@ $db.busy_timeout=(10000)
 
     # Check for correct input
     if @roll.match?(/\dd\d/i)
-      break if check_roll(event) == true
+      next if check_roll(event) == true
 
       # Check for wrath roll
       check_wrath
@@ -475,9 +479,9 @@ $db.busy_timeout=(10000)
         else
           event.respond "#{@user} Rolls:\n#{@roll_set_results}Reason: `#{@comment}`"
         end
-        break
+        next
       else
-        break if do_roll(event) == true
+        next if do_roll(event) == true
       end
 
       # Output aliasing
@@ -496,8 +500,8 @@ $db.busy_timeout=(10000)
             event.respond "#{@user} Roll #{@dice_result}"
             check_fury(event)
           else
-                  event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}"
-                  check_fury(event)
+            event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}"
+            check_fury(event)
           end
         end
       else
@@ -505,19 +509,19 @@ $db.busy_timeout=(10000)
             event_comment_wrath(event, dnum)
           else
             if @simple_output == true
-        event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
-        check_fury(event)
-      else
-            event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
-            check_fury(event)
-      end
+              event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
+              check_fury(event)
+            else
+              event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
+              check_fury(event)
+            end
           end
       end
     end
     check_donate(event)
     check_help(event)
     check_bot_info(event)
-    break if check_purge(event) == false
+    next if check_purge(event) == false
   rescue StandardError => error ## The worst that should happen is that we catch the error and return its message.
     if(error.message == nil )
       error.message = "NIL MESSAGE!"
