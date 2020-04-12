@@ -473,7 +473,7 @@ $db.busy_timeout=(10000)
         if @comment.to_s.empty? || @comment.to_s.nil?
           event.respond "#{@user} Rolls:\n#{@roll_set_results}"
         else
-          event.respond "#{@user} Rolls:\n#{@roll_set_results}Reason: `#{@comment}`"
+          event.respond "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`"
         end
         break
       else
@@ -508,7 +508,7 @@ $db.busy_timeout=(10000)
         event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
         check_fury(event)
       else
-            event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
+            event.respond "#{@user} Roll: `#{@tally}` #{@dice_result} Reason: `#{@comment}`"
             check_fury(event)
       end
           end
@@ -527,8 +527,8 @@ $db.busy_timeout=(10000)
 end
 
 @bot.run :async
-# Check every 5 minutes and log server count
 
+# Check every 5 minutes and log server count
 loop do
   sleep 300
   time = Time.now.getutc
