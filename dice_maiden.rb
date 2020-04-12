@@ -427,7 +427,7 @@ $db.busy_timeout=(10000)
     unless @roll_set.nil?
       if (@roll_set <=1) || (@roll_set > 20)
         event.respond "Roll set must be between 2-20"
-        break
+        next
       end
     end
 
@@ -467,7 +467,7 @@ $db.busy_timeout=(10000)
         @roll_set_results = ''
         roll_count= 0
         while roll_count < @roll_set.to_i
-          break if do_roll(event) == true
+          next if do_roll(event) == true
           @roll_set_results << "`#{@tally}` #{@dice_result}\n"
           roll_count += 1
         end
@@ -477,7 +477,7 @@ $db.busy_timeout=(10000)
         if @comment.to_s.empty? || @comment.to_s.nil?
           event.respond "#{@user} Rolls:\n#{@roll_set_results}"
         else
-          event.respond "#{@user} Rolls:\n#{@roll_set_results}Reason: `#{@comment}`"
+          event.respond "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`"
         end
         next
       else
@@ -531,8 +531,8 @@ $db.busy_timeout=(10000)
 end
 
 @bot.run :async
-# Check every 5 minutes and log server count
 
+# Check every 5 minutes and log server count
 loop do
   sleep 300
   time = Time.now.getutc
