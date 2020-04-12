@@ -394,129 +394,136 @@ $db.busy_timeout=(10000)
 
 # Check for command
 @bot.message(start_with: '!roll') do |event|
-  @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
-  @simple_output = false
-  @wng = false
-  @dh = false
+  begin
+    @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
+    @simple_output = false
+    @wng = false
+    @dh = false
 
-  # check for wrath and glory game mode for roll
-  if @input.match(/!roll\s(wng)\s/)
-    @wng = true
-    @input.sub!("wng","")
-  end
-
-  # check for Dark heresy game mode for roll
-  if @input.match(/!roll\s(dh)\s/)
-    @dh = true
-    @input.sub!("dh","")
-  end
-
-  if @input.match(/!roll\s(s)\s/)
-    @simple_output = true
-    @input.sub!("s","")
-  end
-
-  @roll_set = nil
-  @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s/)
-
-  unless @roll_set.nil?
-    if (@roll_set <=1) || (@roll_set > 20)
-      event.respond "Roll set must be between 2-20"
-      break
+    # check for wrath and glory game mode for roll
+    if @input.match(/!roll\s(wng)\s/)
+      @wng = true
+      @input.sub!("wng","")
     end
-  end
 
-  unless @roll_set.nil?
-    @input.slice! "!roll"
-    @input.slice!(0..@roll_set.to_s.size)
-  else
-    @input.slice! "!roll"
-  end
+    # check for Dark heresy game mode for roll
+    if @input.match(/!roll\s(dh)\s/)
+      @dh = true
+      @input.sub!("dh","")
+    end
 
-  if @input =~ /^\s+d/
-    roll_to_one = @input.lstrip
-    roll_to_one.prepend("1")
-    @input = roll_to_one
-  end
+    if @input.match(/!roll\s(s)\s/)
+      @simple_output = true
+      @input.sub!("s","")
+    end
 
-  @roll = @input
-  @comment = ''
-  @test_status = ''
-  @do_tally_shuffle = 0
-  # check user
-  check_user_or_nick(event)
-  # check for comment
-  check_comment
+    @roll_set = nil
+    @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s/)
 
-  # Check for dn
-  dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
-
-  # Check for correct input
-  if @roll.match?(/\dd\d/i)
-    break if check_roll(event) == true
-
-    # Check for wrath roll
-    check_wrath
-    # Grab dice roll, create roll, grab results
     unless @roll_set.nil?
-      @roll_set_results = ''
-      roll_count= 0
-      while roll_count < @roll_set.to_i
-        break if do_roll(event) == true
-        @roll_set_results << "`#{@tally}` #{@dice_result}\n"
-        roll_count += 1
+      if (@roll_set <=1) || (@roll_set > 20)
+        event.respond "Roll set must be between 2-20"
+        break
       end
+    end
+
+    unless @roll_set.nil?
+      @input.slice! "!roll"
+      @input.slice!(0..@roll_set.to_s.size)
+    else
+      @input.slice! "!roll"
+    end
+
+    if @input =~ /^\s+d/
+      roll_to_one = @input.lstrip
+      roll_to_one.prepend("1")
+      @input = roll_to_one
+    end
+
+    @roll = @input
+    @comment = ''
+    @test_status = ''
+    @do_tally_shuffle = 0
+    # check user
+    check_user_or_nick(event)
+    # check for comment
+    check_comment
+
+    # Check for dn
+    dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
+
+    # Check for correct input
+    if @roll.match?(/\dd\d/i)
+      break if check_roll(event) == true
+
+      # Check for wrath roll
+      check_wrath
+      # Grab dice roll, create roll, grab results
+      unless @roll_set.nil?
+        @roll_set_results = ''
+        roll_count= 0
+        while roll_count < @roll_set.to_i
+          break if do_roll(event) == true
+          @roll_set_results << "`#{@tally}` #{@dice_result}\n"
+          roll_count += 1
+        end
+        if @logging == "debug"
+          log_roll(event)
+        end
+        if @comment.to_s.empty? || @comment.to_s.nil?
+          event.respond "#{@user} Rolls:\n#{@roll_set_results}"
+        else
+          event.respond "#{@user} Rolls:\n#{@roll_set_results}Reason: `#{@comment}`"
+        end
+        break
+      else
+        break if do_roll(event) == true
+      end
+
+      # Output aliasing
+      @tally = alias_output_pass(@tally)
+
+      # Grab event user name, server name and timestamp for roll and log it
       if @logging == "debug"
         log_roll(event)
       end
+      # Print dice result to Discord channel
       if @comment.to_s.empty? || @comment.to_s.nil?
-        event.respond "#{@user} Rolls:\n#{@roll_set_results}"
-      else
-        event.respond "#{@user} Rolls:\n#{@roll_set_results}Reason: `#{@comment}`"
-      end
-      break
-    else
-      break if do_roll(event) == true
-    end
-
-    # Output aliasing
-    @tally = alias_output_pass(@tally)
-
-    # Grab event user name, server name and timestamp for roll and log it
-    if @logging == "debug"
-      log_roll(event)
-    end
-    # Print dice result to Discord channel
-    if @comment.to_s.empty? || @comment.to_s.nil?
-      if check_wrath == true
-        event_no_comment_wrath(event, dnum)
-      else
-        if @simple_output == true
-          event.respond "#{@user} Roll #{@dice_result}"
-          check_fury(event)
-        else
-                event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}"
-                check_fury(event)
-        end
-      end
-    else
         if check_wrath == true
-          event_comment_wrath(event, dnum)
+          event_no_comment_wrath(event, dnum)
         else
           if @simple_output == true
-      event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
-      check_fury(event)
-    else
-          event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
-          check_fury(event)
-    end
+            event.respond "#{@user} Roll #{@dice_result}"
+            check_fury(event)
+          else
+                  event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}"
+                  check_fury(event)
+          end
         end
+      else
+          if check_wrath == true
+            event_comment_wrath(event, dnum)
+          else
+            if @simple_output == true
+        event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
+        check_fury(event)
+      else
+            event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
+            check_fury(event)
+      end
+          end
+      end
     end
+    check_donate(event)
+    check_help(event)
+    check_bot_info(event)
+    break if check_purge(event) == false
+  rescue StandardError => error ## The worst that should happen is that we catch the error and return its message.
+    if(error.message == nil )
+      error.message = "NIL MESSAGE!"
+    end
+    event.respond("Unexpected exception thrown! (" + error.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
   end
-  check_donate(event)
-  check_help(event)
-  check_bot_info(event)
-  break if check_purge(event) == false
 end
 
 @bot.run :async
