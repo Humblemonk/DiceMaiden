@@ -6,7 +6,7 @@
 shard_count = 0
 
 loop do
-  10.times { puts "Restarting dice_maiden#{shard_count}"; `bundle exec bluepill dice_maiden restart dice_maiden#{shard_count}`; shard_count +=1}
+  10.times { puts "Restarting dice_maiden#{shard_count}"; `bluepill dice_maiden restart dice_maiden#{shard_count}`; shard_count +=1}
   break if shard_count == ARGV[0].to_i
   sleep 30
 end
