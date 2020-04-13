@@ -1,3 +1,12 @@
+## 4.0.5 - 2020-4-12
+### Added
+- Fixed bug with wrath and glory rolls
+- Readded latency check feature
+
+## 4.0.4 - 2020-4-12
+### Added
+- Better server count logging
+
 ## 4.0.3 - 2020-4-10
 ### Added
 - Cleaned up ruby gems and discordbots API

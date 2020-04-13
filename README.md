@@ -60,7 +60,11 @@ Warhammer 40k Wrath and Glory example syntaxes:
 
 `!roll wng 4d6` : Roll four six-sided dice with a wrath dice.
 
+`!roll wng dn2 4d6`: Roll four six-sided dice with a wrath dice and a difficulty test of 2. The bot will append the test pass/fail status to the roll result!
+
 `!roll wng 4d6 !soak` or `!roll wng 4d6 !exempt` or `!roll wng 4d6 !dmg` : Roll four six-sided dice without a wrath dice. 
+
+Dark Heresy 2nd edition syntaxes:
 
 `!roll dh 4d10` : Roll four ten-sided dice for dark heresy 2nd edition. If your roll contains a natural 10, you will be prompted with a righteous fury notification!
 

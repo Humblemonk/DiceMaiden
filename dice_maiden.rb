@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.0.3
+# Version: 4.0.5
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -77,7 +77,7 @@ def check_comment
 end
 
 def check_roll(event)
-  dice_requests = @roll.scan(/\dd\d+/i)
+  dice_requests = @roll.scan(/\d+d\d+/i)
 
   for dice_request in dice_requests
     @special_check = dice_request.scan(/d(\d+)/i).first.join.to_i
@@ -391,7 +391,8 @@ end
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
-@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, ignore_bots: true, fancy_log: true
+@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, compress_mode: :large, ignore_bots: true, fancy_log: true
+@bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
 @logging = ARGV[1].to_i
 
@@ -553,6 +554,7 @@ loop do
     $db.execute "update shard_stats set server_count = #{server_parse}, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
     File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} Server Count: #{server_parse}" }
   else
+    $db.execute "update shard_stats set server_count = 0, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
     File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
   end
   # Limit HTTP POST to shard 0. We do not need every shard hitting the discorbots API
