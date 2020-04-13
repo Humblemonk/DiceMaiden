@@ -115,7 +115,7 @@ end
 
 # Takes raw input and returns a reverse polish notation queue of operators and Integers
 def convert_input_to_RPN_queue(event, input)
-  split_input = input.scan(/\b(?:\d+[d]\d+\s?(?:\w\d+)*)|[\+\-\*\/]|(?:\b\d+\b)|[\(\)]/i)# This is the tokenization string for our input
+  split_input = input.scan(/\b(?:\d+[d]\d+(?:\s?[a-z]+\d+)*)|[\+\-\*\/]|(?:\b\d+\b)|[\(\)]/i)# This is the tokenization string for our input
 
   # change to read left to right order
   input_queue = []
@@ -202,6 +202,10 @@ def process_RPN_token_queue(input_queue)
     end
   end
 
+  if output_stack.length > 1
+    raise "Extra numbers detected!"
+  end
+
   return output_stack[0]# There can be only one!
 end
 
@@ -228,9 +232,8 @@ def process_roll_token(event, token)
   begin
     dice_roll = DiceBag::Roll.new(token + @dice_modifiers)
       # Rescue on bad dice roll syntax
-  rescue Exception
-    event.respond 'Roller encountered error. Invalid format!'
-    return 'BAD ROLL'
+  rescue Exception => error
+    raise 'Roller encountered error with "' + token + @dice_modifiers + '": ' + error.message
   end
   token_total = dice_roll.result.total
   # Parse the roll and grab the total tally
@@ -253,16 +256,6 @@ end
 def do_roll(event)
   roll_result = nil
   @tally = ""
-
-  # Read universal dice modifiers
-  @dice_modifiers = @roll.scan(/\s(?:(?:\b[edkrtfl]+\d+)|\s)+(?:$|!)/i).first # Grab all options and whitespace at end of input and seperated
-  if @dice_modifiers == nil
-    @dice_modifiers = ""
-  end
-
-  if @dice_modifiers[-1] == '!'
-    @dice_modifiers.chop! # Remove the bang if needed
-  end
 
   begin
     roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @roll))
@@ -310,6 +303,16 @@ def check_dn(dnum)
                    '**TEST PASSED!**'
                  else
                    '**TEST FAILED!**'
+  end
+end
+
+def check_universal_modifiers
+  # Read universal dice modifiers
+  @dice_modifiers = @roll.scan(/(?:\s(?:\b[a-z]+\d+\b))+$/i).first # Grab all options and whitespace at end of input and seperated
+  if @dice_modifiers == nil
+    @dice_modifiers = ""
+  else
+    @roll = @roll[0..-@dice_modifiers.length]
   end
 end
 
@@ -452,6 +455,8 @@ $db.busy_timeout=(10000)
     check_user_or_nick(event)
     # check for comment
     check_comment
+    # check for modifiers that should apply to everything
+    check_universal_modifiers
 
     # Check for dn
     dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
@@ -466,11 +471,18 @@ $db.busy_timeout=(10000)
       unless @roll_set.nil?
         @roll_set_results = ''
         roll_count= 0
+        error_encountered = false
         while roll_count < @roll_set.to_i
-          next if do_roll(event) == true
+          if do_roll(event) == true
+            error_encountered = true
+            break
+          end
+          @tally = alias_output_pass(@tally)
           @roll_set_results << "`#{@tally}` #{@dice_result}\n"
           roll_count += 1
         end
+        next if error_encountered
+
         if @logging == "debug"
           log_roll(event)
         end
