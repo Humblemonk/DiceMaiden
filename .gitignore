@@ -1,7 +1,5 @@
 main.*
 nohup.out
-*.pill
-*.eye
 dice_maiden*.log*
 dice_rolls.log*
 .env
