@@ -391,8 +391,7 @@ end
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
-@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, compress_mode: :large, ignore_bots: true, fancy_log: true
-@bot.gateway.check_heartbeat_acks = false
+@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, ignore_bots: true, fancy_log: true
 @shard = ARGV[0].to_i
 @logging = ARGV[1].to_i
 
