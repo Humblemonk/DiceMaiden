@@ -308,7 +308,7 @@ end
 
 def check_universal_modifiers
   # Read universal dice modifiers
-  @dice_modifiers = @roll.scan(/(?:\s(?:\b[a-z]+\d+\b))+$/i).first # Grab all options and whitespace at end of input and seperated
+  @dice_modifiers = @roll.scan(/(?:\s(?:\b[a-z]+\d+\b))+$/i).first # Grab all options and whitespace at end of input and separated
   if @dice_modifiers == nil
     @dice_modifiers = ""
   else
@@ -525,7 +525,7 @@ $db.busy_timeout=(10000)
               event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
               check_fury(event)
             else
-              event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
+              event.respond "#{@user} Roll: `#{@tally}` #{@dice_result} Reason: `#{@comment}`"
               check_fury(event)
             end
           end
