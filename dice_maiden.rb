@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.0.5
+# Version: 4.0.6
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -400,7 +400,7 @@ $db = SQLite3::Database.new "main.db"
 $db.busy_timeout=(10000)
 
 # Check for command
-@bot.message(start_with: '!roll') do |event|
+@bot.message(start_with: /^(!roll)/i) do |event|
   begin
     @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
     @simple_output = false
@@ -408,24 +408,24 @@ $db.busy_timeout=(10000)
     @dh = false
 
     # check for wrath and glory game mode for roll
-    if @input.match(/!roll\s(wng)\s/)
+    if @input.match(/!roll\s(wng)\s/i)
       @wng = true
       @input.sub!("wng","")
     end
 
     # check for Dark heresy game mode for roll
-    if @input.match(/!roll\s(dh)\s/)
+    if @input.match(/!roll\s(dh)\s/i)
       @dh = true
       @input.sub!("dh","")
     end
 
-    if @input.match(/!roll\s(s)\s/)
+    if @input.match(/!roll\s(s)\s/i)
       @simple_output = true
       @input.sub!("s","")
     end
 
     @roll_set = nil
-    @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s/)
+    @roll_set = @input.scan(/!roll\s(\d+)\s/i).first.join.to_i if @input.match(/!roll\s(\d+)\s/i)
 
     unless @roll_set.nil?
       if (@roll_set <=1) || (@roll_set > 20)
@@ -435,10 +435,10 @@ $db.busy_timeout=(10000)
     end
 
     unless @roll_set.nil?
-      @input.slice! "!roll"
+      @input.slice! /!roll/i
       @input.slice!(0..@roll_set.to_s.size)
     else
-      @input.slice! "!roll"
+      @input.slice! /!roll/i
     end
 
     if @input =~ /^\s+d/

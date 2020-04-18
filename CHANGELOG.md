@@ -1,3 +1,7 @@
+## 4.0.6 - 2020-4-17
+### Added
+- Roll mechanic is now case-insensitive
+
 ## 4.0.5 - 2020-4-12
 ### Added
 - Fixed bug with wrath and glory rolls
