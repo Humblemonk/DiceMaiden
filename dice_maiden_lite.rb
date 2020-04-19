@@ -314,7 +314,7 @@ end
 
 Dotenv.load
 # Add API token
-@bot = Discordrb::Bot.new token: ENV['TOKEN'] compress_mode: :large, ignore_bots: true, fancy_log: true
+@bot = Discordrb::Bot.new token: ENV['TOKEN'], compress_mode: :large, ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 
 # Check for command
