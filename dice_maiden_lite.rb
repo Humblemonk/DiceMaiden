@@ -1,13 +1,59 @@
 # Dice bot for Discord lite
 # Author: Humblemonk
-# Version: 4.0.1
-# Copyright (c) 2020. All rights reserved.
+# Version: 4.0.6
+# Copyright (c) 2017. All rights reserved.
 # This version is designed to be run for a single instance
 # !/usr/bin/ruby
 
 require 'discordrb'
 require 'dicebag'
 require 'dotenv'
+
+# Returns an input string after it's been put through the aliases
+def alias_input_pass(input)
+  # Each entry is formatted [/Alias match regex/, "Alias Name", /gsub replacement regex/, "replace with string"]
+  alias_input_map = [
+      [/\b\d+WoD\d+\b/i, "WoD", /\b(\d+)WoD(\d+)\b/i, "\\1d10 f1 t\\2"], # World of Darkness 4th edition (note: explosions are left off for now)
+      [/\b\d+dF\b/i, "Fudge", /\b(\d+)dF\b/i, "\\1d3 f1 t3"], # Fate fudge dice
+      [/\b\d+wh\d+\+/i, "Warhammer", /\b(\d+)wh(\d+)\+/i, "\\1d6 t\\2"], # Warhammer (AoS/40k)
+      [/\bdd\d\d\b/i, "Double Digit", /\bdd(\d)(\d)\b/i, "(1d\\1 * 10) + 1d\\2"], # Rolling one dice for each digit
+  ]
+
+  @alias_types = []
+  new_input = input
+
+  # Run through all aliases and record which ones we use
+  for alias_entry in alias_input_map do
+    if input.match?(alias_entry[0])
+      @alias_types.append(alias_entry[1])
+      new_input.gsub!(alias_entry[2], alias_entry[3])
+    end
+  end
+
+  return new_input
+end
+
+# Returns dice string after it's been put through the aliases
+def alias_output_pass(roll_tally)
+  # Each entry is formatted "Alias Name":[[]/gsub replacement regex/, "replace with string", etc]
+  # Not all aliases will have an output hash
+  alias_output_hash = {
+      "Fudge" => [[/\b1\b/, "-"], [/\b2\b/, " "], [/\b3\b/, "+"]]
+  }
+
+  new_tally = roll_tally
+
+  for alias_type in @alias_types do
+    if alias_output_hash.has_key?(alias_type)
+      alias_output = alias_output_hash[alias_type]
+      for replacement in alias_output do
+        new_tally.gsub!(replacement[0], replacement[1])
+      end
+    end
+  end
+
+  return new_tally
+end
 
 def check_user_or_nick(event)
   if event.user.nick != nil
@@ -30,13 +76,13 @@ def check_comment
 end
 
 def check_roll(event)
-  dice_requests = @roll.scan(/\dd\d+/i)
+  dice_requests = @roll.scan(/\d+d\d+/i)
 
   for dice_request in dice_requests
     @special_check = dice_request.scan(/d(\d+)/i).first.join.to_i
     @dice_check = dice_request.scan(/d(\d+)/i).first.join.to_i
 
-    if @dice_check <= 2
+    if @dice_check < 2
       event.respond 'Please roll a dice value 2 or greater'
       return true
     end
@@ -68,7 +114,7 @@ end
 
 # Takes raw input and returns a reverse polish notation queue of operators and Integers
 def convert_input_to_RPN_queue(event, input)
-  split_input = input.scan(/\b(?:\d+[d]\d+\s?(?:\w\d+)*)|[\+\-\*\/]|(?:\b\d+\b)|[\(\)]/i)# This is the tokenization string for our input
+  split_input = input.scan(/\b(?:\d+[d]\d+(?:\s?[a-z]+\d+)*)|[\+\-\*\/]|(?:\b\d+\b)|[\(\)]/i)# This is the tokenization string for our input
 
   # change to read left to right order
   input_queue = []
@@ -144,11 +190,19 @@ def process_RPN_token_queue(input_queue)
       output_stack.push(input_queue.pop)
 
     else # Must be an operator
+      if output_stack.length < 2
+        raise input_queue.pop + " is not between two numbers!"
+      end
+
       operator = input_queue.pop
       operand_B = output_stack.pop
       operand_A = output_stack.pop
       output_stack.push(process_operator_token(operator, operand_A, operand_B))
     end
+  end
+
+  if output_stack.length > 1
+    raise "Extra numbers detected!"
   end
 
   return output_stack[0]# There can be only one!
@@ -161,7 +215,7 @@ def process_operator_token(token, operand_A, operand_B)
   elsif token == '-'
     return operand_A - operand_B
   elsif token == '*'
-    return operand_A - operand_B
+    return operand_A * operand_B
   elsif token == '/'
     if operand_B == 0
       raise 'Tried to divide by zero!'
@@ -177,9 +231,8 @@ def process_roll_token(event, token)
   begin
     dice_roll = DiceBag::Roll.new(token + @dice_modifiers)
       # Rescue on bad dice roll syntax
-  rescue Exception
-    event.respond 'Roller encountered error: ' + $!
-    return 'BAD ROLL'
+  rescue Exception => error
+    raise 'Roller encountered error with "' + token + @dice_modifiers + '": ' + error.message
   end
   token_total = dice_roll.result.total
   # Parse the roll and grab the total tally
@@ -203,20 +256,10 @@ def do_roll(event)
   roll_result = nil
   @tally = ""
 
-  # Read universal dice modifiers
-  @dice_modifiers = @input.scan(/\s(?:(?:\b[edkrtfl]+\d+)|\s)+(?:$|!)/i).first # Grab all options and whitespace at end of input and seperated
-  if @dice_modifiers == nil
-    @dice_modifiers = ""
-  end
-
-  if @dice_modifiers[-1] == '!'
-    @dice_modifiers.chop! # Remove the bang if needed
-  end
-
   begin
-    roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @input))
-  rescue RuntimeError
-    event.respond 'Error: ' + $!.message
+    roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @roll))
+  rescue RuntimeError => error
+    event.respond 'Error: ' + error.message
     return true
   end
 
@@ -224,7 +267,7 @@ def do_roll(event)
 end
 
 def check_fury(event)
-  if (@special_check == 10) && (@tally.include? '10') && (@event_server_check.include? 'FMK')
+  if (@special_check == 10) && (@tally.include? '10') && (@dh == true)
     event.respond '`Righteous Fury Activated!` Purge the Heretic!'
   end
 end
@@ -249,6 +292,16 @@ def check_dn(dnum)
                    '**TEST PASSED!**'
                  else
                    '**TEST FAILED!**'
+  end
+end
+
+def check_universal_modifiers
+  # Read universal dice modifiers
+  @dice_modifiers = @roll.scan(/(?:\s(?:\b[a-z]+\d+\b))+$/i).first # Grab all options and whitespace at end of input and separated
+  if @dice_modifiers == nil
+    @dice_modifiers = ""
+  else
+    @roll = @roll[0..-@dice_modifiers.length]
   end
 end
 
@@ -290,6 +343,12 @@ def event_comment_wrath(event, dnum)
   end
 end
 
+def check_donate(event)
+  if @roll.include? 'donate'
+    event.respond "\n Care to support the bot? You can donate via Patreon https://www.patreon.com/dicemaiden \n You can also do a one time donation via donate bot located here https://donatebot.io/checkout/534632036569448458"
+  end
+end
+
 def check_help(event)
   if @roll.include? 'help'
     event.respond "``` Synopsis:\n\t!roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n !roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```"
@@ -314,116 +373,141 @@ end
 
 Dotenv.load
 # Add API token
-@bot = Discordrb::Bot.new token: ENV['TOKEN'], compress_mode: :large, ignore_bots: true, fancy_log: true
-@bot.gateway.check_heartbeat_acks = false
+@bot = Discordrb::Bot.new token: ENV['TOKEN'], ignore_bots: true, fancy_log: true
 
 # Check for command
-@bot.message(start_with: '!roll') do |event|
-  @input = event.content
-  @event_server_check = event.server.name
-  @simple_output = false
-  @wng = false
+@bot.message(start_with: /^(!roll)/i) do |event|
+  begin
+    @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
+    @simple_output = false
+    @wng = false
+    @dh = false
 
-  # check for wrath and glory game mode for roll
-  if @input.match(/!roll\s(wng)\s/)
-    @wng = true
-    @input.sub!("wng","")
-  end
-
-  if @input.match(/!roll\s(s)\s/)
-    @simple_output = true
-    @input.sub!("s","")
-  end
-
-  @roll_set = nil
-  @roll_set = @input.scan(/!roll\s(\d+)\s/).first.join.to_i if @input.match(/!roll\s(\d+)\s(\d+)/)
-
-  unless @roll_set.nil?
-    if (@roll_set <=1) || (@roll_set > 20)
-      event.respond "Roll set must be between 2-20"
-      break
+    # check for wrath and glory game mode for roll
+    if @input.match(/!roll\s(wng)\s/i)
+      @wng = true
+      @input.sub!("wng","")
     end
-  end
 
-  unless @roll_set.nil?
-    @input.slice! "!roll"
-    @input.slice!(0..@roll_set.to_s.size)
-  else
-    @input.slice! "!roll"
-  end
+    # check for Dark heresy game mode for roll
+    if @input.match(/!roll\s(dh)\s/i)
+      @dh = true
+      @input.sub!("dh","")
+    end
 
-  if @input =~ /^\s+d/
-    roll_to_one = @input.lstrip
-    roll_to_one.prepend("1")
-    @input = roll_to_one
-  end
+    if @input.match(/!roll\s(s)\s/i)
+      @simple_output = true
+      @input.sub!("s","")
+    end
 
-  @roll = @input
-  @comment = ''
-  @test_status = ''
-  @do_tally_shuffle = 0
-  # check user
-  check_user_or_nick(event)
-  # check for comment
-  check_comment
-  # Check for dn
-  dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
+    @roll_set = nil
+    @roll_set = @input.scan(/!roll\s(\d+)\s/i).first.join.to_i if @input.match(/!roll\s(\d+)\s/i)
 
-  # Check for correct input
-  if @roll.match?(/\dd\d/i)
-    break if check_roll(event) == true
-
-    # Check for wrath roll
-    check_wrath
-    # Grab dice roll, create roll, grab results
     unless @roll_set.nil?
-      @roll_set_results = ''
-      roll_count= 0
-      while roll_count < @roll_set.to_i
-        break if do_roll(event) == true
-        @roll_set_results << "`#{@tally}` #{@dice_result}\n"
-        roll_count += 1
+      if (@roll_set <=1) || (@roll_set > 20)
+        event.respond "Roll set must be between 2-20"
+        next
       end
-
-      if @comment.to_s.empty? || @comment.to_s.nil?
-        event.respond "#{@user} Rolls:\n#{@roll_set_results}"
-      else
-        event.respond "#{@user} Rolls:\n#{@roll_set_results}Reason: `#{@comment}`"
-      end
-      break
-    else
-      break if do_roll(event) == true
     end
 
-    # Print dice result to Discord channel
-    if @comment.to_s.empty? || @comment.to_s.nil?
-      if check_wrath == true
-        event_no_comment_wrath(event, dnum)
-      else
-        if @simple_output == true
-          event.respond "#{@user} Roll #{@dice_result}"
-          check_fury(event)
-        else
-                event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}"
-                check_fury(event)
-        end
-      end
+    unless @roll_set.nil?
+      @input.slice! /!roll/i
+      @input.slice!(0..@roll_set.to_s.size)
     else
+      @input.slice! /!roll/i
+    end
+
+    if @input =~ /^\s+d/
+      roll_to_one = @input.lstrip
+      roll_to_one.prepend("1")
+      @input = roll_to_one
+    end
+
+    @roll = @input
+    @comment = ''
+    @test_status = ''
+    @do_tally_shuffle = 0
+    # check user
+    check_user_or_nick(event)
+    # check for comment
+    check_comment
+    # check for modifiers that should apply to everything
+    check_universal_modifiers
+
+    # Check for dn
+    dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
+
+    # Check for correct input
+    if @roll.match?(/\dd\d/i)
+      next if check_roll(event) == true
+
+      # Check for wrath roll
+      check_wrath
+      # Grab dice roll, create roll, grab results
+      unless @roll_set.nil?
+        @roll_set_results = ''
+        roll_count= 0
+        error_encountered = false
+        while roll_count < @roll_set.to_i
+          if do_roll(event) == true
+            error_encountered = true
+            break
+          end
+          @tally = alias_output_pass(@tally)
+          @roll_set_results << "`#{@tally}` #{@dice_result}\n"
+          roll_count += 1
+        end
+        next if error_encountered
+
+        if @comment.to_s.empty? || @comment.to_s.nil?
+          event.respond "#{@user} Rolls:\n#{@roll_set_results}"
+        else
+          event.respond "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`"
+        end
+        next
+      else
+        next if do_roll(event) == true
+      end
+
+      # Output aliasing
+      @tally = alias_output_pass(@tally)
+
+      # Print dice result to Discord channel
+      if @comment.to_s.empty? || @comment.to_s.nil?
         if check_wrath == true
-          event_comment_wrath(event, dnum)
+          event_no_comment_wrath(event, dnum)
         else
           if @simple_output == true
-      event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
-      check_fury(event)
-    else
-          event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}  Reason: `#{@comment}`"
-          check_fury(event)
-    end
+            event.respond "#{@user} Roll #{@dice_result}"
+            check_fury(event)
+          else
+            event.respond "#{@user} Roll: `#{@tally}` #{@dice_result}"
+            check_fury(event)
+          end
         end
+      else
+          if check_wrath == true
+            event_comment_wrath(event, dnum)
+          else
+            if @simple_output == true
+              event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
+              check_fury(event)
+            else
+              event.respond "#{@user} Roll: `#{@tally}` #{@dice_result} Reason: `#{@comment}`"
+              check_fury(event)
+            end
+          end
+      end
     end
+    check_donate(event)
+    check_help(event)
+    next if check_purge(event) == false
+  rescue StandardError => error ## The worst that should happen is that we catch the error and return its message.
+    if(error.message == nil )
+      error.message = "NIL MESSAGE!"
+    end
+    event.respond("Unexpected exception thrown! (" + error.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
   end
-  check_help(event)
-  break if check_purge(event) == false
 end
 
 @bot.run
