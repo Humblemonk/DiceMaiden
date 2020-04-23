@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.0.6
+# Version: 4.0.7
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -556,7 +556,7 @@ loop do
     $db.execute "update shard_stats set server_count = 0, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
     File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
   end
-  # Limit HTTP POST to shard 0. We do not need every shard hitting the discorbots API
+  # Limit HTTP POST to shard 0. We do not need every shard hitting the discordbots API
   if @shard == 0
     servers = $db.execute "select sum(server_count) from shard_stats;"
     RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {"shard_count": @total_shards, "server_count": servers.join.to_i}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
