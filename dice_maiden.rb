@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.0.7
+# Version: 4.1.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -403,6 +403,9 @@ $db.busy_timeout=(10000)
 # Check for command
 @bot.message(start_with: /^(!roll)/i) do |event|
   begin
+    # Add typing indicator effect when event message is detected
+    event.channel.start_typing()
+
     @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
     @simple_output = false
     @wng = false
@@ -544,6 +547,10 @@ $db.busy_timeout=(10000)
 end
 
 @bot.run :async
+
+# Sleep until bot is ready and then set listening status
+sleep(1) until @bot.ready
+@bot.update_status("online", "!roll", nil, since = 0, afk = false, activity_type = 2)
 
 # Check every 5 minutes and log server count
 loop do

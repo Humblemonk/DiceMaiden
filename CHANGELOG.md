@@ -1,3 +1,9 @@
+## 4.1.0 - 2020-4-24
+### Added
+- Alias support for AGE system
+- Typing indicator effect
+- Listening status for roll command
+
 ## 4.0.6 - 2020-4-17
 ### Added
 - Roll mechanic is now case-insensitive
