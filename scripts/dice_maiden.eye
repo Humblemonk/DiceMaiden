@@ -1,9 +1,9 @@
 # Ruby gem Eye config for process monitoring of Dice Maiden
 
-cwd = File.expand_path(File.join(File.dirname(__FILE__), $w[../]))
+cwd = File.expand_path(File.join(File.dirname(__FILE__), %w[../]))
 
 Eye.config do
-  logger '/tmp/eye.log'
+  logger "/opt/eye.log"
 end
 
 Eye.app 'dice_maiden' do
