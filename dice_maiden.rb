@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.1.0
+# Version: 4.2.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -243,7 +243,7 @@ def process_roll_token(event, token)
   roll_tally = parsed.scan(/tally=\[.*?\]/)
   roll_tally = String(roll_tally)
   roll_tally.gsub!(/\[*("tally=)|\"\]|\"/, '')
-  if @do_tally_shuffle == 1
+  if @do_tally_shuffle == true
     roll_tally.gsub!("[",'')
     roll_tally_array = roll_tally.split(', ').map(&:to_i)
     roll_tally = roll_tally_array.shuffle!
@@ -410,6 +410,7 @@ $db.busy_timeout=(10000)
     @simple_output = false
     @wng = false
     @dh = false
+    @do_tally_shuffle = false
 
     # check for wrath and glory game mode for roll
     if @input.match(/!roll\s(wng)\s/i)
@@ -427,6 +428,12 @@ $db.busy_timeout=(10000)
       @simple_output = true
       @input.sub!("s","")
     end
+
+    if @input.match(/!roll\s(ul)\s/i)
+      @do_tally_shuffle = true
+      @input.sub!("ul","")
+    end
+
 
     @roll_set = nil
     @roll_set = @input.scan(/!roll\s(\d+)\s/i).first.join.to_i if @input.match(/!roll\s(\d+)\s/i)
@@ -454,7 +461,6 @@ $db.busy_timeout=(10000)
     @roll = @input
     @comment = ''
     @test_status = ''
-    @do_tally_shuffle = 0
     # check user
     check_user_or_nick(event)
     # check for comment

@@ -1,3 +1,8 @@
+## 4.2.0 - 2020-5-4
+## Added
+- New unsort command syntax: !roll ul
+- Refactored some command logic
+
 ## 4.1.0 - 2020-4-24
 ### Added
 - Alias support for AGE system
