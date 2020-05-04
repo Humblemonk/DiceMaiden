@@ -434,7 +434,6 @@ $db.busy_timeout=(10000)
       @input.sub!("ul","")
     end
 
-
     @roll_set = nil
     @roll_set = @input.scan(/!roll\s(\d+)\s/i).first.join.to_i if @input.match(/!roll\s(\d+)\s/i)
 
