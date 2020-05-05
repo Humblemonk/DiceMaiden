@@ -1,5 +1,5 @@
 #!/usr/bin/ruby
-# Check current session start quota. Helpful to check how close the API toke is from being reset by Discord
+# Check current session start quota. Helpful to check how close the API token is from being reset by Discord
 
 require 'dotenv'
 
