@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.2.0
+# Version: 4.2.2
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -69,7 +69,7 @@ def check_comment
   if @input.include?('!')
     @comment = @input.partition('!').last.lstrip
     if @comment.include? 'unsort'
-      @do_tally_shuffle = 1
+      @do_tally_shuffle = true
     end
     @roll = @input[/(^.*)!/]
     @roll.slice! @comment
@@ -257,7 +257,6 @@ end
 def do_roll(event)
   roll_result = nil
   @tally = ""
-
   begin
     roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @roll))
   rescue RuntimeError => error
@@ -304,7 +303,7 @@ def check_dn(dnum)
                    '**TEST PASSED!**'
                  else
                    '**TEST FAILED!**'
-  end
+                 end
 end
 
 def check_universal_modifiers
@@ -424,18 +423,20 @@ $db.busy_timeout=(10000)
       @input.sub!("dh","")
     end
 
+    # check for simplifying roll output (not include tally)
     if @input.match(/!roll\s(s)\s/i)
       @simple_output = true
       @input.sub!("s","")
     end
 
+    # check for roll having an unsorted tally list
     if @input.match(/!roll\s(ul)\s/i)
       @do_tally_shuffle = true
       @input.sub!("ul","")
     end
 
     @roll_set = nil
-    @roll_set = @input.scan(/!roll\s(\d+)\s/i).first.join.to_i if @input.match(/!roll\s(\d+)\s/i)
+    @roll_set = @input.scan(/!roll\s+(\d+)\s/i).first.join.to_i if @input.match(/!roll\s+(\d+)\s/i)
 
     unless @roll_set.nil?
       if (@roll_set <=1) || (@roll_set > 20)
@@ -445,7 +446,7 @@ $db.busy_timeout=(10000)
     end
 
     unless @roll_set.nil?
-      @input.slice! /!roll/i
+      @input.slice! /!roll\s*/i
       @input.slice!(0..@roll_set.to_s.size)
     else
       @input.slice! /!roll/i
@@ -479,7 +480,7 @@ $db.busy_timeout=(10000)
       # Grab dice roll, create roll, grab results
       unless @roll_set.nil?
         @roll_set_results = ''
-        roll_count= 0
+        roll_count = 0
         error_encountered = false
         while roll_count < @roll_set.to_i
           if do_roll(event) == true
@@ -487,7 +488,11 @@ $db.busy_timeout=(10000)
             break
           end
           @tally = alias_output_pass(@tally)
-          @roll_set_results << "`#{@tally}` #{@dice_result}\n"
+          if @simple_output == true
+            @roll_set_results << "#{@dice_result}\n"
+          else
+            @roll_set_results << "`#{@tally}` #{@dice_result}\n"
+          end
           roll_count += 1
         end
         next if error_encountered
@@ -526,17 +531,17 @@ $db.busy_timeout=(10000)
           end
         end
       else
-          if check_wrath == true
-            event_comment_wrath(event, dnum)
+        if check_wrath == true
+          event_comment_wrath(event, dnum)
+        else
+          if @simple_output == true
+            event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
+            check_fury(event)
           else
-            if @simple_output == true
-              event.respond "#{@user} Roll #{@dice_result} Reason: `#{@comment}`"
-              check_fury(event)
-            else
-              event.respond "#{@user} Roll: `#{@tally}` #{@dice_result} Reason: `#{@comment}`"
-              check_fury(event)
-            end
+            event.respond "#{@user} Roll: `#{@tally}` #{@dice_result} Reason: `#{@comment}`"
+            check_fury(event)
           end
+        end
       end
     end
     check_donate(event)
