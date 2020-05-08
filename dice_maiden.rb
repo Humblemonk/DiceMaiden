@@ -480,6 +480,7 @@ $db.busy_timeout=(10000)
       # Grab dice roll, create roll, grab results
       unless @roll_set.nil?
         @roll_set_results = ''
+        @error_check_roll_set = ''
         roll_count = 0
         error_encountered = false
         while roll_count < @roll_set.to_i
@@ -491,6 +492,7 @@ $db.busy_timeout=(10000)
           if @simple_output == true
             @roll_set_results << "#{@dice_result}\n"
           else
+            @error_check_roll_set << "#{@dice_result}\n"
             @roll_set_results << "`#{@tally}` #{@dice_result}\n"
           end
           roll_count += 1
@@ -552,7 +554,16 @@ $db.busy_timeout=(10000)
     if(error.message == nil )
       error.message = "NIL MESSAGE!"
     end
-    event.respond("Unexpected exception thrown! (" + error.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
+    # Simplify roll and send it again if we error out due to character limit
+    if error.message.include? "Message over the character limit"
+      unless @roll_set.nil?
+        event.respond "#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`"
+      else
+        event.respond "#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`"
+      end
+    else
+      event.respond("Unexpected exception thrown! (" + error.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
+    end
   end
 end
 

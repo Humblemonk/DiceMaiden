@@ -1,3 +1,7 @@
+## 4.3.0 - 2020-5-8
+## Added
+- Better error reporting for when roll is over discord character limit. The roll result will be resent in a simplified format
+
 ## 4.2.0 - 2020-5-4
 ## Added
 - New unsort command syntax: !roll ul
