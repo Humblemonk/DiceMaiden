@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 5.0.0
+# Version: 5.1.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -355,19 +355,22 @@ def event_comment_wrath(event, dnum)
 end
 
 def check_donate(event)
-  if @roll.include? 'donate'
+  # this is jank right now due to a bug I need to fix
+  if @check =~ /^\s*(#{@prefix}1donate)\s*$/i
     event.respond "\n Care to support the bot? You can donate via Patreon https://www.patreon.com/dicemaiden \n You can also do a one time donation via donate bot located here https://donatebot.io/checkout/534632036569448458"
+    return true
   end
 end
 
 def check_help(event)
-  if @roll.include? 'help'
+  if @check =~ /^\s*(#{@prefix} help)\s*$/i
     event.respond "``` Synopsis:\n\t!roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n !roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```"
+    return true
   end
 end
 
 def check_purge(event)
-  if @roll.include? 'purge'
+  if @check =~ /^\s*(#{@prefix} purge)\s*\d*$/i
     @roll.slice! 'purge'
     amount = @input.to_i
     if (amount < 2) || (amount > 100)
@@ -383,9 +386,10 @@ def check_purge(event)
 end
 
 def check_bot_info(event)
-  if @roll.include? 'bot-info'
+  if @check =~ /^\s*(#{@prefix} bot-info)\s*$/i
     servers = $db.execute "select sum(server_count) from shard_stats;"
     event.respond "| Dice Maiden | - #{servers.join.to_i} active servers"
+    return true
   end
 end
 
@@ -610,9 +614,9 @@ $db.busy_timeout=(10000)
         end
       end
     end
-    check_donate(event)
-    check_help(event)
-    check_bot_info(event)
+    next if check_donate(event) == true
+    next if check_help(event) == true
+    next if check_bot_info(event) == true
     next if check_purge(event) == false
   rescue StandardError => error ## The worst that should happen is that we catch the error and return its message.
     if(error.message == nil )
