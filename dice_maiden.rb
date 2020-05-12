@@ -405,6 +405,7 @@ end
 def handle_prefix(event)
   @prefix_setcmd = event.content.strip.to_s
   @server = event.server.id
+  check_user_or_nick(event)
 
   if @prefix_setcmd =~ /^(!dm prefix check)\s*$/i
     @prefix_check = $db.execute "select prefix from prefixes where server = #{@server}"
