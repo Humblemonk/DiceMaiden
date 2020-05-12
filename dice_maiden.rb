@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 5.1.0
+# Version: 5.2.1 true form
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -460,6 +460,7 @@ Dotenv.load
 @shard = ARGV[0].to_i
 @logging = ARGV[1].to_i
 @prefix = ''
+@check = ''
 
 # open connection to sqlite db and set timeout to 10s if the database is busy
 $db = SQLite3::Database.new "main.db"
@@ -526,6 +527,7 @@ $db.busy_timeout=(10000)
     end
 
     @roll = @input
+    @check = @prefix + @roll
     @comment = ''
     @test_status = ''
     # check user
@@ -629,6 +631,8 @@ $db.busy_timeout=(10000)
       else
         event.respond "#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`"
       end
+    elsif error.message.include? "undefined method `join' for nil:NilClass"
+      # do nothing
     else
       event.respond("Unexpected exception thrown! (" + error.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
     end
