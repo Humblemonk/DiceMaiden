@@ -52,6 +52,8 @@ Below are examples of the dice roll syntax.
 
 `!roll help` : Displays basic usage instructions.
 
+`!roll donate` : Get donation information to help support the bot!
+
 These commands can be combined. For example: 
 
 `!roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
