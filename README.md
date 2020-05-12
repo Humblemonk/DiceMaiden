@@ -52,7 +52,7 @@ Below are examples of the dice roll syntax.
 
 `!roll help` : Displays basic usage instructions.
 
-`!roll donate` : Get donation information to help support the bot!
+`!roll donate` : Get donation information on how to help support the bot!
 
 These commands can be combined. For example: 
 
