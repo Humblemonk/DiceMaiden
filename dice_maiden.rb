@@ -417,14 +417,19 @@ def handle_prefix(event)
     end
   end
 
-  if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
     if @prefix_setcmd =~ /^(!dm prefix reset)\s*$/i
-      $db.execute "delete from prefixes where server = #{@server}"
-      event.respond "Prefix has been reset to !roll"
-      return true
+      if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
+        $db.execute "delete from prefixes where server = #{@server}"
+        event.respond "Prefix has been reset to !roll"
+        return true
+      else
+        event.respond "#{@user} does not have permissions for this command"
+        return true
+      end
     end
 
-    if @prefix_setcmd =~ /^(!dm prefix)/i
+  if @prefix_setcmd =~ /^(!dm prefix)/i
+    if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
       #remove command syntax and trailing which will be added later
       @prefix_setcmd.slice! /!dm prefix /i
 
@@ -437,11 +442,9 @@ def handle_prefix(event)
       event.respond "Prefix is now set to:  !#{@prefix_prune}"
       return true
     else
-      return false
+      event.respond "#{@user} does not have permissions for this command"
+      return true
     end
-  else
-    event.respond "#{@user} does not have permissions for this command"
-    return true
   end
 end
 
