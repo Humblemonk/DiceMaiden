@@ -58,6 +58,16 @@ These commands can be combined. For example:
 
 `!roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
 
+## Change Bot Prefix
+
+The following examples outline how to change, reset, or check the prefix used by the bot.
+
+`!dm prefix foobar` : Change the bots prefix to !foobar. **NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role 
+
+`!dm prefix reset` : Reset the bots prefix to !roll
+
+`!dm prefix check` : Checks the bots current prefix
+
 # Game Systems Specific Rolls
 Warhammer 40k Wrath and Glory example syntaxes: 
 

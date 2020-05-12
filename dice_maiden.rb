@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 4.3.0
+# Version: 5.0.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -388,22 +388,81 @@ def check_bot_info(event)
     event.respond "| Dice Maiden | - #{servers.join.to_i} active servers"
   end
 end
+
+def check_prefix(event)
+  @server = event.server.id
+  begin
+    @row = $db.execute"select prefix from prefixes where server = #{@server}"
+    @prefix = @row[0].join(", ")
+    if @row.empty? == true
+      @prefix = "!roll"
+    end
+  rescue
+    @prefix = "!roll"
+  end
+end
+
+def handle_prefix(event)
+  @prefix_setcmd = event.content.strip.to_s
+  @server = event.server.id
+
+  if @prefix_setcmd =~ /^(!dm prefix check)\s*$/i
+    @prefix_check = $db.execute "select prefix from prefixes where server = #{@server}"
+    if @prefix_check.empty?
+      event.respond "This servers prefix is set to:  !roll"
+      return true
+    else
+      event.respond "This servers prefix is set to:  #{@prefix_check[0].join(", ")}"
+      return true
+    end
+  end
+
+  if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
+    if @prefix_setcmd =~ /^(!dm prefix reset)\s*$/i
+      $db.execute "delete from prefixes where server = #{@server}"
+      event.respond "Prefix has been reset to !roll"
+      return true
+    end
+
+    if @prefix_setcmd =~ /^(!dm prefix)/i
+      #remove command syntax and trailing which will be added later
+      @prefix_setcmd.slice! /!dm prefix /i
+
+      if @prefix_setcmd.size > 10
+        event.respond "Prefix too large. Keep it under 10 characters"
+        return true
+      end
+      @prefix_prune = @prefix_setcmd.delete(' ')
+      $db.execute "insert or replace into prefixes(server,prefix,timestamp) VALUES (#{@server},\"!#{@prefix_prune}\",CURRENT_TIMESTAMP)"
+      event.respond "Prefix is now set to:  !#{@prefix_prune}"
+      return true
+    else
+      return false
+    end
+  else
+    event.respond "#{@user} does not have permissions for this command"
+    return true
+  end
+end
+
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
 @bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, ignore_bots: true, fancy_log: true
 @shard = ARGV[0].to_i
 @logging = ARGV[1].to_i
+@prefix = ''
 
 # open connection to sqlite db and set timeout to 10s if the database is busy
 $db = SQLite3::Database.new "main.db"
 $db.busy_timeout=(10000)
 
-# Check for command
-@bot.message(start_with: /^(!roll)/i) do |event|
+@bot.message do |event|
   begin
-    # Add typing indicator effect when event message is detected
-    event.channel.start_typing()
+    # handle !dm prefix command
+    next if handle_prefix(event) == true
+    # check what prefix the server should be using
+    check_prefix(event)
 
     @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
     @simple_output = false
@@ -412,31 +471,31 @@ $db.busy_timeout=(10000)
     @do_tally_shuffle = false
 
     # check for wrath and glory game mode for roll
-    if @input.match(/!roll\s(wng)\s/i)
+    if @input.match(/#{@prefix}\s(wng)\s/i)
       @wng = true
       @input.sub!("wng","")
     end
 
     # check for Dark heresy game mode for roll
-    if @input.match(/!roll\s(dh)\s/i)
+    if @input.match(/#{@prefix}\s(dh)\s/i)
       @dh = true
       @input.sub!("dh","")
     end
 
     # check for simplifying roll output (not include tally)
-    if @input.match(/!roll\s(s)\s/i)
+    if @input.match(/#{@prefix}\s(s)\s/i)
       @simple_output = true
       @input.sub!("s","")
     end
 
     # check for roll having an unsorted tally list
-    if @input.match(/!roll\s(ul)\s/i)
+    if @input.match(/#{@prefix}\s(ul)\s/i)
       @do_tally_shuffle = true
       @input.sub!("ul","")
     end
 
     @roll_set = nil
-    @roll_set = @input.scan(/!roll\s+(\d+)\s/i).first.join.to_i if @input.match(/!roll\s+(\d+)\s/i)
+    @roll_set = @input.scan(/#{@prefix}\s+(\d+)\s/i).first.join.to_i if @input.match(/#{@prefix}\s+(\d+)\s/i)
 
     unless @roll_set.nil?
       if (@roll_set <=1) || (@roll_set > 20)
@@ -446,13 +505,13 @@ $db.busy_timeout=(10000)
     end
 
     unless @roll_set.nil?
-      @input.slice! /!roll\s*/i
+      @input.slice!(/^#{@prefix}\s*/i)
       @input.slice!(0..@roll_set.to_s.size)
     else
-      @input.slice! /!roll/i
+      @input.slice!(/^#{@prefix}/i)
     end
 
-    if @input =~ /^\s+d/
+    if @input =~ /^\s*d/
       roll_to_one = @input.lstrip
       roll_to_one.prepend("1")
       @input = roll_to_one
@@ -473,6 +532,7 @@ $db.busy_timeout=(10000)
 
     # Check for correct input
     if @roll.match?(/\dd\d/i)
+      event.channel.start_typing()
       next if check_roll(event) == true
 
       # Check for wrath roll

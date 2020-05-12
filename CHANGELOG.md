@@ -1,3 +1,8 @@
+## 5.0.0 - 2020-5-12
+## Added
+- Resolved an issue where roll sets would fail with single die rolls: !roll 5 d20
+- Add prefix change support! Documentation updated with command syntax
+
 ## 4.3.0 - 2020-5-8
 ## Added
 - Better error reporting for when roll is over discord character limit. The roll result will be resent in a simplified format
