@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 5.2.2
+# Version: 5.3.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -453,6 +453,15 @@ def handle_prefix(event)
   end
 end
 
+def input_valid(event)
+  event_input = event.content
+  if event_input =~ /^(#{@prefix})/i
+    return true
+  else
+    return false
+  end
+end
+
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
@@ -477,6 +486,8 @@ mutex = Mutex.new
     next if handle_prefix(event) == true
     # check what prefix the server should be using
     check_prefix(event)
+    # check if input is even valid
+    next if input_valid(event) == false
 
     @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
     @simple_output = false

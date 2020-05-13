@@ -1,3 +1,7 @@
+## 5.3.0 - 2020-5-13
+## Added
+- Fixed a bug where we were not properly checking the prefix
+
 ## 5.2.1 - 2020-5-12
 ## Added
 - A laundry list of bug fixes for the recent prefix change support
