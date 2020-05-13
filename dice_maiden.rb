@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 5.2.1
+# Version: 5.2.2
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 
@@ -422,16 +422,16 @@ def handle_prefix(event)
     end
   end
 
-    if @prefix_setcmd =~ /^(!dm prefix reset)\s*$/i
-      if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
-        $db.execute "delete from prefixes where server = #{@server}"
-        event.respond "Prefix has been reset to !roll"
-        return true
-      else
-        event.respond "#{@user} does not have permissions for this command"
-        return true
-      end
+  if @prefix_setcmd =~ /^(!dm prefix reset)\s*$/i
+    if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
+      $db.execute "delete from prefixes where server = #{@server}"
+      event.respond "Prefix has been reset to !roll"
+      return true
+    else
+      event.respond "#{@user} does not have permissions for this command"
+      return true
     end
+  end
 
   if @prefix_setcmd =~ /^(!dm prefix)/i
     if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
@@ -466,7 +466,12 @@ Dotenv.load
 $db = SQLite3::Database.new "main.db"
 $db.busy_timeout=(10000)
 
+mutex = Mutex.new
+
 @bot.message do |event|
+  # Locking the thread to prevent messages going to the wrong server
+  mutex.lock
+
   begin
     # handle !dm prefix command
     next if handle_prefix(event) == true
@@ -631,12 +636,13 @@ $db.busy_timeout=(10000)
       else
         event.respond "#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`"
       end
-    elsif error.message.include? "undefined method `join' for nil:NilClass"
+    elsif (error.message.include? "undefined method `join' for nil:NilClass") || (error.message.include? "The bot doesn't have the required permission to do this!")
       # do nothing
     else
       event.respond("Unexpected exception thrown! (" + error.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
     end
   end
+  mutex.unlock
 end
 
 @bot.run :async
