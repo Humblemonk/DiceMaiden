@@ -1,3 +1,7 @@
+## 5.2.1 - 2020-5-12
+## Added
+- A laundry list of bug fixes for the recent prefix change support
+
 ## 5.0.0 - 2020-5-12
 ## Added
 - Resolved an issue where roll sets would fail with single die rolls: !roll 5 d20
