@@ -469,6 +469,12 @@ def input_valid(event)
   end
 end
 
+def message_is_pm(event)
+  if event.channel.pm?
+    return true
+  end
+end
+
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
@@ -489,6 +495,8 @@ mutex = Mutex.new
   mutex.lock
 
   begin
+    # check if this is event is a pm and do nothing if so
+    next if message_is_pm(event) == true
     # handle !dm prefix command
     next if handle_prefix(event) == true
     # check what prefix the server should be using
