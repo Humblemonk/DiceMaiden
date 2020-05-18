@@ -19,6 +19,8 @@ def alias_input_pass(input)
       [/\b\d+wh\d+\+/i, "Warhammer", /\b(\d+)wh(\d+)\+/i, "\\1d6 t\\2"], # Warhammer (AoS/40k)
       [/\bdd\d\d\b/i, "Double Digit", /\bdd(\d)(\d)\b/i, "(1d\\1 * 10) + 1d\\2"], # Rolling one dice for each digit
       [/\bage\b/i, "AGE System Test", /\b(age)\b/i, "2d6 + 1d6"], # 2d6 plus one drama/dragon/stunt die
+      [/\B\+d\d+\b/i, "Advantage", /\B\+d(\d+)\b/i, "2d\\1 d1"], # Roll two dice of the specified size and keep the highest
+      [/\B\-d\d+\b/i, "Disadvantage", /\B\-d(\d+)\b/i, "2d\\1 kl1"], # Roll two dice of the specified size and keep the lowest
   ]
 
   @alias_types = []
