@@ -495,7 +495,7 @@ mutex = Mutex.new
   mutex.lock
 
   begin
-    # check if this is event is a pm and do nothing if so
+    # check if this event is a pm and do nothing if so
     next if message_is_pm(event) == true
     # handle !dm prefix command
     next if handle_prefix(event) == true
