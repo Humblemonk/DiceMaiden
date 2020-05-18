@@ -438,7 +438,12 @@ def handle_prefix(event)
   if @prefix_setcmd =~ /^(!dm prefix)/i
     if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
       #remove command syntax and trailing which will be added later
-      @prefix_setcmd.slice! /!dm prefix /i
+      @prefix_setcmd.slice! /!dm prefix\s*/i
+
+      if @prefix_setcmd.empty?
+        # do nothing if the set command is empty
+        return true
+      end
 
       if @prefix_setcmd.size > 10
         event.respond "Prefix too large. Keep it under 10 characters"
