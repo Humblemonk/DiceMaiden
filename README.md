@@ -95,6 +95,10 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 
 `age` -> `2d6 + 1d6` AGE system roll. The AGE system games use 3d6 for ability tests, with 1 of them typically being represented as a drama die, stunt die, dragon die etc. It is important that all three dice be rolled together but the drama die is able to be distinguished from the others. Example games include Fantasy Age, Dragon Age, Modern Age, Blue Rose, and The Expanse RPG.
 
+`+dX` -> `2dX d1`  Advantage roll where X is the dice sides value. Roll two dice and keep the highest.
+
+`-dX` -> `2dX kl1` Disadvantage roll where X the dice sides value. Roll two dice and keep the lowest.
+
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
 
