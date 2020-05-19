@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 5.3.0
+# Version: 6.0.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 require_relative 'dice_maiden_logic'

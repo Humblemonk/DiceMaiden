@@ -1,3 +1,5 @@
+# All bot logic that is not handled by Dice-Bag lives here
+
 # Returns an input string after it's been put through the aliases
 def alias_input_pass(input)
   # Each entry is formatted [/Alias match regex/, "Alias Name", /gsub replacement regex/, "replace with string"]

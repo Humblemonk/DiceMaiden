@@ -1,6 +1,6 @@
 # Dice bot for Discord lite
 # Author: Humblemonk
-# Version: 4.0.6
+# Version: 6.0.0
 # Copyright (c) 2017. All rights reserved.
 # This version is designed to be run for a single instance
 # !/usr/bin/ruby

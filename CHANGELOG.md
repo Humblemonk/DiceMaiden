@@ -1,3 +1,7 @@
+## 6.0.0 - 2020-5-19
+### Added
+- Refactored the majority of bot logic to make it easier for multiple users to contribute to the code base
+
 ## 5.3.0 - 2020-5-13
 ## Added
 - Fixed a bug where we were not properly checking the prefix
