@@ -27,11 +27,15 @@ Below are examples of the dice roll syntax.
 
 `!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. 
 
+`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes indefinitly. 
+
 `!roll 3d10 d1` : Roll three ten-sided dice and drop one die. The lowest value will be dropped first.  **NOTE:** These dice are dropped before any dice are kept with the following `k` command. Order of operations is : roll dice, drop dice, keep dice
 
 `!roll 3d10 k2` : Roll three ten-sided dice and keep two. The highest value rolled will be kept. 
 
 `!roll 4d6 r2` : Roll four six-sided dice and reroll any that are equal to or less than two. 
+
+`!roll 4d6 ir2` : Roll four six-sided dice and reroll any that are equal to or less than two (and do the same to those dice). 
 
 `!roll 6d10 t7` : Roll six ten-sided dice and any that are seven or higher are counted as a success. The dice in the roll are not added together for a total. Any die that meets or exceeds the target number is added to a total of successes. 
 
@@ -72,7 +76,7 @@ Dark Heresy 2nd edition syntaxes:
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
 in most cases. Below is the complete list of aliases , with example rolls, currently supported by Dice Maiden. Have a game system that you want turned into an alias? Create an issue on github to get it added to this list!
 
-`4wod8` -> `4d10 f1 t8` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check. Exploding 10s will be added to this alias at a later date.
+`4wod8` -> `4d10 f1 t8 ie10` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check. Exploding 10s will be added to this alias at a later date.
 
 `3df` -> `3d3 t3 f1` Fudge dice from the fate RPG system. The number represents total dice rolled. This alias also outputs the dice faces as `+`/` `/`-`.
 
