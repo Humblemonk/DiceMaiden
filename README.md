@@ -89,7 +89,7 @@ Dark Heresy 2nd edition syntaxes:
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
 in most cases. Below is the complete list of aliases , with example rolls, currently supported by Dice Maiden. Have a game system that you want turned into an alias? Create an issue on github to get it added to this list!
 
-`4wod8` -> `4d10 f1 t8 ie10` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check. Exploding 10s will be added to this alias at a later date.
+`4wod8` -> `4d10 f1 ie10 t8` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check.
 
 `3df` -> `3d3 t3 f1` Fudge dice from the fate RPG system. The number represents total dice rolled. This alias also outputs the dice faces as `+`/` `/`-`.
 
