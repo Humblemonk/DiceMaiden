@@ -1,3 +1,39 @@
+## 6.0.0 - 2020-5-19
+### Added
+- Refactored the majority of bot logic to make it easier for multiple users to contribute to the code base
+
+## 5.3.0 - 2020-5-13
+## Added
+- Fixed a bug where we were not properly checking the prefix
+
+## 5.2.1 - 2020-5-12
+## Added
+- A laundry list of bug fixes for the recent prefix change support
+
+## 5.0.0 - 2020-5-12
+## Added
+- Resolved an issue where roll sets would fail with single die rolls: !roll 5 d20
+- Add prefix change support! Documentation updated with command syntax
+
+## 4.3.0 - 2020-5-8
+## Added
+- Better error reporting for when roll is over discord character limit. The roll result will be resent in a simplified format
+
+## 4.2.0 - 2020-5-4
+## Added
+- New unsort command syntax: !roll ul
+- Refactored some command logic
+
+## 4.1.0 - 2020-4-24
+### Added
+- Alias support for AGE system
+- Typing indicator effect
+- Listening status for roll command
+
+## 4.0.6 - 2020-4-17
+### Added
+- Roll mechanic is now case-insensitive
+
 ## 4.0.5 - 2020-4-12
 ### Added
 - Fixed bug with wrath and glory rolls

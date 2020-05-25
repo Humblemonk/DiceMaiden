@@ -3,7 +3,8 @@
  <a href="https://discordbots.org/bot/377701707943116800" >
   <img src="https://discordbots.org/api/widget/377701707943116800.svg" alt="Dice Maiden" />
 </a>
-<br>Dice bot for Discord
+<br>Dice Bot for Discord
+<br>Dice Maiden is a simple to use dice rolling bot perfect for any trpg sessions!
 </p>
 
 # Quick Install
@@ -25,7 +26,7 @@ Below are examples of the dice roll syntax.
 
 `!roll 3d6 + 5` : Roll three six-sided dice and add five. Other supported static modifiers are add (+), subtract (-), multiply (*), and divide (/).
 
-`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. 
+`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open eneded' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'.
 
 `!roll 3d6 e6` : Roll three six-sided dice and explode on sixes indefinitly. 
 
@@ -51,13 +52,25 @@ Below are examples of the dice roll syntax.
 
 `!roll s 4d6` : Simplify roll output by not showing the tally.
 
-`!roll 4d6 ! unsort` : Roll four six-sided dice and unsort the tally.
+`!roll 4d6 ! unsort` or `!roll ul 4d6`: Roll four six-sided dice and unsort the tally.
 
 `!roll help` : Displays basic usage instructions.
+
+`!roll donate` : Get donation information on how to help support the bot!
 
 These commands can be combined. For example: 
 
 `!roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
+
+## Change Bot Prefix
+
+The following examples outline how to change, reset, or check the prefix used by the bot.
+
+`!dm prefix foobar` : Change the bots prefix to !foobar. **NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role 
+
+`!dm prefix reset` : Reset the bots prefix to !roll
+
+`!dm prefix check` : Checks the bots current prefix
 
 # Game Systems Specific Rolls
 Warhammer 40k Wrath and Glory example syntaxes: 
@@ -83,6 +96,12 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 `3wh4+` -> `3d6 t4` Warhammer Age of Sigmar/40k style rolls. The first number is the amount of dice rolled and the second number is the target number.
 
 `dd34` -> `(1d3 * 10) + 1d4` Double digit rolls. Uses the first number for the first digit and the second number for the second digit. This is sometimes used in warhammer as a "d66".
+
+`age` -> `2d6 + 1d6` AGE system roll. The AGE system games use 3d6 for ability tests, with 1 of them typically being represented as a drama die, stunt die, dragon die etc. It is important that all three dice be rolled together but the drama die is able to be distinguished from the others. Example games include Fantasy Age, Dragon Age, Modern Age, Blue Rose, and The Expanse RPG.
+
+`+dX` -> `2dX d1`  Advantage roll where X is the dice sides value. Roll two dice and keep the highest.
+
+`-dX` -> `2dX kl1` Disadvantage roll where X the dice sides value. Roll two dice and keep the lowest.
 
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
