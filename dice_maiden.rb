@@ -38,100 +38,64 @@ mutex = Mutex.new
     # check if input is even valid
     next if input_valid(event) == false
 
-    @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
-    @simple_output = false
-    @wng = false
-    @dh = false
-    @do_tally_shuffle = false
-
-    check_roll_modes
-
-    @roll_set = nil
-    next unless roll_sets_valid(event)
-
-    if @input =~ /^\s*d/
-      roll_to_one = @input.lstrip
-      roll_to_one.prepend("1")
-      @input = roll_to_one
-    end
-
-    @roll = @input
-    @check = @prefix + @roll
-    @comment = ''
-    @test_status = ''
-    # check user
-    check_user_or_nick(event)
-    # check for comment
-    check_comment
-    # check for modifiers that should apply to everything
-    check_universal_modifiers
-
-    # Check for dn
-    dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
-
-    # Check for correct input
-    if @roll.match?(/\dd\d/i)
-      event.channel.start_typing()
-      next if check_roll(event) == true
-
-      # Check for wrath roll
-      check_wrath
-      # Grab dice roll, create roll, grab results
-      unless @roll_set.nil?
-        @roll_set_results = ''
-        @error_check_roll_set = ''
-        roll_count = 0
-        error_encountered = false
-        while roll_count < @roll_set.to_i
-          if do_roll(event) == true
-            error_encountered = true
-            break
-          end
-          @tally = alias_output_pass(@tally)
-          if @simple_output == true
-            @roll_set_results << "#{@dice_result}\n"
-          else
-            @error_check_roll_set << "#{@dice_result}\n"
-            @roll_set_results << "`#{@tally}` #{@dice_result}\n"
-          end
-          roll_count += 1
-        end
-        next if error_encountered
-
-        if @logging == "debug"
-          log_roll(event)
-        end
-        if @comment.to_s.empty? || @comment.to_s.nil?
-          event.respond "#{@user} Rolls:\n#{@roll_set_results}"
-        else
-          event.respond "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`"
-        end
-        next
-      else
-        next if do_roll(event) == true
-      end
-
-      # Output aliasing
-      @tally = alias_output_pass(@tally)
-
-      # Grab event user name, server name and timestamp for roll and log it
-      if @logging == "debug"
-        log_roll(event)
-      end
-      
-      # Print dice result to Discord channel
-      @has_comment = !@comment.to_s.empty? && !@comment.to_s.nil?
-      if check_wrath == true
-        respond_wrath(event, dnum)
-      else
-        event.respond build_response
-        check_fury(event)
-      end
-    end
+    # check for non-roll commands
     next if check_donate(event) == true
     next if check_help(event) == true
     next if check_bot_info(event) == true
     next if check_purge(event) == false
+    raw_input = event.content.delete_prefix(@prefix)
+
+    # check user
+    check_user_or_nick(event)
+
+    @rolls = create_rolls(raw_input)
+    @roll_set_results = ''
+    @error_check_roll_set = ''
+
+    # process rolls
+    for roll in @rolls do
+      @test_status = ''
+      @do_tally_shuffle = 0
+      # check for modifiers that should apply to everything
+      check_universal_modifiers(roll.roll_string)
+
+      # Check for dn
+      dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
+
+      # Check for correct input
+      next unless roll.roll_string.match?(/\dd\d/i)
+      event.channel.start_typing()
+
+      next if check_roll(event, roll.roll_string) == true
+
+      # Do the actual roll
+      if do_roll(event, roll.roll_string) == true
+        error_encountered = true
+        break
+      end
+
+      #Get the hashed roll result from the Roll object
+      @tally = roll.hash_output(@tally)
+
+      next if error_encountered
+
+      if roll.wrath_roll
+        @roll_set_results << build_wrath_response(roll)
+      else
+        @roll_set_results << build_response(roll)
+      end
+    end
+
+    #log roll if applicable
+    if @logging == "debug"
+      log_roll(event)
+    end
+
+    # Print dice result to Discord channel
+    event.respond "#{@user} Rolls:\n#{@roll_set_results}"
+
+  rescue ArgumentError => error ## Catch any errors that were thrown by bad argument and send back to user
+    event.respond(error.message)
   rescue StandardError => error ## The worst that should happen is that we catch the error and return its message.
     if(error.message == nil )
       error.message = "NIL MESSAGE!"

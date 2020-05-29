@@ -17,84 +17,47 @@ Dotenv.load
 # Check for command
 @bot.message(start_with: /^(!roll)/i) do |event|
   begin
-    @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
-    @simple_output = false
-    @wng = false
-    @dh = false
     @prefix = "!roll"
 
-    check_roll_modes()
-
-    @roll_set = nil
-    next unless roll_sets_valid(event)
-
-    if @input =~ /^\s+d/
-      roll_to_one = @input.lstrip
-      roll_to_one.prepend("1")
-      @input = roll_to_one
-    end
-
-    @roll = @input
-    @comment = ''
-    @test_status = ''
-    @do_tally_shuffle = 0
+    next if check_donate(event)
+    next if check_help(event)
+    next if check_purge(event)
+    raw_input = event.content.delete_prefix(@prefix)
     # check user
     check_user_or_nick(event)
-    # check for comment
-    check_comment
-    # check for modifiers that should apply to everything
-    check_universal_modifiers
 
-    # Check for dn
-    dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
+    @rolls = create_rolls(raw_input)
+    @roll_set_results = ''
+    for roll in @rolls do
+      @test_status = ''
+      @do_tally_shuffle = 0
+      # check for modifiers that should apply to everything
+      check_universal_modifiers(roll.roll_string)
 
-    # Check for correct input
-    if @roll.match?(/\dd\d/i)
-      next if check_roll(event) == true
+      # Check for dn
+      dnum = roll.roll_string.scan(/dn\s?(\d+)/).first.join.to_i if roll.roll_string.include?('dn')
 
-      # Check for wrath roll
-      check_wrath
-      # Grab dice roll, create roll, grab results
-      unless @roll_set.nil?
-        @roll_set_results = ''
-        roll_count= 0
-        error_encountered = false
-        while roll_count < @roll_set.to_i
-          if do_roll(event) == true
-            error_encountered = true
-            break
-          end
-          @tally = alias_output_pass(@tally)
-          @roll_set_results << "`#{@tally}` #{@dice_result}\n"
-          roll_count += 1
-        end
-        next if error_encountered
+      # Check for correct input
+      next unless roll.roll_string.match?(/\dd\d/i)
+      next if check_roll(event, roll.roll_string) == true
 
-        if @comment.to_s.empty? || @comment.to_s.nil?
-          event.respond "#{@user} Rolls:\n#{@roll_set_results}"
-        else
-          event.respond "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`"
-        end
-        next
-      else
-        next if do_roll(event) == true
+      if do_roll(event, roll.roll_string) == true
+        error_encountered = true
+        break
       end
+      @tally = roll.hash_output(@tally)
 
-      # Output aliasing
-      @tally = alias_output_pass(@tally)
+      next if error_encountered
 
-      # Print dice result to Discord channel
-      @has_comment = !@comment.to_s.empty? && !@comment.to_s.nil?
-      if check_wrath == true
-        respond_wrath(event, dnum)
+      if roll.wrath_roll
+        @roll_set_results << build_wrath_response(roll)
       else
-        event.respond build_response
-        check_fury(event)
+        @roll_set_results << build_response(roll)
       end
     end
-    check_donate(event)
-    check_help(event)
-    next if check_purge(event) == false
+    event.respond "#{@user} Rolls:\n#{@roll_set_results}"
+  rescue ArgumentError => error ## Catch any errors that were thrown by bad argument and send back to user
+    event.respond(error.message)
   rescue StandardError => error ## The worst that should happen is that we catch the error and return its message.
     if(error.message == nil )
       error.message = "NIL MESSAGE!"
