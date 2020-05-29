@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 6.0.0
+# Version: 6.0.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 require_relative 'dice_maiden_logic'
@@ -10,8 +10,6 @@ require 'dicebag'
 require 'dotenv'
 require 'rest-client'
 require 'sqlite3'
-
-
 
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
@@ -33,8 +31,6 @@ mutex = Mutex.new
   mutex.lock
 
   begin
-    # check if this event is a pm and do nothing if so
-    next if message_is_pm(event) == true
     # handle !dm prefix command
     next if handle_prefix(event) == true
     # check what prefix the server should be using
@@ -131,7 +127,6 @@ mutex = Mutex.new
         event.respond build_response
         check_fury(event)
       end
-
     end
     next if check_donate(event) == true
     next if check_help(event) == true

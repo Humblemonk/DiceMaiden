@@ -372,8 +372,13 @@ def check_bot_info(event)
 end
 
 def check_prefix(event)
-  @server = event.server.id
+  if event.channel.pm?
+    @prefix = "!roll"
+    return
+  end
+
   begin
+    @server = event.server.id
     @row = $db.execute"select prefix from prefixes where server = #{@server}"
     @prefix = @row[0].join(", ")
     if @row.empty? == true
@@ -385,6 +390,10 @@ def check_prefix(event)
 end
 
 def handle_prefix(event)
+  if event.channel.pm?
+       return false
+  end
+
   @prefix_setcmd = event.content.strip.to_s
   @server = event.server.id
   check_user_or_nick(event)
@@ -442,12 +451,6 @@ def input_valid(event)
     return true
   else
     return false
-  end
-end
-
-def message_is_pm(event)
-  if event.channel.pm?
-    return true
   end
 end
 
