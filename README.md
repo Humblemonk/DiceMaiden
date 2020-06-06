@@ -8,7 +8,7 @@
 </p>
 
 # Quick Install
-Follow the link to add the bot to your discord server : 
+Follow the link to add the bot to your discord server :
 
 https://discordapp.com/api/oauth2/authorize?client_id=572301609305112596&scope=bot&permissions=11264
 
@@ -30,11 +30,11 @@ Below are examples of the dice roll syntax.
 
 `!roll 3d10 d1` : Roll three ten-sided dice and drop one die. The lowest value will be dropped first.  **NOTE:** These dice are dropped before any dice are kept with the following `k` command. Order of operations is : roll dice, drop dice, keep dice
 
-`!roll 3d10 k2` : Roll three ten-sided dice and keep two. The highest value rolled will be kept. 
+`!roll 3d10 k2` : Roll three ten-sided dice and keep two. The highest value rolled will be kept.
 
-`!roll 4d6 r2` : Roll four six-sided dice and reroll any that are equal to or less than two. 
+`!roll 4d6 r2` : Roll four six-sided dice and reroll any that are equal to or less than two.
 
-`!roll 6d10 t7` : Roll six ten-sided dice and any that are seven or higher are counted as a success. The dice in the roll are not added together for a total. Any die that meets or exceeds the target number is added to a total of successes. 
+`!roll 6d10 t7` : Roll six ten-sided dice and any that are seven or higher are counted as a success. The dice in the roll are not added together for a total. Any die that meets or exceeds the target number is added to a total of successes.
 
 `!roll 5d10 t8 f1` : f# denotes a failure number that each dice must match or be beneath in order to count against successes. These work as a sort of negative success and are totaled together as described above. In the example roll, roll five ten-sided dice and each dice that is 8 or higher is a success and subtract each one. The total may be negative. If the option is given a 0 value, that is the same as not having the option at all thus a normal sum of all dice in the roll is performed instead.
 
@@ -54,7 +54,7 @@ Below are examples of the dice roll syntax.
 
 `!roll donate` : Get donation information on how to help support the bot!
 
-These commands can be combined. For example: 
+These commands can be combined. For example:
 
 `!roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
 
@@ -62,20 +62,20 @@ These commands can be combined. For example:
 
 The following examples outline how to change, reset, or check the prefix used by the bot.
 
-`!dm prefix foobar` : Change the bots prefix to !foobar. **NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role 
+`!dm prefix foobar` : Change the bots prefix to !foobar. **NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role
 
 `!dm prefix reset` : Reset the bots prefix to !roll
 
 `!dm prefix check` : Checks the bots current prefix
 
 # Game Systems Specific Rolls
-Warhammer 40k Wrath and Glory example syntaxes: 
+Warhammer 40k Wrath and Glory example syntaxes:
 
 `!roll wng 4d6` : Roll four six-sided dice with a wrath dice.
 
 `!roll wng dn2 4d6`: Roll four six-sided dice with a wrath dice and a difficulty test of 2. The bot will append the test pass/fail status to the roll result!
 
-`!roll wng 4d6 !soak` or `!roll wng 4d6 !exempt` or `!roll wng 4d6 !dmg` : Roll four six-sided dice without a wrath dice. 
+`!roll wng 4d6 !soak` or `!roll wng 4d6 !exempt` or `!roll wng 4d6 !dmg` : Roll four six-sided dice without a wrath dice.
 
 Dark Heresy 2nd edition syntaxes:
 
@@ -98,6 +98,10 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 `+dX` -> `2dX d1`  Advantage roll where X is the dice sides value. Roll two dice and keep the highest.
 
 `-dX` -> `2dX kl1` Disadvantage roll where X the dice sides value. Roll two dice and keep the lowest.
+
+`+d%` -> `((2d10kl1-1) *10) + 1d10` Advantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the lowest.
+
+`-d%` -> `((2d10k1-1) *10) + 1d10` Disadvantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the highest.
 
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
