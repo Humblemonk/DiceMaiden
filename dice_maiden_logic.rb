@@ -415,7 +415,38 @@ end
 def check_help(event)
   input = event.content
   if input =~ /^\s*(#{@prefix} help)\s*$/i
-    event.respond "``` Synopsis:\n\t!roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n !roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```"
+    event.respond """
+```
+Synopsis:
+    !roll xdx [OPTIONS]
+
+    Description:
+
+        xdx : Denotes how many dice to roll and how many sides the dice have.
+
+    The following options are available:
+
+        + - / * : Static modifier
+
+        e# : The explode value.
+
+        k# : How many dice to keep out of the roll, keeping highest value.
+
+        r# : Reroll value.
+
+        t# : Target number for a success.
+
+        f# : Target number for a failure.
+
+        ! : Any text after ! will be a comment.
+
+        & : Split multiple roll commands with &.
+
+!roll donate : Care to support the bot? Get donation information here. Thanks!
+
+Find more commands at https://github.com/Humblemonk/DiceMaiden
+```
+    """
     return true
   end
   return false

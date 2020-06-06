@@ -44,6 +44,10 @@ Below are examples of the dice roll syntax.
 
 `!roll 4d6 ! Hello World!`: Roll four six-sided dice and add comment to the roll.
 
+`!roll 2d6 & 1d8`: Roll two six-sided dice and then one eight-sided die.
+
+`!roll 1d20 ! Attack & 1d10 + 2 ! Damage`: Roll a twenty-sided die with a comment then a ten-sided die, add two to the result and display with a comment.
+
 `!roll 6 4d6` : Roll 6 sets of four sixe-sided dice. A size of a set can be between 2 and 20.
 
 `!roll s 4d6` : Simplify roll output by not showing the tally.
