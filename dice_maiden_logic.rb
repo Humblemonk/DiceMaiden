@@ -168,6 +168,7 @@ $alias_input_map = [
       [/\bage\b/i, "AGE System Test", /\b(age)\b/i, "2d6 + 1d6"], # 2d6 plus one drama/dragon/stunt die
       [/\B\+d\d+\b/i, "Advantage", /\B\+d(\d+)\b/i, "2d\\1 d1"], # Roll two dice of the specified size and keep the highest
       [/\B\-d\d+\b/i, "Disadvantage", /\B\-d(\d+)\b/i, "2d\\1 kl1"], # Roll two dice of the specified size and keep the lowest
+      [/\b\d+d%\B/i, "Percentile roll", /\b(\d+)d%\B/i, "\\1d100"], # Roll a d100
       [/\B\+d%\B/i, "Advantage on percentile", /\B\+d%\B/i, "((2d10kl1-1) *10) + 1d10"], # Roll two d10s for the tens column and keep the lowest (roll under system) then add a d10 for the ones
       [/\B\-d%\B/i, "Disadvantage on percentile", /\B\-d%\B/i, "((2d10k1-1) *10) + 1d10"], # Roll two d10s for the tens column and keep the highest (roll under system) then add a d10 for the ones
   ]

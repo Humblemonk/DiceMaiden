@@ -103,6 +103,8 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 
 `-dX` -> `2dX kl1` Disadvantage roll where X the dice sides value. Roll two dice and keep the lowest.
 
+`2d%` -> `2d100` Simple shorthand for a d100 roll.
+
 `+d%` -> `((2d10kl1-1) *10) + 1d10` Advantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the lowest.
 
 `-d%` -> `((2d10k1-1) *10) + 1d10` Disadvantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the highest.
