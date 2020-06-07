@@ -68,6 +68,14 @@ The following examples outline how to change, reset, or check the prefix used by
 
 `!dm prefix check` : Checks the bots current prefix
 
+## Set Bot Request Display
+
+You can set the bot to display the actual roll executed as part of the bot response with this server-wide option. This is off by default.
+
+`!dm request show` : Show the roll requests in the output.
+
+`!dm request hide` : Hide the roll requests in the output.
+
 # Game Systems Specific Rolls
 Warhammer 40k Wrath and Glory example syntaxes:
 
