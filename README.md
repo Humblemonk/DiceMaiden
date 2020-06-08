@@ -70,7 +70,7 @@ The following examples outline how to change, reset, or check the prefix used by
 
 ## Set Bot Request Display
 
-You can set the bot to display the actual roll executed as part of the bot response with this server-wide option. This is off by default.
+You can set the bot to display the actual roll executed as part of the bot response with this server-wide option. This is off by default. The user must have the "manage messages" or "administrator" role to make these changes.
 
 `!dm request show` : Show the roll requests in the output.
 

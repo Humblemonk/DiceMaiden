@@ -448,27 +448,38 @@ def handle_prefix(event)
 end
 
 def check_server_options(event)
-  if event.content =~ /(^!dm prefix)/i
-    return handle_prefix(event)
-  elsif event.content =~ /(^!dm request)/i
-    return set_show_request(event)
-  end
+    if event.content =~ /(^!dm prefix)/i
+      return handle_prefix(event)
+    elsif event.content =~ /(^!dm request)/i
+      return set_show_request(event)
+    end
 end
 
 def set_show_request(event)
+  if event.channel.pm?
+    return false
+  end
+
   request_setcmd = event.content.delete_prefix("!dm request").strip
   server = event.server.id
-  if request_setcmd == "show"
-    @request_option = true
-  elsif request_setcmd == "hide"
-    @request_option = false
+  check_user_or_nick(event)
+
+  if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
+    if request_setcmd == "show"
+      @request_option = true
+    elsif request_setcmd == "hide"
+      @request_option = false
+    else
+      event.respond "'" + request_setcmd + "' is not a valid option. Please use 'show' or 'hide'."
+      return true
+    end
+    $db.execute "insert or replace into server_options(server,show_requests,timestamp) VALUES (#{server},\"!#{@request_option}\",CURRENT_TIMESTAMP)"
+    event.respond "Requests will now be " + (@request_option ? "shown" : "hidden") + " in responses."
+    return true
   else
-    event.respond "'" + request_setcmd + "' is not a valid option. Please use 'show' or 'hide'."
+    event.respond "#{@user} does not have permissions for this command"
     return true
   end
-  $db.execute "insert or replace into server_options(server,show_requests,timestamp) VALUES (#{server},\"!#{@request_option}\",CURRENT_TIMESTAMP)"
-  event.respond "Requests will now be " + (@request_option ? "shown" : "hidden") + " in responses."
-  return true
 end
 
 def check_request_option(event)
