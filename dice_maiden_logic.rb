@@ -447,6 +447,35 @@ def handle_prefix(event)
   end
 end
 
+def check_server_options(event)
+  if event.content =~ /(^!dm prefix)/i
+    return handle_prefix(event)
+  elsif event.content =~ /(^!dm request)/i
+    return set_show_request(event)
+  end
+end
+
+def set_show_request(event)
+  request_setcmd = event.content.delete_prefix("!dm request").strip
+  server = event.server.id
+  if request_setcmd == "show"
+    @request_option = true
+  elsif request_setcmd == "hide"
+    @request_option = false
+  else
+    event.respond "'" + request_setcmd + "' is not a valid option. Please use 'show' or 'hide'."
+    return true
+  end
+  $db.execute "insert or replace into server_options(server,show_requests,timestamp) VALUES (#{server},\"!#{@request_option}\",CURRENT_TIMESTAMP)"
+  event.respond "Requests will now be " + (@request_option ? "shown" : "hidden") + " in responses."
+  return true
+end
+
+def check_request_option(event)
+    server = event.server.id
+    @request_option = $db.execute "select show_requests from server_options where server = #{server}"
+end
+
 def input_valid(event)
   event_input = event.content
   if event_input =~ /^(#{@prefix})/i
@@ -509,6 +538,9 @@ def build_response
   response = response + " #{@dice_result}"
   if @has_comment
     response = response + " Reason: `#{@comment}`"
+  end
+  if @request_option
+    response = response + " Request: `[#{@input.strip}]`"
   end
   return response
 end
