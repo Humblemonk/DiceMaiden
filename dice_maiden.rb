@@ -35,7 +35,7 @@ mutex = Mutex.new
     # handle !dm <command>
     next if check_server_options(event) == true
 
-    #check the sever request options
+    #check the server request options
     check_request_option(event)
 
     # check what prefix the server should be using

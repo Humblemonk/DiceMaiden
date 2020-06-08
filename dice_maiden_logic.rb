@@ -467,13 +467,13 @@ def set_show_request(event)
   if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
     if request_setcmd == "show"
       @request_option = true
+      $db.execute "insert or replace into server_options(server,show_requests,timestamp) VALUES (#{server},\"#{@request_option}\",CURRENT_TIMESTAMP)"
     elsif request_setcmd == "hide"
-      @request_option = false
+      $db.execute "delete from server_options where server = #{server}"
     else
       event.respond "'" + request_setcmd + "' is not a valid option. Please use 'show' or 'hide'."
       return true
     end
-    $db.execute "insert or replace into server_options(server,show_requests,timestamp) VALUES (#{server},\"!#{@request_option}\",CURRENT_TIMESTAMP)"
     event.respond "Requests will now be " + (@request_option ? "shown" : "hidden") + " in responses."
     return true
   else
@@ -485,6 +485,9 @@ end
 def check_request_option(event)
     server = event.server.id
     @request_option = $db.execute "select show_requests from server_options where server = #{server}"
+    if @request_option.empty?
+      @request_option = false
+    end
 end
 
 def input_valid(event)
