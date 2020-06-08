@@ -540,7 +540,9 @@ def build_response
     response = response + " Reason: `#{@comment}`"
   end
   if @request_option
-    response = response + " Request: `[#{@input.strip}]`"
+    # Alias parsed initial request
+    request = @input.split("!")[0]
+    response = response + " Request: `[#{request.strip}]`"
   end
   return response
 end
