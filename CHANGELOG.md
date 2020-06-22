@@ -1,6 +1,7 @@
 ## 6.2.0 - 2020-6-22
 ### Added
 - Added support for indefinite explodes and rerolls. Check readme for more information!
+- Updated world of darkness 4th edition alias. It now properly supports indefinite explosions.
 
 ## 6.1.0 - 2020-6-08
 ### Added
