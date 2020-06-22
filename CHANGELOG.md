@@ -1,3 +1,7 @@
+## 6.2.0 - 2020-6-22
+### Added
+- Added support for indefinite explodes and rerolls. Check readme for more information!
+
 ## 6.1.0 - 2020-6-08
 ### Added
 - Added new server wide option: Roll request display. You can set the bot to display the actual roll executed as part of the bots response.
