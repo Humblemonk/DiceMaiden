@@ -26,7 +26,7 @@ Below are examples of the dice roll syntax.
 
 `!roll 3d6 + 5` : Roll three six-sided dice and add five. Other supported static modifiers are add (+), subtract (-), multiply (*), and divide (/).
 /
-`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open eneded' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'. The dice will only explode once with this command. Use "ie" for indefinite explosions.
+`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open ended' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'. The dice will only explode once with this command. Use "ie" for indefinite explosions.
 
 <<<<<<< HEAD
 `!roll 3d6 ie6` : Roll three six-sided dice and explode on sixes indefinitly.
