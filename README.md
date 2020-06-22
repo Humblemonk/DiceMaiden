@@ -28,7 +28,13 @@ Below are examples of the dice roll syntax.
 /
 `!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open eneded' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'. The dice will only explode once with this command. Use "ie" for indefinite explosions.
 
+<<<<<<< HEAD
 `!roll 3d6 ie6` : Roll three six-sided dice and explode on sixes indefinitly.
+=======
+`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open eneded' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'.
+
+`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes indefinitely. 
+>>>>>>> fdb6eaac2781151c397bfc013db668ca5cc61ac6
 
 `!roll 3d10 d1` : Roll three ten-sided dice and drop one die. The lowest value will be dropped first.  **NOTE:** These dice are dropped before any dice are kept with the following `k` command. Order of operations is : roll dice, drop dice, keep dice
 
@@ -97,7 +103,11 @@ Dark Heresy 2nd edition syntaxes:
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
 in most cases. Below is the complete list of aliases , with example rolls, currently supported by Dice Maiden. Have a game system that you want turned into an alias? Create an issue on github to get it added to this list!
 
+<<<<<<< HEAD
 `4wod8` -> `4d10 f1 t8` World of darkness. The first number is the number of dice to roll and the second is the toughness of the check.
+=======
+`4wod8` -> `4d10 f1 ie10 t8` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check.
+>>>>>>> fdb6eaac2781151c397bfc013db668ca5cc61ac6
 
 `3df` -> `3d3 t3 f1` Fudge dice from the fate RPG system. The number represents total dice rolled. This alias also outputs the dice faces as `+`/` `/`-`.
 
