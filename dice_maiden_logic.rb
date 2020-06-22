@@ -234,10 +234,12 @@ def process_roll_token(event, token)
   # Parse the roll and grab the total tally
   parse_roll = dice_roll.tree
   parsed = parse_roll.inspect
-  roll_tally = parsed.scan(/tally=\[.*?\]/)
+  roll_tally = parsed.scan(/tally=\[.*?, @/)
   roll_tally = String(roll_tally)
-  roll_tally.gsub!(/\[*("tally=)|\"\]|\"/, '')
-  if @do_tally_shuffle == true
+  roll_tally.gsub!(/\[*("tally=)|\"\]|\"|, @/, '')
+  roll_tally.gsub!(/\[\[/, '[')
+  roll_tally.gsub!(/\]\]/, ']')
+  if @do_tally_shuffle == 1
     roll_tally.gsub!("[",'')
     roll_tally_array = roll_tally.split(', ').map(&:to_i)
     roll_tally = roll_tally_array.shuffle!
@@ -344,7 +346,7 @@ end
 
 def check_help(event)
   if @check =~ /^\s*(#{@prefix} help)\s*$/i
-    event.respond "``` Synopsis:\n\t!roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n !roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```"
+    event.respond "``` Synopsis:\n\t!roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tie# : The indefinite explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tir# : Indefinite reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n !roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```"
     return true
   end
 end
