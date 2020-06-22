@@ -11,6 +11,8 @@ def alias_input_pass(input)
       [/\bage\b/i, "AGE System Test", /\b(age)\b/i, "2d6 + 1d6"], # 2d6 plus one drama/dragon/stunt die
       [/\B\+d\d+\b/i, "Advantage", /\B\+d(\d+)\b/i, "2d\\1 d1"], # Roll two dice of the specified size and keep the highest
       [/\B\-d\d+\b/i, "Disadvantage", /\B\-d(\d+)\b/i, "2d\\1 kl1"], # Roll two dice of the specified size and keep the lowest
+      [/\B\+d%\B/i, "Advantage on percentile", /\B\+d%\B/i, "((2d10kl1-1) *10) + 1d10"], # Roll two d10s for the tens column and keep the lowest (roll under system) then add a d10 for the ones
+      [/\B\-d%\B/i, "Disadvantage on percentile", /\B\-d%\B/i, "((2d10k1-1) *10) + 1d10"], # Roll two d10s for the tens column and keep the highest (roll under system) then add a d10 for the ones
   ]
 
   @alias_types = []
@@ -374,8 +376,13 @@ def check_bot_info(event)
 end
 
 def check_prefix(event)
-  @server = event.server.id
+  if event.channel.pm?
+    @prefix = "!roll"
+    return
+  end
+
   begin
+    @server = event.server.id
     @row = $db.execute"select prefix from prefixes where server = #{@server}"
     @prefix = @row[0].join(", ")
     if @row.empty? == true
@@ -387,6 +394,10 @@ def check_prefix(event)
 end
 
 def handle_prefix(event)
+  if event.channel.pm?
+       return false
+  end
+
   @prefix_setcmd = event.content.strip.to_s
   @server = event.server.id
   check_user_or_nick(event)
@@ -438,18 +449,55 @@ def handle_prefix(event)
   end
 end
 
+def check_server_options(event)
+    if event.content =~ /(^!dm prefix)/i
+      return handle_prefix(event)
+    elsif event.content =~ /(^!dm request)/i
+      return set_show_request(event)
+    end
+end
+
+def set_show_request(event)
+  if event.channel.pm?
+    return false
+  end
+
+  request_setcmd = event.content.delete_prefix("!dm request").strip
+  server = event.server.id
+  check_user_or_nick(event)
+
+  if event.user.defined_permission?(:manage_messages) == true || event.user.defined_permission?(:administrator) == true || event.user.permission?(:manage_messages, event.channel) == true
+    if request_setcmd == "show"
+      @request_option = true
+      $db.execute "insert or replace into server_options(server,show_requests,timestamp) VALUES (#{server},\"#{@request_option}\",CURRENT_TIMESTAMP)"
+    elsif request_setcmd == "hide"
+      $db.execute "delete from server_options where server = #{server}"
+    else
+      event.respond "'" + request_setcmd + "' is not a valid option. Please use 'show' or 'hide'."
+      return true
+    end
+    event.respond "Requests will now be " + (@request_option ? "shown" : "hidden") + " in responses."
+    return true
+  else
+    event.respond "#{@user} does not have permissions for this command"
+    return true
+  end
+end
+
+def check_request_option(event)
+    server = event.server.id
+    @request_option = $db.execute "select show_requests from server_options where server = #{server}"
+    if @request_option.empty?
+      @request_option = false
+    end
+end
+
 def input_valid(event)
   event_input = event.content
   if event_input =~ /^(#{@prefix})/i
     return true
   else
     return false
-  end
-end
-
-def message_is_pm(event)
-  if event.channel.pm?
-    return true
   end
 end
 
@@ -506,6 +554,11 @@ def build_response
   response = response + " #{@dice_result}"
   if @has_comment
     response = response + " Reason: `#{@comment}`"
+  end
+  if @request_option
+    # Alias parsed initial request
+    request = @input.split("!")[0]
+    response = response + " Request: `[#{request.strip}]`"
   end
   return response
 end

@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 6.0.0
+# Version: 6.1.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 require_relative 'dice_maiden_logic'
@@ -11,8 +11,6 @@ require 'dotenv'
 require 'rest-client'
 require 'sqlite3'
 
-
-
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
@@ -21,6 +19,7 @@ Dotenv.load
 @logging = ARGV[1].to_i
 @prefix = ''
 @check = ''
+@request_option = false
 
 # open connection to sqlite db and set timeout to 10s if the database is busy
 $db = SQLite3::Database.new "main.db"
@@ -33,10 +32,12 @@ mutex = Mutex.new
   mutex.lock
 
   begin
-    # check if this event is a pm and do nothing if so
-    next if message_is_pm(event) == true
-    # handle !dm prefix command
-    next if handle_prefix(event) == true
+    # handle !dm <command>
+    next if check_server_options(event) == true
+
+    #check the server request options
+    check_request_option(event)
+
     # check what prefix the server should be using
     check_prefix(event)
     # check if input is even valid
@@ -122,7 +123,7 @@ mutex = Mutex.new
       if @logging == "debug"
         log_roll(event)
       end
-      
+
       # Print dice result to Discord channel
       @has_comment = !@comment.to_s.empty? && !@comment.to_s.nil?
       if check_wrath == true
@@ -131,7 +132,6 @@ mutex = Mutex.new
         event.respond build_response
         check_fury(event)
       end
-
     end
     next if check_donate(event) == true
     next if check_help(event) == true

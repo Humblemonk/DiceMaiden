@@ -1,3 +1,11 @@
+## 6.1.0 - 2020-6-08
+### Added
+- Added new server wide option: Roll request display. You can set the bot to display the actual roll executed as part of the bots response.
+
+## 6.0.1 - 2020-5-28
+### Added
+- The bot should now respond to private message rolls
+
 ## 6.0.0 - 2020-5-19
 ### Added
 - Refactored the majority of bot logic to make it easier for multiple users to contribute to the code base
