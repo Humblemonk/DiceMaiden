@@ -485,11 +485,16 @@ def set_show_request(event)
 end
 
 def check_request_option(event)
-    server = event.server.id
-    @request_option = $db.execute "select show_requests from server_options where server = #{server}"
-    if @request_option.empty?
-      @request_option = false
-    end
+  if event.channel.pm?
+    @request_option = false
+    return
+  end
+
+  server = event.server.id
+  @request_option = $db.execute "select show_requests from server_options where server = #{server}"
+  if @request_option.empty?
+    @request_option = false
+  end
 end
 
 def input_valid(event)
