@@ -33,10 +33,12 @@ mutex = Mutex.new
 
   begin
     # handle !dm <command>
-    next if check_server_options(event) == true
+    if ENV['NO_DATABASE'] == nil
+      next if check_server_options(event) == true
 
-    #check the server request options
-    check_request_option(event)
+      #check the server request options
+      check_request_option(event)
+    end
 
     # check what prefix the server should be using
     check_prefix(event)
