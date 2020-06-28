@@ -110,7 +110,7 @@ end
 
 # Takes raw input and returns a reverse polish notation queue of operators and Integers
 def convert_input_to_RPN_queue(event, input)
-  split_input = input.scan(/\b(?:\d+[d]\d+(?:\s?[a-z]+\d+)*)|[\+\-\*\/]|(?:\b\d+\b)|[\(\)]/i)# This is the tokenization string for our input
+  split_input = input.scan(/\b(?:\d+[d]\d+(?:\s?[a-z]+\d*)*)|[\+\-\*\/]|(?:\b\d+\b)|[\(\)]/i)# This is the tokenization string for our input
 
   # change to read left to right order
   input_queue = []
