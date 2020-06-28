@@ -1,6 +1,12 @@
+## 6.2.0 - 2020-6-22
+### Added
+- Added support for indefinite explodes and rerolls. Check readme for more information!
+- Updated world of darkness 4th edition alias. It now properly supports indefinite explosions.
+
 ## 6.1.0 - 2020-6-08
 ### Added
 - Added new server wide option: Roll request display. You can set the bot to display the actual roll executed as part of the bots response.
+- Resolved an issue with unsorting tally
 
 ## 6.0.1 - 2020-5-28
 ### Added

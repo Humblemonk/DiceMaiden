@@ -25,16 +25,10 @@ Below are examples of the dice roll syntax.
 `!roll 2d6 + 3d10` : Roll two six-sided dice and three ten-sided dice.
 
 `!roll 3d6 + 5` : Roll three six-sided dice and add five. Other supported static modifiers are add (+), subtract (-), multiply (*), and divide (/).
-/
-`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open eneded' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'. The dice will only explode once with this command. Use "ie" for indefinite explosions.
 
-<<<<<<< HEAD
-`!roll 3d6 ie6` : Roll three six-sided dice and explode on sixes indefinitly.
-=======
-`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open eneded' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'.
+`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open ended' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'. The dice will only explode once with this command. Use "ie" for indefinite explosions.
 
-`!roll 3d6 e6` : Roll three six-sided dice and explode on sixes indefinitely. 
->>>>>>> fdb6eaac2781151c397bfc013db668ca5cc61ac6
+`!roll 3d6 ie6` : Roll three six-sided dice and explode on sixes indefinitely within reason. We will cap explosions at 100 rolls to prevent abuse.
 
 `!roll 3d10 d1` : Roll three ten-sided dice and drop one die. The lowest value will be dropped first.  **NOTE:** These dice are dropped before any dice are kept with the following `k` command. Order of operations is : roll dice, drop dice, keep dice
 
@@ -42,7 +36,7 @@ Below are examples of the dice roll syntax.
 
 `!roll 4d6 r2` : Roll four six-sided dice and reroll any that are equal to or less than two once. Use ir for indefinite rerolls.
 
-`!roll 4d6 ir2` : Roll four six-sided dice and reroll any that are equal to or less than two (and do the same to those dice). 
+`!roll 4d6 ir2` : Roll four six-sided dice and reroll any that are equal to or less than two (and do the same to those dice). This is capped at 100 rerolls to prevent abuse.
 
 `!roll 6d10 t7` : Roll six ten-sided dice and any that are seven or higher are counted as a success. The dice in the roll are not added together for a total. Any die that meets or exceeds the target number is added to a total of successes.
 
@@ -68,9 +62,9 @@ These commands can be combined. For example:
 
 `!roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
 
-## Change Bot Prefix
+## Change Bot Command Prefix
 
-The following examples outline how to change, reset, or check the prefix used by the bot.
+The following examples outline how to change, reset, or check the command prefix used by the bot.
 
 `!dm prefix foobar` : Change the bots prefix to !foobar. **NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role
 
@@ -103,11 +97,7 @@ Dark Heresy 2nd edition syntaxes:
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
 in most cases. Below is the complete list of aliases , with example rolls, currently supported by Dice Maiden. Have a game system that you want turned into an alias? Create an issue on github to get it added to this list!
 
-<<<<<<< HEAD
-`4wod8` -> `4d10 f1 t8` World of darkness. The first number is the number of dice to roll and the second is the toughness of the check.
-=======
 `4wod8` -> `4d10 f1 ie10 t8` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check.
->>>>>>> fdb6eaac2781151c397bfc013db668ca5cc61ac6
 
 `3df` -> `3d3 t3 f1` Fudge dice from the fate RPG system. The number represents total dice rolled. This alias also outputs the dice faces as `+`/` `/`-`.
 

@@ -239,7 +239,7 @@ def process_roll_token(event, token)
   roll_tally.gsub!(/\[*("tally=)|\"\]|\"|, @/, '')
   roll_tally.gsub!(/\[\[/, '[')
   roll_tally.gsub!(/\]\]/, ']')
-  if @do_tally_shuffle == 1
+  if @do_tally_shuffle == true
     roll_tally.gsub!("[",'')
     roll_tally_array = roll_tally.split(', ').map(&:to_i)
     roll_tally = roll_tally_array.shuffle!
@@ -485,11 +485,16 @@ def set_show_request(event)
 end
 
 def check_request_option(event)
-    server = event.server.id
-    @request_option = $db.execute "select show_requests from server_options where server = #{server}"
-    if @request_option.empty?
-      @request_option = false
-    end
+  if event.channel.pm?
+    @request_option = false
+    return
+  end
+
+  server = event.server.id
+  @request_option = $db.execute "select show_requests from server_options where server = #{server}"
+  if @request_option.empty?
+    @request_option = false
+  end
 end
 
 def input_valid(event)
