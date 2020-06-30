@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 6.2.0
+# Version: 6.2.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 require_relative 'dice_maiden_logic'
@@ -72,7 +72,7 @@ mutex = Mutex.new
     check_universal_modifiers
 
     # Check for dn
-    dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.include?('dn')
+    dnum = @input.scan(/dn\s?(\d+)/).first.join.to_i if @input.match?(/^(1dn)\d+/i)
 
     # Check for correct input
     if @roll.match?(/\dd\d/i)
