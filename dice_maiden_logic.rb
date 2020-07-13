@@ -303,7 +303,7 @@ end
 
 def check_universal_modifiers
   # Read universal dice modifiers
-  @dice_modifiers = @roll.scan(/(?:\s(?:\b[a-z]+\d+\b))+$/i).first # Grab all options and whitespace at end of input and separated
+  @dice_modifiers = @roll.scan(/(?:\s(?:\b[a-z]+\d+\s*))+$/i).first # Grab all options and whitespace at end of input and separated
   if @dice_modifiers == nil
     @dice_modifiers = ""
   else
