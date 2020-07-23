@@ -1,3 +1,7 @@
+## 6.2.1 - 2020-7-23
+### Added
+- Resolved an issue with keep lowest command. This now fully supports the drop command
+
 ## 6.2.0 - 2020-6-22
 ### Added
 - Added support for indefinite explodes and rerolls. Check readme for more information!

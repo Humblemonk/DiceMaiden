@@ -42,7 +42,7 @@ Below are examples of the dice roll syntax.
 
 `!roll 5d10 t8 f1` : f# denotes a failure number that each dice must match or be beneath in order to count against successes. These work as a sort of negative success and are totaled together as described above. In the example roll, roll five ten-sided dice and each dice that is 8 or higher is a success and subtract each one. The total may be negative. If the option is given a 0 value, that is the same as not having the option at all thus a normal sum of all dice in the roll is performed instead.
 
-`!roll 4d10 kl3` : Roll four ten-sided dice and keep the lowest three dice rolled. **NOTE:** This modifier will only work with comments and math modifiers
+`!roll 4d10 kl3` : Roll four ten-sided dice and keep the lowest three dice rolled.
 
 `!roll purge 10`: Purge the last 10 messages from channel. The purge value can be between 2 to 100 messages and requires the user to have the "manage messages" or "administrator" role.
 
