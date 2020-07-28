@@ -1,3 +1,7 @@
+## 6.3.0 - 2020-7-28
+### Added
+- Added new text for rerolls. Results will now show total rerolls
+
 ## 6.2.1 - 2020-7-23
 ### Added
 - Resolved an issue with keep lowest command. This now fully supports the drop command

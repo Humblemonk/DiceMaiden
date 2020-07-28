@@ -230,6 +230,15 @@ def process_roll_token(event, token)
     raise 'Roller encountered error with "' + token + @dice_modifiers + '": ' + error.message
   end
   token_total = dice_roll.result.total
+  # Check for reroll or indefinite reroll
+  reroll_check = dice_roll.result.sections[0].options[:reroll]
+  reroll_indefinite_check = dice_roll.result.sections[0].options[:reroll_indefinite]
+  if reroll_check > 0 || reroll_indefinite_check > 0
+    @reroll_count = dice_roll.result.sections[0].reroll_count()
+    @show_rerolls = true
+  else
+    @show_rerolls = false
+  end
   # Parse the roll and grab the total tally
   parse_roll = dice_roll.tree
   parsed = parse_roll.inspect
@@ -554,6 +563,9 @@ def build_response
   response = "#{@user} Roll"
   if !@simple_output
     response = response + ": `#{@tally}`"
+    if @show_rerolls
+      response = response + " Rerolls: `#{@reroll_count}`"
+    end
   end
   response = response + " #{@dice_result}"
   if @has_comment
