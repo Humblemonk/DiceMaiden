@@ -19,6 +19,13 @@ This will authorize the bot for your server and you should see it in your defaul
 # Manual Install
 If you wish to host this yourself, utilize dice_maiden_lite.rb. Dice Maiden requires ruby version 2.3+. There are a handful of gems required as well which are listed in the Gemfile. You will also need to create a bot which can be done at the [discord developer section](https://discordapp.com/developers/applications/me)
 
+# Support
+Found a bug? Have a feature request? Create an issue on github. Thanks!
+
+You can also join the Discord Support server: https://discord.gg/4T3R5Cb
+
+If you wish to support the bot and donate, you can do so via Patreon [here](https://patreon.com/dicemaiden) or paypal via donate bot [here](https://donatebot.io/checkout/534632036569448458?buyer=176097017926385664)!
+
 # How to use
 Below are examples of the dice roll syntax.
 
@@ -114,10 +121,3 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 `+d%` -> `((2d10kl1-1) *10) + 1d10` Advantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the lowest.
 
 `-d%` -> `((2d10k1-1) *10) + 1d10` Disadvantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the highest.
-
-# Support
-Found a bug? Have a feature request? Create an issue on github. Thanks!
-
-You can also join the Discord Support server: https://discord.gg/4T3R5Cb
-
-If you wish to support the bot and donate, you can do so via Patreon [here](https://patreon.com/dicemaiden) or paypal via donate bot [here](https://donatebot.io/checkout/534632036569448458?buyer=176097017926385664)!
