@@ -62,6 +62,8 @@ end
 def check_comment
   if @input.include?('!')
     @comment = @input.partition('!').last.lstrip
+    # remove @ from comments to prevent abuse
+    @comment.delete! '@'
     if @comment.include? 'unsort'
       @do_tally_shuffle = true
     end
