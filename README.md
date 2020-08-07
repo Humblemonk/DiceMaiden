@@ -121,3 +121,5 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 `+d%` -> `((2d10kl1-1) *10) + 1d10` Advantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the lowest.
 
 `-d%` -> `((2d10k1-1) *10) + 1d10` Disadvantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the highest.
+
+`snm5` -> `5d6 ie6 t4` Sunsails: New Millennium 4th edition. The number represents the number of dice rolled. Indefinately explodes sixs, with a target of four.
