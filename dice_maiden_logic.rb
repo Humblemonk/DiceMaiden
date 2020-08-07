@@ -14,6 +14,7 @@ def alias_input_pass(input)
       [/\B\-d\d+\b/i, "Disadvantage", /\B\-d(\d+)\b/i, "2d\\1 kl1"], # Roll two dice of the specified size and keep the lowest
       [/\B\+d%\B/i, "Advantage on percentile", /\B\+d%\B/i, "((2d10kl1-1) *10) + 1d10"], # Roll two d10s for the tens column and keep the lowest (roll under system) then add a d10 for the ones
       [/\B\-d%\B/i, "Disadvantage on percentile", /\B\-d%\B/i, "((2d10k1-1) *10) + 1d10"], # Roll two d10s for the tens column and keep the highest (roll under system) then add a d10 for the ones
+      [/\b\d+CoD\b/i, "CoD", /\b(\d+)CoD\b/i, "\\1d10 ie10 t8"], # Chronicles of Darkness
   ]
 
   @alias_types = []

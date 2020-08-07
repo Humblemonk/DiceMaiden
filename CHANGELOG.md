@@ -1,3 +1,8 @@
+## 6.4.0 - 2020-8-07
+### Added
+- Added Chronicles of Darkness alias
+- Added Sunsails: New Millennium 4th edition alias
+
 ## 6.3.0 - 2020-7-28
 ### Added
 - Added new text for rerolls. Results will now show total rerolls
