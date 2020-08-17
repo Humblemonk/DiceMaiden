@@ -5,6 +5,7 @@ def alias_input_pass(input)
   # Each entry is formatted [/Alias match regex/, "Alias Name", /gsub replacement regex/, "replace with string"]
   alias_input_map = [
       [/\b\d+dF\b/i, "Fudge", /\b(\d+)dF\b/i, "\\1d3 f1 t3"], # Fate fudge dice
+      [/\bSRF\d+\b/i, "SRF", /\bSRF(\d+)\b/i, "\\1d6 f1 t5"], # Shadowrun 3rd/4th Edition (note: explosions are left off for now)
       [/\bSNM\d+\b/i, "Sunsails", /\bSNM(\d+)\b/i, "\\1d6 ie6 t4"], # Sunsails: New Milennium; Fourth Edition
       [/\b\d+wh\d+\+/i, "Warhammer", /\b(\d+)wh(\d+)\+/i, "\\1d6 t\\2"], # Warhammer (AoS/40k)  
       [/\b\d+WoD\d+\b/i, "WoD", /\b(\d+)WoD(\d+)\b/i, "\\1d10 f1 t\\2"], # World of Darkness 4th edition (note: explosions are left off for now)
