@@ -1,3 +1,8 @@
+## 6.5.0 - 2020-9-05
+### Added
+- Added Shadowrun alias
+- Added d6 System alias
+
 ## 6.4.0 - 2020-8-07
 ### Added
 - Added Chronicles of Darkness alias
