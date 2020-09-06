@@ -127,3 +127,5 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 `snm5` -> `5d6 ie6 t4` Sunsails: New Millennium 4th edition. The number represents total dice rolled. Indefinitely explodes on sixes, with a target of four.
 
 `d6s4` -> `4d6 + 1d6 ie` The D6 System. The number must be 1 lower than the total size of the dice pool as the wild die is automatically added for you. If you have some pips to add put them on the end (i.e. `d6s4 +2` is the same as `4d6 + 1d6 ie + 2`).
+
+`sr6` -> `6d6 t5` Shadowrun System. The number represents total dice rolled. Target to hit is 4 or higher.
