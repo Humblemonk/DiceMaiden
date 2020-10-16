@@ -14,7 +14,9 @@ https://discordapp.com/api/oauth2/authorize?client_id=572301609305112596&scope=b
 
 This will authorize the bot for your server and you should see it in your default public channel. The bot will have permissions to read, send and manage messages.
 
-**NOTE:** When you first add the bot to your server, it may show up as offline. This is normal! It can take some time for your server to be cached by the bot.
+**NOTE:** When you first add the bot to your server, it may show up as offline. This is normal! It can take some time for your server to be cached by the bot. 
+
+Also, There is **NO UPTIME GUARANTEE** for this bot. I highly suggest running your own instance if you wish to hit those fabled 99% discord bot uptimes. Steps below on how to do this.
 
 # Manual Install
 If you wish to host this yourself, Dice Maiden requires ruby version 2.4 or higher. Please check the Gemfile for the various gems required. To manage these gems, it is recommended to utilize [Bundler](https://bundler.io/).You will also need to create a bot which can be done at the [discord developer section](https://discordapp.com/developers/applications/me). 
