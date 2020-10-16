@@ -382,11 +382,11 @@ def check_purge(event)
 end
 
 def check_bot_info(event)
-  if @launch_option == "lite"
-    event.respond "This option is not supported with Dice Maiden Lite."
-    return true
-  end
   if @check =~ /^\s*(#{@prefix} bot-info)\s*$/i
+    if @launch_option == "lite"
+      event.respond "This option is not supported with Dice Maiden Lite."
+      return true
+    end
     servers = $db.execute "select sum(server_count) from shard_stats;"
     event.respond "| Dice Maiden | - #{servers.join.to_i} active servers"
     return true
