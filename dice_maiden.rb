@@ -3,6 +3,7 @@
 # Version: 6.6.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
+# If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
 require_relative 'dice_maiden_logic'
 
 require 'discordrb'
