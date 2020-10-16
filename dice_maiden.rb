@@ -182,7 +182,7 @@ else
     # Limit HTTP POST to shard 0. We do not need every shard hitting the discordbots API
     if @shard == 0
       servers = $db.execute "select sum(server_count) from shard_stats;"
-      RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {"shard_count": @total_shards, "server_count": servers.join.to_i}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
+      RestClient.post("https://top.gg/api/bots/377701707943116800/stats", {"shard_count": @total_shards, "server_count": servers.join.to_i}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
     end
   end
 end
