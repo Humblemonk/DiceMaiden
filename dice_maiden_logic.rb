@@ -382,6 +382,10 @@ def check_purge(event)
 end
 
 def check_bot_info(event)
+  if @launch_option == "lite"
+    event.respond "This option is not supported with Dice Maiden Lite."
+    return true
+  end
   if @check =~ /^\s*(#{@prefix} bot-info)\s*$/i
     servers = $db.execute "select sum(server_count) from shard_stats;"
     event.respond "| Dice Maiden | - #{servers.join.to_i} active servers"
@@ -390,7 +394,7 @@ def check_bot_info(event)
 end
 
 def check_prefix(event)
-  if event.channel.pm?
+  if event.channel.pm? || @launch_option == "lite"
     @prefix = "!roll"
     return
   end
@@ -464,11 +468,19 @@ def handle_prefix(event)
 end
 
 def check_server_options(event)
-    if event.content =~ /(^!dm prefix)/i
-      return handle_prefix(event)
-    elsif event.content =~ /(^!dm request)/i
-      return set_show_request(event)
+  if event.content =~ /(^!dm prefix)/i
+    if @launch_option == "lite"
+      event.respond "This option is not supported with Dice Maiden Lite."
+      return true
     end
+    return handle_prefix(event)
+  elsif event.content =~ /(^!dm request)/i
+    if @launch_option == "lite"
+      event.respond "This option is not supported with Dice Maiden Lite."
+      return true
+    end
+    return set_show_request(event)
+  end
 end
 
 def set_show_request(event)
@@ -499,7 +511,7 @@ def set_show_request(event)
 end
 
 def check_request_option(event)
-  if event.channel.pm?
+  if event.channel.pm? || @launch_option == "lite"
     @request_option = false
     return
   end

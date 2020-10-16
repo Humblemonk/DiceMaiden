@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 6.5.0
+# Version: 6.6.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 require_relative 'dice_maiden_logic'
@@ -16,27 +16,30 @@ Dotenv.load
 # Add API token
 @bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, ignore_bots: true, fancy_log: true
 @shard = ARGV[0].to_i
-@logging = ARGV[1].to_i
+@launch_option = ARGV[1].to_s
 @prefix = ''
 @check = ''
 @request_option = false
 
 # open connection to sqlite db and set timeout to 10s if the database is busy
-$db = SQLite3::Database.new "main.db"
-$db.busy_timeout=(10000)
+if @launch_option == "lite"
+  # do nothing
+else
+  $db = SQLite3::Database.new "main.db"
+  $db.busy_timeout=(10000)
+end
 
 mutex = Mutex.new
 
 @bot.message do |event|
   # Locking the thread to prevent messages going to the wrong server
   mutex.lock
-
   begin
     # handle !dm <command>
-    next if check_server_options(event) == true
+      next if check_server_options(event) == true
 
-    #check the server request options
-    check_request_option(event)
+      #check the server request options
+      check_request_option(event)
 
     # check what prefix the server should be using
     check_prefix(event)
@@ -103,7 +106,7 @@ mutex = Mutex.new
         end
         next if error_encountered
 
-        if @logging == "debug"
+        if @launch_option == "debug"
           log_roll(event)
         end
         if @comment.to_s.empty? || @comment.to_s.nil?
@@ -120,7 +123,7 @@ mutex = Mutex.new
       @tally = alias_output_pass(@tally)
 
       # Grab event user name, server name and timestamp for roll and log it
-      if @logging == "debug"
+      if @launch_option == "debug"
         log_roll(event)
       end
 
@@ -156,28 +159,30 @@ mutex = Mutex.new
   end
   mutex.unlock
 end
+if @launch_option == "lite"
+  @bot.run
+else
+  @bot.run :async
 
-@bot.run :async
-
-# Sleep until bot is ready and then set listening status
-sleep(1) until @bot.ready
-@bot.update_status("online", "!roll", nil, since = 0, afk = false, activity_type = 2)
-
-# Check every 5 minutes and log server count
-loop do
-  sleep 300
-  time = Time.now.getutc
-  if @bot.connected? == true
-    server_parse = @bot.servers.count
-    $db.execute "update shard_stats set server_count = #{server_parse}, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
-    File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} Server Count: #{server_parse}" }
-  else
-    $db.execute "update shard_stats set server_count = 0, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
-    File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
-  end
-  # Limit HTTP POST to shard 0. We do not need every shard hitting the discordbots API
-  if @shard == 0
-    servers = $db.execute "select sum(server_count) from shard_stats;"
-    RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {"shard_count": @total_shards, "server_count": servers.join.to_i}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
+  # Sleep until bot is ready and then set listening status
+  sleep(1) until @bot.ready
+  @bot.update_status("online", "!roll", nil, since = 0, afk = false, activity_type = 2)
+  # Check every 5 minutes and log server count
+  loop do
+    sleep 300
+    time = Time.now.getutc
+    if @bot.connected? == true
+      server_parse = @bot.servers.count
+      $db.execute "update shard_stats set server_count = #{server_parse}, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
+      File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} Server Count: #{server_parse}" }
+    else
+      $db.execute "update shard_stats set server_count = 0, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
+      File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
+    end
+    # Limit HTTP POST to shard 0. We do not need every shard hitting the discordbots API
+    if @shard == 0
+      servers = $db.execute "select sum(server_count) from shard_stats;"
+      RestClient.post("https://discordbots.org/api/bots/377701707943116800/stats", {"shard_count": @total_shards, "server_count": servers.join.to_i}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
+    end
   end
 end

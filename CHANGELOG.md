@@ -1,3 +1,8 @@
+## 6.6.0 - 2020-9-17
+### Added
+- Removed dice_maiden_lite.rb and consolidated its features into dice_maiden.rb
+- Added 'lite' runtime support. If this is set, the bot will ignore database requirements
+
 ## 6.5.0 - 2020-9-05
 ### Added
 - Added Shadowrun alias

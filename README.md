@@ -17,7 +17,16 @@ This will authorize the bot for your server and you should see it in your defaul
 **NOTE:** When you first add the bot to your server, it may show up as offline. This is normal! It can take some time for your server to be cached by the bot.
 
 # Manual Install
-If you wish to host this yourself, utilize dice_maiden_lite.rb. Dice Maiden requires ruby version 2.3+. There are a handful of gems required as well which are listed in the Gemfile. You will also need to create a bot which can be done at the [discord developer section](https://discordapp.com/developers/applications/me)
+If you wish to host this yourself, Dice Maiden requires ruby version 2.4 or higher. Please check the Gemfile for the various gems required. To manage these gems, it is recommended to utilize Bundler.You will also need to create a bot which can be done at the [discord developer section](https://discordapp.com/developers/applications/me). 
+
+An ENV file (.env) must be created for storing your bots secret token and current shard count. Single instance bots will have a shard count of 1. Example ENV file:
+```
+TOKEN: foobar
+SHARD: 1
+```
+A single instance of Dice Maiden does not require a sqlite database to operate. Passing the command 'lite' at runtime will tell the bot to ignore any database requirement. 
+
+Example runtime command for a single bot instance: `bundle execute ruby dice_maiden.rb 0 lite`
 
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
