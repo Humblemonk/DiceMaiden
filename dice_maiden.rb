@@ -36,10 +36,10 @@ mutex = Mutex.new
   mutex.lock
   begin
     # handle !dm <command>
-      next if check_server_options(event) == true
+    next if check_server_options(event) == true
 
-      #check the server request options
-      check_request_option(event)
+    #check the server request options
+    check_request_option(event)
 
     # check what prefix the server should be using
     check_prefix(event)
