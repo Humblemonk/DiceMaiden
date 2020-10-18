@@ -1,7 +1,7 @@
 # Dice Maiden
 <p align="center">
- <a href="https://top.gg/bot/377701707943116800" >
-  <img src="https://top.gg/api/widget/377701707943116800.svg" alt="Dice Maiden" />
+<a href="https://top.gg/bot/377701707943116800">
+    <img src="https://top.gg/api/widget/377701707943116800.svg" alt="Dice Maiden" />
 </a>
 <br>Dice Bot for Discord
 <br>Dice Maiden is a simple to use dice rolling bot perfect for any trpg sessions!
