@@ -21,7 +21,7 @@ Also, There is **NO UPTIME GUARANTEE** for this bot. I highly suggest running yo
 # Manual Install
 If you wish to host this yourself, Dice Maiden requires ruby version 2.4 or higher. Please check the Gemfile for the various gems required. To manage these gems, it is recommended to utilize [Bundler](https://bundler.io/).You will also need to create a bot which can be done at the [discord developer section](https://discordapp.com/developers/applications/me). 
 
-An ENV file (.env) must be created for storing your bots secret token and current shard count. Single instance bots will have a shard count of 1. Example ENV file:
+An ENV file (.env) must be created for storing your bots secret token and current shard count. Single instance bots will have a shard count of 1. This file must exist in the bots root directory. Example ENV file:
 ```
 TOKEN: foobar
 SHARD: 1
