@@ -179,6 +179,8 @@ else
     else
       $db.execute "update shard_stats set server_count = 0, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
       File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
+      # Bot died and cant connect to Discord. Kill the bot and have eye restart it
+      exit
     end
     # Limit HTTP POST to shard 0. We do not need every shard hitting the discordbots API
     if @shard == 0
