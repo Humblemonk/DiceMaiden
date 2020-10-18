@@ -13,9 +13,9 @@ Eye.app 'dice_maiden' do
   check :memory, :below => 512.megabytes, :every => 30.seconds, :times => 5
 
   group 'shards' do
-    chain grace: 6.seconds
+    chain grace: 2.seconds
     
-    70.times do |i|
+    100.times do |i|
       process "dice_maiden#{i}" do
         pid_file "/tmp/dice_maiden#{i}.pid"
         start_command "bundle exec ruby dice_maiden.rb #{i}"

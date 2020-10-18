@@ -16,6 +16,7 @@ Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
 @bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, ignore_bots: true, fancy_log: true
+@bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
 @launch_option = ARGV[1].to_s
 @prefix = ''
@@ -180,7 +181,7 @@ else
       $db.execute "update shard_stats set server_count = 0, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
       File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
       # Bot died and cant connect to Discord. Kill the bot and have eye restart it
-      exit
+      exit!
     end
     # Limit HTTP POST to shard 0. We do not need every shard hitting the discordbots API
     if @shard == 0
