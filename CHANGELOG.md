@@ -1,3 +1,7 @@
+## 6.6.1 - 2020-10-17
+### Added
+- Added alias for shorthand d100 rolls
+
 ## 6.6.0 - 2020-9-17
 ### Added
 - Removed dice_maiden_lite.rb and consolidated its features into dice_maiden.rb
