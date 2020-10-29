@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'discordrb', github: 'swarley/discordrb', branch: 'close_codes'
+gem 'discordrb', github: 'swarley/discordrb', branch: 'next'
 gem 'dicebag', :git => "https://github.com/Humblemonk/Dice-Bag.git", :branch => "master"
 gem 'dotenv', '~> 2.5'
 gem 'rest-client', '~> 2.0', '>= 2.0.2'
