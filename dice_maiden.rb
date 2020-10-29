@@ -15,7 +15,7 @@ require 'sqlite3'
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
-@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, ignore_bots: true, fancy_log: true
+@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, intents: [:servers, :server_messages], ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
 @launch_option = ARGV[1].to_s
