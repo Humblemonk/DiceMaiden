@@ -29,6 +29,14 @@ A single instance of Dice Maiden does not require a sqlite database to operate. 
 
 Example runtime command for a single bot instance: `bundle execute ruby dice_maiden.rb 0 lite`
 
+## Docker
+
+To launch a single bot instance:
+
+```
+docker-compose up
+```
+
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
 
