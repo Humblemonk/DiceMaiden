@@ -37,6 +37,14 @@ To launch a single bot instance:
 docker-compose up
 ```
 
+The command 'lite' has been included in the [`Dockerfile`](Dockerfile#L8), per the above instructions. In order to override this, one can create the following `docker-compose.override.yml` based on the existing [`docker-compose.yml`](docker-compose.yml) file but with the following additional contents:
+
+```yaml
+  dice_maiden:
+    # build, image, and volumes have been omitted here for brevity.
+    command: bundle execute ruby dice_maiden.rb
+```
+
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
 
