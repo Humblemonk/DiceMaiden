@@ -1,0 +1,7 @@
+version: "3"
+services:
+  dice_maiden: 
+    build: .
+    image: humblemonk/dicemaiden
+    volumes:
+      - ./.env:/opt/dice_maiden/.env
