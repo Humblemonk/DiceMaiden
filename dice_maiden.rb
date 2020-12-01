@@ -154,6 +154,7 @@ mutex = Mutex.new
         event.respond "#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`"
       end
     elsif (error.message.include? "undefined method `join' for nil:NilClass") || (error.message.include? "The bot doesn't have the required permission to do this!") || (error.message.include? "500 Internal Server Error")
+      time = Time.now.getutc
       File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} ERROR: #{error.message}" }
     else
       event.respond("Unexpected exception thrown! (" + error.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
