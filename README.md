@@ -69,6 +69,8 @@ Below are examples of the dice roll syntax.
 
 `!roll s 4d6` : Simplify roll output by not showing the tally.
 
+`!roll b 4d6` : Count number of ones rolled and display as Botches.
+
 `!roll 4d6 ! unsort` or `!roll ul 4d6`: Roll four six-sided dice and unsort the tally.
 
 `!roll help` : Displays basic usage instructions.
