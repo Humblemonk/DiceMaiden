@@ -553,9 +553,10 @@ def check_roll_modes
   end
 
   # check for botch mode for roll
-  if @input.match(/#{@prefix}\s(b)\s/i)
-    @botch_count = true
-    @input.sub!("b","")
+  if @input.match(/#{@prefix}\sb\d+\s/i)
+    @botch = true
+    @botch_treshold = @input[/\sb\d+/].sub!("\sb","").to_i
+    @input.sub!("b\d\+","")
   end
 
   # check for roll having an unsorted tally list
@@ -584,6 +585,15 @@ def roll_sets_valid(event)
   end
 end
 
+def botch_counter
+  @botch_count = 0
+  while @botch_treshold > 0
+    @botch_count += @tally.scan(/\D#{@botch_treshold}\D/).count
+    @botch_treshold -= 1
+  end
+  return " Botches: #{@botch_count}"
+end
+
 def build_response
   response = "#{@user} Roll"
   if !@simple_output
@@ -593,8 +603,8 @@ def build_response
     end
   end
   response = response + " #{@dice_result}"
-  if @botch_count == true
-    response = response + " Botches: #{@tally.scan(/1/).count}"
+  if @botch == true
+    response = response + botch_counter
   end
   if @has_comment
     response = response + " Reason: `#{@comment}`"
