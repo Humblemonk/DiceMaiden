@@ -558,6 +558,10 @@ def check_roll_modes
     @input.sub!("ul","")
   end
 
+  if @input.match(/#{@prefix}\s(ed\d+)/i)
+    @ed = true
+  end
+
 end
 
 def roll_sets_valid(event)
