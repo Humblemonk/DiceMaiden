@@ -25,10 +25,8 @@
 
 def replace_earthdawn(event)
     roll = @input.match(/#{@prefix}\sed(\d+)/i)
-    print "found" + roll[1] + "\n"
     step = roll[1].to_i
     if step.between?(1,20)
-        print "replacing ed"+roll[1]+" with "+@earthdawn_replacements[step]+"!\n"
         @input.sub!("ed"+roll[1], @earthdawn_replacements[step])
     else
         event.respond "Only steps 1-20 are implemented"
