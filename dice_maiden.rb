@@ -5,7 +5,7 @@
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
 require_relative 'dice_maiden_logic'
-require_relative "earthdawn_logic"
+require_relative 'earthdawn_logic'
 
 require 'discordrb'
 require 'dicebag'
