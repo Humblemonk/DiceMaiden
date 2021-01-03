@@ -50,6 +50,7 @@ If everything was successful, your Dice Maiden docker container should now be ru
 2. Run commands inside dicemaiden container: `sudo docker exec -it dicemaiden bash`
 3. Start/stop/restart dicemaiden container: `sudo docker start dicemaiden; sudo docker stop dicemaiden; sudo docker restart dicemaiden`
 
+If you wish to rebuild the container so that your bot is running the latest changes, run the following command: `sudo docker-compose up -d --build`
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
 
