@@ -29,6 +29,27 @@ A single instance of Dice Maiden does not require a sqlite database to operate. 
 
 Example runtime command for a single bot instance: `bundle execute ruby dice_maiden.rb 0 lite`
 
+## Single instance Docker install
+
+Another way to run a single instance of Dice Maiden is via docker. Before utilizing the docker image included with Dice Maiden, please make sure both `docker` and `docker-compose` are installed. Follow the steps below:
+
+1. Run `git clone https://github.com/Humblemonk/DiceMaiden.git` in your /opt directory. This may require sudo powers.
+2. run `vim /opt/DiceMaiden/.env` and add the following to the env file:
+
+```
+TOKEN: token obtained from your discord developer application
+SHARD: 1
+```
+3. Once the env file is created, make sure you are in the DiceMaiden directory by typing `cd /opt/DiceMaiden`. Once in the DiceMaiden directory, run `docker-compose up -d` to build the docker container. 
+
+**NOTE:** The initial run can take a bit as the container needs to download and install all the ruby gems and their dependencies. This isnt required again unless you rebuild the container.
+
+If everything was successful, your Dice Maiden docker container should now be running! A couple helpful commands for docker newbies:
+
+1. View dicemaiden container logs: `sudo docker logs -f dicemaiden`
+2. Run commands inside dicemaiden container: `sudo docker exec -it dicemaiden bash`
+3. Start/stop/restart dicemaiden container: `sudo docker start dicemaiden; sudo docker stop dicemaiden; sudo docker restart dicemaiden`
+
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
 

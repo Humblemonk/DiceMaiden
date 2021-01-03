@@ -1,0 +1,10 @@
+version: "3"
+services:
+  dice_maiden:
+    build:
+      context: .
+      dockerfile: DockerFile
+    image: humblemonk/dicemaiden
+    container_name: dicemaiden
+    volumes:
+      - .env:/opt/DiceMaiden/.env
