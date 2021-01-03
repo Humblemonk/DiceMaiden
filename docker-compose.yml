@@ -3,7 +3,7 @@ services:
   dice_maiden:
     build:
       context: .
-      dockerfile: DockerFile
+      dockerfile: Dockerfile
     image: humblemonk/dicemaiden
     container_name: dicemaiden
     volumes:
