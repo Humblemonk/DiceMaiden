@@ -18,6 +18,7 @@ def alias_input_pass(input)
       [/\bd6s\d+\b/i, "The D6 System", /\bd6s(\d+)\b/i, "\\1d6 + 1d6 ie"], # The D6 System
       [/\bsr\d+\b/i, "Shadowrun", /\bsr(\d+)\b/i, "\\1d6 t5"], # Shadowrun system
       [/\b\d+d%\B/i, "Percentile roll", /\b(\d+)d%\B/i, "\\1d100"], # Roll a d100
+      [/\bsp\d+\b/i, "Storypath", /\bsp(\d+)\b/i, "ul \\1d10 ie10 t8"], # storypath system
   ]
 
   @alias_types = []
