@@ -105,7 +105,9 @@ These commands can be combined. For example:
 
 The following examples outline how to change, reset, or check the command prefix used by the bot.
 
-`!dm prefix foobar` : Change the bots prefix to !foobar. **NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role. The bot will only respond to rolls with this new prefix.
+`!dm prefix foobar` : Change the bots prefix to !foobar. 
+
+**NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role. The bot will only respond to rolls with this new prefix.
 
 `!dm prefix reset` : Reset the bots prefix to !roll
 
