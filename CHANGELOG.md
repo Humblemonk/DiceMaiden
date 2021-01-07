@@ -1,3 +1,8 @@
+## 6.7.0 - 2021-01-07
+### Added
+- Added initial support for storypath system
+- Resolved an issue where the bot was responding to "!roll" even when a custom prefix was set.
+
 ## 6.6.1 - 2020-10-17
 ### Added
 - Added alias for shorthand d100 rolls
