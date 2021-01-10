@@ -605,7 +605,7 @@ end
 def total_rolls
   # returns how many dice have been rolled, including explosions, but not rerolls. Ignores keep/drop, since the dice are still showed in the responce.
   @roll_count = @tally.scan(/\d+[\],]/).count
-  return @roll_counter
+  return @roll_count
 end
 
 def build_response
