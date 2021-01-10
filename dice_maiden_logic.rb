@@ -560,6 +560,13 @@ def check_roll_modes
     @input.sub!("b\d\+","")
   end
 
+   # check for botch ratio mode for roll
+  if @input.match(/#{@prefix}\sbr\d+\s/i)
+    @botch_ratio = true
+    @botch_treshold = @input[/\sbr\d+/].sub!("\sbr","").to_i
+    @input.sub!("br\d\+","")
+  end
+  
   # check for roll having an unsorted tally list
   if @input.match(/#{@prefix}\s(ul)\s/i)
     @do_tally_shuffle = true
@@ -592,7 +599,13 @@ def botch_counter
     @botch_count += @tally.scan(/\D#{@botch_treshold}\D/).count
     @botch_treshold -= 1
   end
-  return " Botches: #{@botch_count}"
+  return @botch_count
+end
+
+def total_rolls
+  # returns how many dice have been rolled, including explosions, but not rerolls. Ignores keep/drop, since the dice are still showed in the responce.
+  @roll_count = @tally.scan(/\d+[\],]/).count
+  return @roll_counter
 end
 
 def build_response
@@ -604,8 +617,11 @@ def build_response
     end
   end
   response = response + " #{@dice_result}"
-  if @botch == true
-    response = response + botch_counter
+  if @botch
+    response = response + " Botches: #{@botch_count}"
+  end
+  if @botch_ratio
+    response = response + " Botches: #{@botch_count/@total_rolls} (#{@botch_count}/#{@total_rolls})"
   end
   if @has_comment
     response = response + " Reason: `#{@comment}`"
