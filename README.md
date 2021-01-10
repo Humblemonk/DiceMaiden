@@ -93,6 +93,9 @@ Below are examples of the dice roll syntax.
 
 `!roll b1 4d6` : Counts number of dice at or below the number following `b`. If no number follows `b`, this option is ignored.
 
+`!roll br1 4d6` : As `b`, but returns the ratio of numbers below the number following `br` compared to the number of dice rolled, including explosions, but not rerolls.
+The first number is a simplified fraction, while the numbers in parenthies are the actual numbers.
+
 `!roll 4d6 ! unsort` or `!roll ul 4d6`: Roll four six-sided dice and unsort the tally.
 
 `!roll help` : Displays basic usage instructions.
