@@ -621,7 +621,7 @@ def build_response
     response = response + " Botches: #{@botch_count}"
   end
   if @botch_ratio
-    response = response + " Botches: #{@botch_count/@total_rolls} (#{@botch_count}/#{@total_rolls})"
+    response = response + " Botches: #{@botch_count}/#{@total_rolls} (#{(@botch_count/@total_rolls)*100}%)"
   end
   if @has_comment
     response = response + " Reason: `#{@comment}`"
