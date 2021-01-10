@@ -29,6 +29,28 @@ A single instance of Dice Maiden does not require a sqlite database to operate. 
 
 Example runtime command for a single bot instance: `bundle execute ruby dice_maiden.rb 0 lite`
 
+## Single instance Docker install
+
+Another way to run a single instance of Dice Maiden is via docker. Before utilizing the docker image included with Dice Maiden, please make sure both `docker` and `docker-compose` are installed. Follow the steps below:
+
+1. Run `git clone https://github.com/Humblemonk/DiceMaiden.git` in your /opt directory. This may require sudo powers.
+2. run `vim /opt/DiceMaiden/.env` and add the following to the env file:
+
+```
+TOKEN: token obtained from your discord developer application
+SHARD: 1
+```
+3. Once the env file is created, make sure you are in the DiceMaiden directory by typing `cd /opt/DiceMaiden`. Once in the DiceMaiden directory, run `docker-compose up -d` to build the docker container. 
+
+**NOTE:** The initial run can take a bit as the container needs to download and install all the ruby gems and their dependencies. This isnt required again unless you rebuild the container.
+
+If everything was successful, your Dice Maiden docker container should now be running! A couple helpful commands for docker newbies:
+
+1. View dicemaiden container logs: `sudo docker logs -f dicemaiden`
+2. Run commands inside dicemaiden container: `sudo docker exec -it dicemaiden bash`
+3. Start/stop/restart dicemaiden container: `sudo docker start dicemaiden; sudo docker stop dicemaiden; sudo docker restart dicemaiden`
+
+If you wish to rebuild the container so that your bot is running the latest changes, run the following command: `sudo docker-compose up -d --build`
 # Support
 Found a bug? Have a feature request? Create an issue on github. Thanks!
 
@@ -83,7 +105,9 @@ These commands can be combined. For example:
 
 The following examples outline how to change, reset, or check the command prefix used by the bot.
 
-`!dm prefix foobar` : Change the bots prefix to !foobar. **NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role
+`!dm prefix foobar` : Change the bots prefix to !foobar. 
+
+**NOTE:** A new prefix will have an ! added to the start of it. A prefix cannot be more than 10 characters, contain spaces, or be the following: "check" or "reset". The user must have the "manage messages" or "administrator" role. The bot will only respond to rolls with this new prefix.
 
 `!dm prefix reset` : Reset the bots prefix to !roll
 
@@ -141,3 +165,5 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 `d6s4` -> `4d6 + 1d6 ie` The D6 System. The number must be 1 lower than the total size of the dice pool as the wild die is automatically added for you. If you have some pips to add put them on the end (i.e. `d6s4 +2` is the same as `4d6 + 1d6 ie + 2`).
 
 `sr6` -> `6d6 t5` Shadowrun System. The number represents total dice rolled. Target to hit is 5 or higher.
+
+`sp4` -> `4d10 t8 ie10` Storypath system. The number represents total dice rolled. A d10 system with a target set to 8 and infinite explosion on 10.
