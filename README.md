@@ -14,18 +14,18 @@ https://discordapp.com/api/oauth2/authorize?client_id=572301609305112596&scope=b
 
 This will authorize the bot for your server and you should see it in your default public channel. The bot will have permissions to read, send and manage messages.
 
-**NOTE:** When you first add the bot to your server, it may show up as offline. This is normal! It can take some time for your server to be cached by the bot. 
+**NOTE:** When you first add the bot to your server, it may show up as offline. This is normal! It can take some time for your server to be cached by the bot.
 
 
 # Manual Install
-If you wish to host this yourself, Dice Maiden requires ruby version 2.4 or higher. Please check the Gemfile for the various gems required. To manage these gems, it is recommended to utilize [Bundler](https://bundler.io/).You will also need to create a bot which can be done at the [discord developer section](https://discordapp.com/developers/applications/me). 
+If you wish to host this yourself, Dice Maiden requires ruby version 2.4 or higher. Please check the Gemfile for the various gems required. To manage these gems, it is recommended to utilize [Bundler](https://bundler.io/).You will also need to create a bot which can be done at the [discord developer section](https://discordapp.com/developers/applications/me).
 
 An ENV file (.env) must be created for storing your bots secret token and current shard count. Single instance bots will have a shard count of 1. This file must exist in the bots root directory. Example ENV file:
 ```
 TOKEN: foobar
 SHARD: 1
 ```
-A single instance of Dice Maiden does not require a sqlite database to operate. Passing the command 'lite' at runtime will tell the bot to ignore any database requirement. 
+A single instance of Dice Maiden does not require a sqlite database to operate. Passing the command 'lite' at runtime will tell the bot to ignore any database requirement.
 
 Example runtime command for a single bot instance: `bundle execute ruby dice_maiden.rb 0 lite`
 
@@ -87,9 +87,11 @@ Below are examples of the dice roll syntax.
 
 `!roll 4d6 ! Hello World!`: Roll four six-sided dice and add comment to the roll.
 
-`!roll 6 4d6` : Roll 6 sets of four sixe-sided dice. A size of a set can be between 2 and 20.
+`!roll 6 4d6` : Roll 6 sets of four six-sided dice. A size of a set can be between 2 and 20.
 
 `!roll s 4d6` : Simplify roll output by not showing the tally.
+
+`!roll b1 4d6` : Counts number of dice at or below the number following `b`. If no number follows `b`, this option is ignored.
 
 `!roll 4d6 ! unsort` or `!roll ul 4d6`: Roll four six-sided dice and unsort the tally.
 
