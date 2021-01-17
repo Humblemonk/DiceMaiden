@@ -5,6 +5,7 @@
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
 require_relative 'dice_maiden_logic'
+require_relative 'earthdawn_logic'
 
 require 'discordrb'
 require 'dicebag'
@@ -53,8 +54,13 @@ mutex = Mutex.new
     @wng = false
     @dh = false
     @do_tally_shuffle = false
+    @ed = false
 
     check_roll_modes
+
+    if @ed
+      next unless replace_earthdawn(event)
+    end
 
     @roll_set = nil
     next unless roll_sets_valid(event)
