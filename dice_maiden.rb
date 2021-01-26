@@ -53,6 +53,8 @@ mutex = Mutex.new
     @wng = false
     @dh = false
     @do_tally_shuffle = false
+    @botch = false
+    @botch_ratio = false
 
     check_roll_modes
 
