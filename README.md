@@ -91,6 +91,8 @@ Below are examples of the dice roll syntax.
 
 `!roll s 4d6` : Simplify roll output by not showing the tally.
 
+`!roll 2d10 nr` : Gives the result of each die roll, but doesn't sum them.
+
 `!roll 4d6 ! unsort` or `!roll ul 4d6`: Roll four six-sided dice and unsort the tally.
 
 `!roll help` : Displays basic usage instructions.
@@ -133,6 +135,14 @@ Warhammer 40k Wrath and Glory example syntaxes:
 Dark Heresy 2nd edition syntaxes:
 
 `!roll dh 4d10` : Roll four ten-sided dice for dark heresy 2nd edition. If your roll contains a natural 10, you will be prompted with a righteous fury notification!
+
+Hero System 5th edition syntaxes:
+
+`!roll 2hsn` : Roll 2 six-sided dice for normal damage. In the talley, Body modifiers are given in parentheses. Both Body and Stun are calculated.
+
+`!roll 5hsk1 +1d3` : Roll 5 1/2 six-sided dice for killing damage, with a plus one stun modifier. Stun modifier defaults to zero, meaning a roll of 1d6 -1, if no value is given. For partial dice, use +1 for a single pip, +1d3 for a half d6, and whole d6 can either be added to the first number, or at the end with the partial dice. Calculates Body, Stun Multiplier, and Stun
+
+`!roll 3hsh` : Adds 11 to the nubmer supplied, then subtracts from that sum the result of 3d6. Ie. 11 + 3 - 3d6
 
 ## Alias Rolls
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
