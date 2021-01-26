@@ -618,10 +618,10 @@ def build_response
   end
   response = response + " #{@dice_result}"
   if @botch
-    response = response + " Botches: #{@botch_count}"
+    response = response + " Botches: #{botch_counter}"
   end
   if @botch_ratio
-    response = response + " Botches: #{@botch_count}/#{@total_rolls} (#{(@botch_count/@total_rolls)*100}%)"
+    response = response + " Botches: #{botch_counter}/#{total_rolls} (#{(botch_counter/total_rolls)*100}%)"
   end
   if @has_comment
     response = response + " Reason: `#{@comment}`"
