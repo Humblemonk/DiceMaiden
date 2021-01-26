@@ -19,8 +19,9 @@ def alias_input_pass(input)
       [/\bsr\d+\b/i, "Shadowrun", /\bsr(\d+)\b/i, "\\1d6 t5"], # Shadowrun system
       [/\b\d+d%\B/i, "Percentile roll", /\b(\d+)d%\B/i, "\\1d100"], # Roll a d100
       [/\bsp\d+\b/i, "Storypath", /\bsp(\d+)\b/i, "ul \\1d10 ie10 t8"], # storypath system
-      [/\b\d+HSN\b/i, "Hero System Normal", /\b(\d+)HSN\b/i, "\\1d6 nr"], # Hero System 5e Normal Damage
-      [/\b\d+HSH\b/i, "Hero System to Hit", /\b(\d+)HSN\b/i, "11+\\1 -3d6 nr"], # Hero System 5e Normal Damage
+      [/\b\d+HSN\b/i, "Hero System Normal", /\b(\d+)HSN\b/i, "hsn \\1d6 nr"], # Hero System 5e Normal Damage
+      [/\b\d+HSK\d*\b/i, "Hero System Killing", /\b(\d+)HSK(\d*)\b/i, "hsk\\2 \\1d6 nr"], # Hero System 5e Killing Damage
+      [/\b\d+HSH\b/i, "Hero System to Hit", /\b(\d+)HSN\b/i, "hsh 11+\\1 -3d6 nr"], # Hero System 5e to Hit
   ]
 
   @alias_types = []
@@ -557,9 +558,15 @@ def check_roll_modes
   end
   
   # check for Hero System 5e Killing damage mode for roll
-  if @input.match(/#{@prefix}\s(hsk)\s/i)
+  if @input.match(/#{@prefix}\s(hsk)/i)
     @hsk = true
-    @input.sub!("hsk","")
+    if @input.match(/hsk\d+/i)
+      multiplier_string = @input.scan(/(hsk)\d+/i)
+      @hsk_multiplier_modifier = multiplier_string.scan(/\d+/).to_i
+      @input.sub!(/hsk\d+/i,"")
+    else
+      @hsk_multiplier_modifier = 0
+      @input.sub!("hsk","")
   end
   
     # check for Hero System 5e to Hit mode for roll
@@ -575,7 +582,7 @@ def check_roll_modes
   end
 
   # check for no total mode for roll
-  if @input.match(/#{@prefix}\s(nr)\s/i)
+  if @input.match(/\s(nr)\s/i)
     @no_result = true
     @input.sub!("nr","")
   end
@@ -612,6 +619,17 @@ def hero_system_math
     @hsn_body += @tally.scan(/\+2\D/).count
     @hsn_body *=2
     @hsn_body += @tally.scan(/\+1\D/).count
+    @hsn_stun = @dice_result.scan(/\d+/)
+  end
+  
+  if @hsk
+    @hsk_body = @dice_result.scan(/\d+/).to_i
+    @hsk_stun_roll = DiceBag::Roll.new("1d6").result.total
+    @hsk_multiplier = @hsk_stun_roll -1 + @hsk_multiplier_modifier
+    if @hsk_multiplier.zero?
+      @hsk_multiplier = 1
+    end
+    @hsk_stun = @hsk_body * @hsk_multiplier
   end
 end
 
@@ -629,11 +647,14 @@ def build_response
   end
   
   if @hsn
-     response = response + "Body: #{@hsn_body}, Stun:#{/\d+/.match(@dice_result)}"
+     response = response + "Body: #{@hsn_body}, Stun:#{@hsn_stun}"
   end
   
+  if @hsk
+    responce = responce + "Body: #{@hsk_body}, Stun Multiplier: #{@hsk_multiplier}, Stun: #{@hsk_stun}"
+  
   if @hsh
-    response = response + "Hits DCV #{/\d+/.match(@dice_result)}"
+    response = response + "Hits DCV #{@dice_result.scan(/\d+/)}"
   end
   
   if @has_comment
