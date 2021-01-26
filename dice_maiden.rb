@@ -52,6 +52,10 @@ mutex = Mutex.new
     @simple_output = false
     @wng = false
     @dh = false
+    @hsn = false
+    @hsk = false
+    @hsh = false
+    @no_result = false
     @do_tally_shuffle = false
 
     check_roll_modes
