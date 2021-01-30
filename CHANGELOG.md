@@ -1,3 +1,7 @@
+## 6.8.0 - 2021-01-17
+### Added
+- Added support for earthdawn system
+
 ## 6.7.0 - 2021-01-07
 ### Added
 - Added initial support for storypath system
