@@ -171,3 +171,30 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 `sr6` -> `6d6 t5` Shadowrun System. The number represents total dice rolled. Target to hit is 5 or higher.
 
 `sp4` -> `4d10 t8 ie10` Storypath system. The number represents total dice rolled. A d10 system with a target set to 8 and infinite explosion on 10.
+
+## Earthdawn System:
+
+`!roll edX` where X can be a value of 1 to 20. Earthdawn system has a plethora of ways to roll the dice and the table below breaks down the various options:
+
+| Roll Command | Description|
+| --- | --- |
+| !roll ed1 | 1d4 ie - 2 |
+| !roll ed2 | 1d4 ie - 1 |
+| !roll ed3 | 1d4 ie | 
+| !roll ed4 | 1d6 ie |
+| !roll ed5 | 1d8 ie |
+| !roll ed6 | 1d10 ie |
+| !roll ed7 | 1d12 ie |
+| !roll ed8 | 2d6 ie |
+| !roll ed9 | 1d8 ie + 1d6 ie |
+| !roll ed10 | 2d8 ie |
+| !roll ed11 | 1d10 ie + 1d8 ie |
+| !roll ed12 | 2d10 ie |
+| !roll ed13 | 1d12 ie + 1d10 ie |
+| !roll ed14 | 2d12 ie |
+| !roll ed15 | 1d12 ie + 2d6 ie |
+| !roll ed16 | 1d12 ie + 1d8 ie + 1d6 ie |
+| !roll ed17 | 1d12 ie + 2d8 ie |
+| !roll ed18 | 1d12 ie + 1d10 ie + 1d8 ie |
+| !roll ed19 | 1d20 ie + 2d6 ie |
+| !roll ed20 | 1d20 ie + 1d8 ie + 1d6 ie |
