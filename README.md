@@ -105,9 +105,9 @@ These commands can be combined. For example:
 
 `!roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
 
-## Change Bot Command Prefix
+## Change Bot Command 
 
-The following examples outline how to change, reset, or check the command prefix used by the bot.
+The following examples outline how to change, reset, or check the command used by the bot.
 
 `!dm prefix foobar` : Change the bots prefix to !foobar. 
 
