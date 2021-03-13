@@ -5,8 +5,8 @@ def alias_input_pass(input)
   # Each entry is formatted [/Alias match regex/, "Alias Name", /gsub replacement regex/, "replace with string"]
   alias_input_map = [
       [/\b\d+dF\b/i, "Fudge", /\b(\d+)dF\b/i, "\\1d3 f1 t3"], # Fate fudge dice
-      [/\bSNM\d+\b/i, "Sunsails", /\bSNM(\d+)\b/i, "\\1d6 ie6 t4"], # Sunsails: New Milennium; Fourth Edition
-      [/\b\d+wh\d+\+/i, "Warhammer", /\b(\d+)wh(\d+)\+/i, "\\1d6 t\\2"], # Warhammer (AoS/40k)  
+      [/\bSNM\d+\b/i, "Sunsails", /\bSNM(\d+)\b/i, "\\1d6 ie6 br1 t4"], # Sunsails: New Milennium; Fourth Edition
+      [/\b\d+wh\d+\+/i, "Warhammer", /\b(\d+)wh(\d+)\+/i, "\\1d6 t\\2"], # Warhammer (AoS/40k)
       [/\b\d+WoD\d+\b/i, "WoD", /\b(\d+)WoD(\d+)\b/i, "\\1d10 f1 t\\2"], # World of Darkness 4th edition (note: explosions are left off for now)
       [/\bdd\d\d\b/i, "Double Digit", /\bdd(\d)(\d)\b/i, "(1d\\1 * 10) + 1d\\2"], # Rolling one dice for each digit
       [/\bage\b/i, "AGE System Test", /\b(age)\b/i, "2d6 + 1d6"], # 2d6 plus one drama/dragon/stunt die
@@ -553,6 +553,20 @@ def check_roll_modes
     @input.sub!("s","")
   end
 
+  # check for botch mode for roll
+  if @input.match(/#{@prefix}\sb\d+\s/i)
+    @botch = true
+    @botch_treshold = @input[/\sb\d+/].sub!("\sb","").to_i
+    @input.sub!("b\d\+","")
+  end
+
+   # check for botch ratio mode for roll
+  if @input.match(/#{@prefix}\sbr\d+\s/i)
+    @botch_ratio = true
+    @botch_treshold = @input[/\sbr\d+/].sub!("\sbr","").to_i
+    @input.sub!("br\d\+","")
+  end
+  
   # check for roll having an unsorted tally list
   if @input.match(/#{@prefix}\s(ul)\s/i)
     @do_tally_shuffle = true
@@ -583,6 +597,21 @@ def roll_sets_valid(event)
   end
 end
 
+def botch_counter
+  @botch_count = 0
+  while @botch_treshold > 0
+    @botch_count += @tally.scan(/\D#{@botch_treshold}\D/).count
+    @botch_treshold -= 1
+  end
+  return @botch_count
+end
+
+def total_rolls
+  # returns how many dice have been rolled, including explosions, but not rerolls. Ignores keep/drop, since the dice are still showed in the responce.
+  @roll_count = @tally.scan(/\d+[\],]/).count
+  return @roll_count
+end
+
 def build_response
   response = "#{@user} Roll"
   if !@simple_output
@@ -592,6 +621,12 @@ def build_response
     end
   end
   response = response + " #{@dice_result}"
+  if @botch
+    response = response + " Botches: #{botch_counter}"
+  end
+  if @botch_ratio
+    response = response + " Botches: #{botch_counter}/#{total_rolls} (#{(botch_counter/total_rolls)*100}%)"
+  end
   if @has_comment
     response = response + " Reason: `#{@comment}`"
   end
