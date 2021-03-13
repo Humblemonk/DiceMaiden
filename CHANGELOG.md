@@ -1,3 +1,7 @@
+## 6.8.1 - 2021-03-13
+### Added
+- Resolved an issue where the bot would respond with "Invalid Form Body"
+
 ## 6.8.0 - 2021-01-17
 ### Added
 - Added support for earthdawn system

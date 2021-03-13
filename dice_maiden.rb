@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 6.8.0
+# Version: 6.8.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -153,7 +153,7 @@ mutex = Mutex.new
       error.message = "NIL MESSAGE!"
     end
     # Simplify roll and send it again if we error out due to character limit
-    if error.message.include? "Message over the character limit"
+    if (error.message.include? "Message over the character limit") || (error.message.include? "Invalid Form Body")
       unless @roll_set.nil?
         event.respond "#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`"
       else
