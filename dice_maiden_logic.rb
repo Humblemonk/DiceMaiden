@@ -19,6 +19,9 @@ def alias_input_pass(input)
       [/\bsr\d+\b/i, "Shadowrun", /\bsr(\d+)\b/i, "\\1d6 t5"], # Shadowrun system
       [/\b\d+d%\B/i, "Percentile roll", /\b(\d+)d%\B/i, "\\1d100"], # Roll a d100
       [/\bsp\d+\b/i, "Storypath", /\bsp(\d+)\b/i, "ul \\1d10 ie10 t8"], # storypath system
+      [/\b\d+HSN\b/i, "Hero System Normal", /\b(\d+)HSN\b/i, "hsn \\1d6 nr"], # Hero System 5e Normal Damage
+      [/\b\d+HSK\d*\b/i, "Hero System Killing", /\b(\d+)HSK(\d*)\b/i, "hsk\\2 \\1d6 nr"], # Hero System 5e Killing Damage
+      [/\b\d+HSH\b/i, "Hero System to Hit", /\b(\d+)HSN\b/i, "hsh 11+\\1 -3d6 nr"], # Hero System 5e to Hit
   ]
 
   @alias_types = []
@@ -41,6 +44,7 @@ def alias_output_pass(roll_tally)
   # Not all aliases will have an output hash
   alias_output_hash = {
       "Fudge" => [[/\b1\b/, "-"], [/\b2\b/, " "], [/\b3\b/, "+"]]
+      "Hero System Normal" => [[/\b1\b/, "1 (+0)"], [/\b([2-5])\b/, "\\1 (+1)"], [/\b6\b/, "6 (+2)"]]
   }
 
   new_tally = roll_tally
@@ -546,6 +550,30 @@ def check_roll_modes
     @dh = true
     @input.sub!("dh","")
   end
+  
+  # check for Hero System 5e Normal damage mode for roll
+  if @input.match(/#{@prefix}\s(hsn)\s/i)
+    @hsn = true
+    @input.sub!("hsn","")
+  end
+  
+  # check for Hero System 5e Killing damage mode for roll
+  if @input.match(/#{@prefix}\s(hsk)/i)
+    @hsk = true
+    if @input.match(/hsk\d+/i)
+      multiplier_string = @input.scan(/(hsk)\d+/i)
+      @hsk_multiplier_modifier = multiplier_string.scan(/\d+/).to_i
+      @input.sub!(/hsk\d+/i,"")
+    else
+      @hsk_multiplier_modifier = 0
+      @input.sub!("hsk","")
+  end
+  
+    # check for Hero System 5e to Hit mode for roll
+  if @input.match(/#{@prefix}\s(hsh)\s/i)
+    @hsh = true
+    @input.sub!("hsh","")
+  end
 
   # check for simple mode for roll
   if @input.match(/#{@prefix}\s(s)\s/i)
@@ -553,6 +581,12 @@ def check_roll_modes
     @input.sub!("s","")
   end
 
+  # check for no total mode for roll
+  if @input.match(/\s(nr)\s/i)
+    @no_result = true
+    @input.sub!("nr","")
+  end
+  
   # check for roll having an unsorted tally list
   if @input.match(/#{@prefix}\s(ul)\s/i)
     @do_tally_shuffle = true
@@ -583,6 +617,26 @@ def roll_sets_valid(event)
   end
 end
 
+def hero_system_math
+  if @hsn
+    @hsn_body = 0
+    @hsn_body += @tally.scan(/\+2\D/).count
+    @hsn_body *=2
+    @hsn_body += @tally.scan(/\+1\D/).count
+    @hsn_stun = @dice_result.scan(/\d+/)
+  end
+  
+  if @hsk
+    @hsk_body = @dice_result.scan(/\d+/).to_i
+    @hsk_stun_roll = DiceBag::Roll.new("1d6").result.total
+    @hsk_multiplier = @hsk_stun_roll -1 + @hsk_multiplier_modifier
+    if @hsk_multiplier.zero?
+      @hsk_multiplier = 1
+    end
+    @hsk_stun = @hsk_body * @hsk_multiplier
+  end
+end
+
 def build_response
   response = "#{@user} Roll"
   if !@simple_output
@@ -591,10 +645,26 @@ def build_response
       response = response + " Rerolls: `#{@reroll_count}`"
     end
   end
-  response = response + " #{@dice_result}"
+  
+  if !@no_result
+    response = response + " #{@dice_result}"
+  end
+  
+  if @hsn
+     response = response + "Body: #{@hsn_body}, Stun:#{@hsn_stun}"
+  end
+  
+  if @hsk
+    responce = responce + "Body: #{@hsk_body}, Stun Multiplier: #{@hsk_multiplier}, Stun: #{@hsk_stun}"
+  
+  if @hsh
+    response = response + "Hits DCV #{@dice_result.scan(/\d+/)}"
+  end
+  
   if @has_comment
     response = response + " Reason: `#{@comment}`"
   end
+  
   if @request_option
     # Alias parsed initial request
     request = @input.split("!")[0]

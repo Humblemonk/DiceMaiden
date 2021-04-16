@@ -53,6 +53,10 @@ mutex = Mutex.new
     @simple_output = false
     @wng = false
     @dh = false
+    @hsn = false
+    @hsk = false
+    @hsh = false
+    @no_result = false
     @do_tally_shuffle = false
     @ed = false
 
@@ -126,9 +130,14 @@ mutex = Mutex.new
       else
         next if do_roll(event) == true
       end
-
+            
       # Output aliasing
       @tally = alias_output_pass(@tally)
+      
+      # Does calculations for Hero System stuff, if necessary
+      if @hsn || @hsk
+        hero_system_math
+      end
 
       # Grab event user name, server name and timestamp for roll and log it
       if @launch_option == "debug"
