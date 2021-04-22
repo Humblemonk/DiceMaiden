@@ -172,6 +172,8 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 
 `sp4` -> `4d10 t8 ie10` Storypath system. The number represents total dice rolled. A d10 system with a target set to 8 and infinite explosion on 10.
 
+`6yz` -> `6d6 t6` Year Zero system. The number represents the total dice rolled. A d6 system with a target set to 6.
+
 ## Earthdawn System:
 
 `!roll edX` where X can be a value of 1 to 20. Earthdawn system has a plethora of ways to roll the dice and the table below breaks down the various options:
