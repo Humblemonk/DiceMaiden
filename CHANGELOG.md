@@ -1,3 +1,8 @@
+## 7.0.0 - 2021-04-25
+### Added
+- Added alias for Year Zero Engine
+- Added rubocop rules and cleaned up the codebase
+
 ## 6.8.1 - 2021-03-13
 ### Added
 - Resolved an issue where the bot would respond with "Invalid Form Body"
