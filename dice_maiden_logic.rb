@@ -259,7 +259,7 @@ def do_roll(event)
   roll_result = nil
   @tally = ''
   begin
-    roll_result = process_RPN_token_queue(convert_input_to_RPN_queue(event, @roll))
+    roll_result = process_rpn_token_queue(convert_input_to_rpn_queue(event, @roll))
   rescue RuntimeError => e
     event.respond 'Error: ' + e.message
     return true
