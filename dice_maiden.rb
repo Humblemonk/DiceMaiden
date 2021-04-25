@@ -16,7 +16,8 @@ require 'sqlite3'
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
-@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i, intents: [:servers, :server_messages, :direct_messages], ignore_bots: true, fancy_log: true
+@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i,
+                          intents: %i[servers server_messages direct_messages], ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
 @launch_option = ARGV[1].to_s
@@ -25,11 +26,11 @@ Dotenv.load
 @request_option = false
 
 # open connection to sqlite db and set timeout to 10s if the database is busy
-if @launch_option == "lite"
+if @launch_option == 'lite'
   # do nothing
 else
-  $db = SQLite3::Database.new "main.db"
-  $db.busy_timeout=(10000)
+  $db = SQLite3::Database.new 'main.db'
+  $db.busy_timeout = (10_000)
 end
 
 mutex = Mutex.new
@@ -41,7 +42,7 @@ mutex = Mutex.new
     # handle !dm <command>
     next if check_server_options(event) == true
 
-    #check the server request options
+    # check the server request options
     check_request_option(event)
 
     # check what prefix the server should be using
@@ -58,16 +59,14 @@ mutex = Mutex.new
 
     check_roll_modes
 
-    if @ed
-      next unless replace_earthdawn(event)
-    end
+    next if @ed && !replace_earthdawn(event)
 
     @roll_set = nil
     next unless roll_sets_valid(event)
 
     if @input =~ /^\s*d/
       roll_to_one = @input.lstrip
-      roll_to_one.prepend("1")
+      roll_to_one.prepend('1')
       @input = roll_to_one
     end
 
@@ -87,13 +86,15 @@ mutex = Mutex.new
 
     # Check for correct input
     if @roll.match?(/\dd\d/i)
-      event.channel.start_typing()
+      event.channel.start_typing
       next if check_roll(event) == true
 
       # Check for wrath roll
       check_wrath
       # Grab dice roll, create roll, grab results
-      unless @roll_set.nil?
+      if @roll_set.nil?
+        next if do_roll(event) == true
+      else
         @roll_set_results = ''
         @error_check_roll_set = ''
         roll_count = 0
@@ -114,26 +115,20 @@ mutex = Mutex.new
         end
         next if error_encountered
 
-        if @launch_option == "debug"
-          log_roll(event)
-        end
+        log_roll(event) if @launch_option == 'debug'
         if @comment.to_s.empty? || @comment.to_s.nil?
           event.respond "#{@user} Rolls:\n#{@roll_set_results}"
         else
           event.respond "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`"
         end
         next
-      else
-        next if do_roll(event) == true
       end
 
       # Output aliasing
       @tally = alias_output_pass(@tally)
 
       # Grab event user name, server name and timestamp for roll and log it
-      if @launch_option == "debug"
-        log_roll(event)
-      end
+      log_roll(event) if @launch_option == 'debug'
 
       # Print dice result to Discord channel
       @has_comment = !@comment.to_s.empty? && !@comment.to_s.nil?
@@ -148,34 +143,32 @@ mutex = Mutex.new
     next if check_help(event) == true
     next if check_bot_info(event) == true
     next if check_purge(event) == false
-  rescue StandardError => error ## The worst that should happen is that we catch the error and return its message.
-    if(error.message == nil )
-      error.message = "NIL MESSAGE!"
-    end
+  rescue StandardError => e ## The worst that should happen is that we catch the error and return its message.
+    e.message = 'NIL MESSAGE!' if e.message.nil?
     # Simplify roll and send it again if we error out due to character limit
-    if (error.message.include? "Message over the character limit") || (error.message.include? "Invalid Form Body")
-      unless @roll_set.nil?
-        event.respond "#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`"
-      else
+    if (e.message.include? 'Message over the character limit') || (e.message.include? 'Invalid Form Body')
+      if @roll_set.nil?
         event.respond "#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`"
+      else
+        event.respond "#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`"
       end
-    elsif (error.message.include? "undefined method `join' for nil:NilClass") || (error.message.include? "The bot doesn't have the required permission to do this!") || (error.message.include? "500 Internal Server Error")
+    elsif (e.message.include? "undefined method `join' for nil:NilClass") || (e.message.include? "The bot doesn't have the required permission to do this!") || (e.message.include? '500 Internal Server Error')
       time = Time.now.getutc
-      File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} ERROR: #{error.message}" }
+      File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} ERROR: #{e.message}" }
     else
-      event.respond("Unexpected exception thrown! (" + error.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
+      event.respond('Unexpected exception thrown! (' + e.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
     end
   end
   mutex.unlock
 end
-if @launch_option == "lite"
+if @launch_option == 'lite'
   @bot.run
 else
   @bot.run :async
 
   # Sleep until bot is ready and then set listening status
   sleep(1) until @bot.ready
-  @bot.update_status("online", "!roll", nil, since = 0, afk = false, activity_type = 2)
+  @bot.update_status('online', '!roll', nil, since = 0, afk = false, activity_type = 2)
   # Check every 5 minutes and log server count
   loop do
     sleep 300
@@ -191,9 +184,10 @@ else
       exit!
     end
     # Limit HTTP POST to shard 0. We do not need every shard hitting the discordbots API
-    if @shard == 0
-      servers = $db.execute "select sum(server_count) from shard_stats;"
-      RestClient.post("https://top.gg/api/bots/377701707943116800/stats", {"shard_count": @total_shards, "server_count": servers.join.to_i}, :'Authorization' => ENV['API'], :'Content-Type' => :json);
-    end
+    next unless @shard == 0
+
+    servers = $db.execute 'select sum(server_count) from shard_stats;'
+    RestClient.post('https://top.gg/api/bots/377701707943116800/stats',
+                    { "shard_count": @total_shards, "server_count": servers.join.to_i }, 'Authorization': ENV['API'], 'Content-Type': :json)
   end
 end
