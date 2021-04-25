@@ -1,3 +1,7 @@
+## 7.0.1 - 2021-04-25
+### Added
+- Resolved case sensitive issue from rubocop update
+
 ## 7.0.0 - 2021-04-25
 ### Added
 - Added alias for Year Zero Engine
