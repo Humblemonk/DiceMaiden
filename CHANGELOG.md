@@ -1,3 +1,7 @@
+## 7.1.0 - 2021-09-01
+### Added
+- Added support for threads
+
 ## 7.0.1 - 2021-04-25
 ### Added
 - Resolved case sensitive issue from rubocop update

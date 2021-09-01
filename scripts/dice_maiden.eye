@@ -15,7 +15,7 @@ Eye.app 'dice_maiden' do
   group 'shards' do
     chain grace: 2.seconds
     
-    144.times do |i|
+    192.times do |i|
       process "dice_maiden#{i}" do
         pid_file "/tmp/dice_maiden#{i}.pid"
         start_command "bundle exec ruby dice_maiden.rb #{i}"

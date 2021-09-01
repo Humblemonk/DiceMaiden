@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'dicebag', git: 'https://github.com/Humblemonk/Dice-Bag.git', branch: 'master'
-gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'
+gem 'discordrb', github: 'shardlab/discordrb', branch: 'threads'
 gem 'dotenv', '~> 2.5'
 gem 'rest-client', '~> 2.0', '>= 2.0.2'
 gem 'rubocop'
