@@ -41,7 +41,7 @@ TOKEN: token obtained from your discord developer application
 SHARD: 1
 ```
 
-The `docker-compose` file created by this repo expects to find the `.env` file in `/opt` directory. This can be changed by editing the `docker-compose` file
+The `docker-compose` file created by this repo expects to find the `.env` file in `/opt` directory. This can be changed by editing the `docker-compose` file.
 
 3. Once the env file is created, make sure you are in the DiceMaiden directory by typing `cd /opt/DiceMaiden`. Once in the DiceMaiden directory, run `docker-compose up -d` to build the docker container. 
 
