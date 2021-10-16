@@ -516,7 +516,7 @@ end
 
 def input_valid(event)
   event_input = event.content
-  if event_input =~ /^(#{@prefix}\s)/i
+  if event_input =~ /\A^(#{@prefix}\s)/i
     true
   else
     false
