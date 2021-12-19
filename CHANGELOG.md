@@ -1,3 +1,7 @@
+## 7.2.0 - 2021-12-19
+### Added
+- Added alias support for general DnD stat rolls
+
 ## 7.1.1 - 2021-10-16
 ### Added
 - Fixed an issue where the bot would read commands inside markdown blockquotes
