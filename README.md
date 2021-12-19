@@ -27,7 +27,7 @@ SHARD: 1
 ```
 A single instance of Dice Maiden does not require a sqlite database to operate. Passing the command 'lite' at runtime will tell the bot to ignore any database requirement. 
 
-Example runtime command for a single bot instance: `bundle execute ruby dice_maiden.rb 0 lite`
+Example runtime command for a single bot instance: `bundle exec ruby dice_maiden.rb 0 lite`
 
 ## Single instance Docker install
 
@@ -176,6 +176,8 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 `sp4` -> `4d10 t8 ie10` Storypath system. The number represents total dice rolled. A d10 system with a target set to 8 and infinite explosion on 10.
 
 `6yz` -> `6d6 t6` Year Zero system. The number represents the total dice rolled. A d6 system with a target set to 6.
+
+`dndstats` -> `6 4d6 k3` Usual DnD stat roll (4d6 drop lowest).
 
 ## Earthdawn System:
 
