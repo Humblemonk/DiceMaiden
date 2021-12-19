@@ -142,7 +142,7 @@ Hero System 5th edition syntaxes:
 
 `!roll 5hsk1 +1d3` : Roll 5 1/2 six-sided dice for killing damage, with a plus one stun modifier. Stun modifier defaults to zero, meaning a roll of 1d6 -1, if no value is given. For partial dice, use +1 for a single pip, +1d3 for a half d6, and whole d6 can either be added to the first number, or at the end with the partial dice. Calculates Body, Stun Multiplier, and Stun
 
-`!roll 3hsh` : Adds 11 to the nubmer supplied, then subtracts from that sum the result of 3d6. Ie. 11 + 3 - 3d6
+`!roll 3hsh` : Adds 11 to the number supplied, then subtracts from that sum the result of 3d6. Ie. 11 + 3 - 3d6
 
 ## Alias Rolls
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
