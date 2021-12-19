@@ -274,10 +274,12 @@ def log_roll(event)
   @time = Time.now.getutc
   if @roll_set.nil?
     File.open('dice_rolls.log', 'a') do |f|
-      f.puts "#{@time} Shard: #{@shard} |#{@server}| #{@user} Roll: #{@tally} #{@dice_result}"    end
+      f.puts "#{@time} Shard: #{@shard} |#{@server}| #{@user} Roll: #{@tally} #{@dice_result}"
+    end
   else
     File.open('dice_rolls.log', 'a') do |f|
-      f.puts "#{@time} Shard: #{@shard} | #{@server}| #{@user} Rolls:\n #{@roll_set_results}"    end
+      f.puts "#{@time} Shard: #{@shard} | #{@server}| #{@user} Rolls:\n #{@roll_set_results}"
+    end
   end
 end
 
