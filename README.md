@@ -177,7 +177,7 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 
 `6yz` -> `6d6 t6` Year Zero system. The number represents the total dice rolled. A d6 system with a target set to 6.
 
-`dndstats` -> `6 4d6 k3` Usual DnD stat roll (4d6 drop lowest).
+`dndstats` -> `6 4d6 k3` DnD stat roll (4d6 drop lowest). This is supported by DnD 2nd edition, 3.5e, 5e and pathfinder 1e.
 
 ## Earthdawn System:
 
