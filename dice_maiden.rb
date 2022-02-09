@@ -152,7 +152,7 @@ mutex = Mutex.new
       else
         event.respond "#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`"
       end
-    elsif (e.message.include? "undefined method `join' for nil:NilClass") || (e.message.include? "The bot doesn't have the required permission to do this!") || (e.message.include? '500 Internal Server Error')
+    elsif (e.message.include? "undefined method `join' for nil:NilClass") || (e.message.include? "The bot doesn't have the required permission to do this!") || (e.message.include? '500: Internal Server Error')
       time = Time.now.getutc
       File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} ERROR: #{e.message}" }
     else
