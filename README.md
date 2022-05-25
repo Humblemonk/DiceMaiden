@@ -141,6 +141,12 @@ Dark Heresy 2nd edition syntaxes:
 
 `!roll dh 4d10` : Roll four ten-sided dice for dark heresy 2nd edition. If your roll contains a natural 10, you will be prompted with a righteous fury notification!
 
+Godbound damage roll example syntax: 
+
+`!roll gb 1d12+4` : Roll 1d12, add 4, then compare against the game's damage chart
+
+`!roll gb 8d8` : Roll 8d8, compare each die against the game's damage chart, and then sum
+
 ## Alias Rolls
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
 in most cases. Below is the complete list of aliases , with example rolls, currently supported by Dice Maiden. Have a game system that you want turned into an alias? Create an issue on github to get it added to this list!

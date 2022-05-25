@@ -54,6 +54,7 @@ mutex = Mutex.new
     @simple_output = false
     @wng = false
     @dh = false
+    @godbound = false
     @do_tally_shuffle = false
     @ed = false
 

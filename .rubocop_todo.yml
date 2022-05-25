@@ -94,6 +94,7 @@ Style/FrozenStringLiteralComment:
     - 'dice_maiden_logic.rb'
     - 'earthdawn_logic.rb'
     - 'scripts/dice_maiden_quota.rb'
+    - 'godbound_logic.rb'
 
 # Offense count: 13
 # Configuration parameters: AllowedVariables.
