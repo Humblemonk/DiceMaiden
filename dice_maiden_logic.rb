@@ -17,7 +17,7 @@ def alias_input_pass(input)
     [/\b\d+CoD\b/i, 'CoD', /\b(\d+)CoD\b/i, '\\1d10 ie10 t8'], # Chronicles of Darkness (default, 10-again)
     [/\b\d+CoD\b/i, 'CoD8', /\b(\d+)CoD\b/i, '\\1d10 ie9 t8'], # Chronicles of Darkness (8-again)
     [/\b\d+CoD\b/i, 'CoD9', /\b(\d+)CoD\b/i, '\\1d10 ie8 t8'], # Chronicles of Darkness (9-again)
-    [/\b\d+CoD\b/i, 'CoDR', /\b(\d+)CoD\b/i, '\\1d10 ie8 r7'], # Chronicles of Darkness (Rote quality, reroll all failed)
+    [/\b\d+CoD\b/i, 'CoDR', /\b(\d+)CoD\b/i, '\\1d10 r7 t8'], # Chronicles of Darkness (Rote quality, reroll all failed)
     [/\bd6s\d+\b/i, 'The D6 System', /\bd6s(\d+)\b/i, '\\1d6 + 1d6 ie'], # The D6 System
     [/\bsr\d+\b/i, 'Shadowrun', /\bsr(\d+)\b/i, '\\1d6 t5'], # Shadowrun system
     [/\b\d+d%\B/i, 'Percentile roll', /\b(\d+)d%\B/i, '\\1d100'], # Roll a d100
