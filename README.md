@@ -145,7 +145,7 @@ Dark Heresy 2nd edition syntaxes:
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
 in most cases. Below is the complete list of aliases , with example rolls, currently supported by Dice Maiden. Have a game system that you want turned into an alias? Create an issue on github to get it added to this list!
 
-`4cod` -> `4d10 t8 ie10` Chronicles of Darkness. The first number is the number of dice to roll.
+`4cod` -> `4d10 t8 ie10` Chronicles of Darkness. The first number is the number of dice to roll (use cod8, cod9 and codr for 8-again, 9-again and rote quality rolls).
 
 `4wod8` -> `4d10 f1 ie10 t8` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check.
 
