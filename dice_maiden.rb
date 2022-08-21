@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 7.2.0
+# Version: 8.0.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -16,7 +16,7 @@ require 'sqlite3'
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
-@bot = Discordrb::Bot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i,
+@bot = Discordrb::Commands::CommandBot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i,
                           intents: %i[servers server_messages direct_messages], ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
@@ -35,22 +35,30 @@ end
 
 mutex = Mutex.new
 
-@bot.message do |event|
+@bot.register_application_command(:roll, 'Ask Dice Maiden to roll some dice!') do |cmd|
+  cmd.string('message', 'Roll syntax sent to Dice Maiden')
+end
+
+@bot.register_application_command(:r, 'Ask Dice Maiden to roll some dice!') do |cmd|
+  cmd.string('message', 'Roll syntax sent to Dice Maiden')
+end
+
+
+inc_cmd = ->(event) do
   # Locking the thread to prevent messages going to the wrong server
   mutex.lock
   begin
-    # handle !dm <command>
-    next if check_server_options(event) == true
+    @event_roll = event.options.values.join("")
+    # handle !dm <command>. DEPRECATED WITH SLASH COMMANDS
+    #next if check_server_options(@event_roll) == true
 
-    # check the server request options
+    # check what prefix the server should be using. DEPRECATED WITH SLASH COMMANDS
+    #check_prefix(@event_roll)
+    # check if input is even valid. DEPRECATED WITH SLASH COMMANDS
+    # next if input_valid(@event_roll) == false
+
     check_request_option(event)
-
-    # check what prefix the server should be using
-    check_prefix(event)
-    # check if input is even valid
-    next if input_valid(event) == false
-
-    @input = alias_input_pass(event.content) # Do alias pass as soon as we get the message
+    @input = alias_input_pass(@event_roll) # Do alias pass as soon as we get the message
     @simple_output = false
     @wng = false
     @dh = false
@@ -117,9 +125,9 @@ mutex = Mutex.new
 
         log_roll(event) if @launch_option == 'debug'
         if @comment.to_s.empty? || @comment.to_s.nil?
-          event.respond "#{@user} Rolls:\n#{@roll_set_results}"
+          event.respond(content:"#{@user} Rolls:\n#{@roll_set_results}")
         else
-          event.respond "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`"
+          event.respond(content:"#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`")
         end
         next
       end
@@ -135,7 +143,7 @@ mutex = Mutex.new
       if check_wrath == true
         respond_wrath(event, dnum)
       else
-        event.respond build_response
+        event.respond(content: build_response)
         check_fury(event)
       end
     end
@@ -143,24 +151,28 @@ mutex = Mutex.new
     next if check_help(event) == true
     next if check_bot_info(event) == true
     next if check_purge(event) == false
-  rescue StandardError => e ## The worst that should happen is that we catch the error and return its message.
+ rescue StandardError => e ## The worst that should happen is that we catch the error and return its message.
     e.message = 'NIL MESSAGE!' if e.message.nil?
-    # Simplify roll and send it again if we error out due to character limit
+     #Simplify roll and send it again if we error out due to character limit
     if (e.message.include? 'Message over the character limit') || (e.message.include? 'Invalid Form Body')
       if @roll_set.nil?
-        event.respond "#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`"
+        event.respond(content:"#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`")
       else
-        event.respond "#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`"
+        event.respond(content:"#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`")
       end
     elsif (e.message.include? "undefined method `join' for nil:NilClass") || (e.message.include? "The bot doesn't have the required permission to do this!") || (e.message.include? '500: Internal Server Error')
       time = Time.now.getutc
       File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} ERROR: #{e.message}" }
     else
-      event.respond('Unexpected exception thrown! (' + e.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github.")
+      event.respond(content:('Unexpected exception thrown! (' + e.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github."))
     end
   end
   mutex.unlock
 end
+
+@bot.application_command(:roll, &inc_cmd)
+@bot.application_command(:r, &inc_cmd)
+
 if @launch_option == 'lite'
   @bot.run
 else
@@ -168,7 +180,7 @@ else
 
   # Sleep until bot is ready and then set listening status
   sleep(1) until @bot.ready
-  @bot.update_status('online', '!roll', nil, since = 0, afk = false, activity_type = 2)
+  @bot.update_status('online', '/roll', nil, since = 0, afk = false, activity_type = 2)
   # Check every 5 minutes and log server count
   loop do
     sleep 300

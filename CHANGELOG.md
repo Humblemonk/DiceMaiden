@@ -1,3 +1,7 @@
+## 8.0.0 - 2022-08-21
+### Added
+- Moved to slash commands per discord requirements. More info in readme!
+
 ## 7.2.0 - 2021-12-19
 ### Added
 - Added alias support for general DnD stat rolls
