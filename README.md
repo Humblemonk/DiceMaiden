@@ -10,7 +10,7 @@
 # Slash Command Update
 On August 31st 2022, Discord is enforcing new permission rules for large bots. This includes Dice Maiden. These updates restricts access to certain APIs for privacy reasons. One is the message content from users which Dice Maiden has used for years. More info about these changes can be found [here](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Privileged-Intent-FAQ)
 
-In an attempt to not have to rewrite the majority of Dice Maidens codebase, I applied for priviledged intents and was denied. The Discord devteam recommended moving the bot to slash commands so here we are. What this means for users:
+In an attempt to not have to rewrite the majority of Dice Maidens codebase, I applied for privileged intents and was denied. The Discord devteam recommended moving the bot to slash commands so here we are. What this means for users:
 
 * !roll and other prefixes have been retired. Sorry no custom prefixes
 * rolls can be initiated now by doing /roll or /r
