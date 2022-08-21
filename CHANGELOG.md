@@ -1,3 +1,7 @@
+## 8.0.1 - 2022-08-21
+### Added
+- Resolved an issue with nickname checks for DMs. No longer going to check
+
 ## 8.0.0 - 2022-08-21
 ### Added
 - Moved to slash commands per discord requirements. More info in readme!

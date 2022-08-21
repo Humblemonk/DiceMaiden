@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.0.0
+# Version: 8.0.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -85,7 +85,7 @@ inc_cmd = ->(event) do
     @comment = ''
     @test_status = ''
     # check user
-    check_user_or_nick(event)
+    check_user_or_nick(event) if !event.channel.pm?
     # check for comment
     check_comment
     # check for modifiers that should apply to everything
