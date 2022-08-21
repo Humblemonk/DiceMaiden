@@ -35,14 +35,16 @@ end
 
 mutex = Mutex.new
 
-@bot.register_application_command(:roll, 'Ask Dice Maiden to roll some dice!') do |cmd|
-  cmd.string('message', 'Roll syntax sent to Dice Maiden')
-end
+if @shard == 0
+  puts "Shard #{@shard} is registering commands"
+  @bot.register_application_command(:roll, 'Ask Dice Maiden to roll some dice!') do |cmd|
+    cmd.string('message', 'Roll syntax sent to Dice Maiden')
+  end
 
-@bot.register_application_command(:r, 'Ask Dice Maiden to roll some dice!') do |cmd|
-  cmd.string('message', 'Roll syntax sent to Dice Maiden')
+  @bot.register_application_command(:r, 'Ask Dice Maiden to roll some dice!') do |cmd|
+    cmd.string('message', 'Roll syntax sent to Dice Maiden')
+  end
 end
-
 
 inc_cmd = ->(event) do
   # Locking the thread to prevent messages going to the wrong server
