@@ -15,6 +15,7 @@ In an attempt to not have to rewrite the majority of Dice Maidens codebase, I ap
 * !roll and other prefixes have been retired. Sorry no custom prefixes
 * rolls can be initiated now by doing /roll or /r
 * Some new (and maybe old) bugs might crop up with this shift to slash command. We are working on ironing these out
+* Bot permissions may have broken for your server. Please update the permission for the bot or re add the bot to your server
 
 # **USERS WILL NEED THE ROLE "USE APPLICATION COMMANDS" TO USE SLASH COMMANDS**
 
