@@ -21,7 +21,7 @@ In an attempt to not have to rewrite the majority of Dice Maidens codebase, I ap
 # Quick Install
 Follow the link to add the bot to your discord server :
 
-https://discordapp.com/api/oauth2/authorize?client_id=572301609305112596&scope=bot&permissions=11264
+https://discord.com/api/oauth2/authorize?client_id=572301609305112596&permissions=274878000128&scope=bot%20applications.commands
 
 This will authorize the bot for your server and you should see it in your default public channel. The bot will have permissions to read, send and manage messages.
 
