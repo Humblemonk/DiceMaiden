@@ -1,6 +1,6 @@
 ## 8.1.0 - 2022-08-23
 ### Added
-- Added first test units file
+- Added first unit test file
 
 ## 8.0.2 - 2022-08-23
 ### Added
