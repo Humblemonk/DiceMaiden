@@ -75,7 +75,7 @@ inc_cmd = lambda do |event|
     next unless roll_sets_valid(event)
 
     # check for single dice rolls
-    @input.gsub!(/(?<!\d)(^|[+*\/-]\s?)d(\d+)/, '\11d\2') if @input.match?(/(?<!\d)(^|[+*\/-]\s?)d(\d+)/)
+    @input.gsub!(%r{(?<!\d)(^|[+*/-]\s?)d(\d+)}, '\11d\2') if @input.match?(%r{(?<!\d)(^|[+*/-]\s?)d(\d+)})
 
     @roll = @input
     @check = @prefix + @roll
