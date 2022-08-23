@@ -1,6 +1,5 @@
 #!/usr/bin/ruby
 # frozen_string_literal: true
-
 # test various dice maiden commands
 
 # Test single die rolls
