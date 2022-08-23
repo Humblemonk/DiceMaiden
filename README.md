@@ -54,7 +54,7 @@ SHARD: 1
 
 The `docker-compose` file created by this repo expects to find the `.env` file in `/opt` directory. This can be changed by editing the `docker-compose` file.
 
-3. Once the env file is created, make sure you are in the DiceMaiden directory by typing `cd /opt/DiceMaiden`. Once in the DiceMaiden directory, run `docker-compose up -d` to build the docker container. 
+3. Once the env file is created, make sure you are in the DiceMaiden directory by typing `cd /opt/dicemaiden`. Once in the DiceMaiden directory, run `docker-compose up -d` to build the docker container. 
 
 **NOTE:** The initial run can take a bit as the container needs to download and install all the ruby gems and their dependencies. This isnt required again unless you rebuild the container.
 
@@ -66,7 +66,7 @@ If everything was successful, your Dice Maiden docker container should now be ru
 
 If you wish to rebuild the container so that your bot is running the latest changes, run the following commands:
 
-1. Update the bot by running `git pull origin master` in the `/opt/DiceMaiden` directory
+1. Update the bot by running `git pull origin master` in the `/opt/dicemaiden` directory
 2. Rebuild the docker container `sudo docker-compose up -d --build`
 
 # Support
