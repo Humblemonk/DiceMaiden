@@ -10,7 +10,7 @@ Eye.app 'dice_maiden' do
   working_dir cwd
   env 'BUNDLE_GEMFILE' => "Gemfile"
   trigger :flapping, times: 10, within: 1.minute, retry_in: 10.minutes
-  check :memory, :below => 205.megabytes, :every => 60.seconds, :times => 5
+  check :memory, :below => 256.megabytes, :every => 60.seconds, :times => 5
 
   group 'shards' do
     chain grace: 2.seconds

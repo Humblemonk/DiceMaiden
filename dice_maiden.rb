@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.0.1
+# Version: 8.0.2
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -52,12 +52,12 @@ inc_cmd = ->(event) do
   begin
     @event_roll = event.options.values.join("")
     # handle !dm <command>. DEPRECATED WITH SLASH COMMANDS
-    #next if check_server_options(@event_roll) == true
+    # next if check_server_options(event) == true
 
     # check what prefix the server should be using. DEPRECATED WITH SLASH COMMANDS
-    #check_prefix(@event_roll)
+    # check_prefix(event)
     # check if input is even valid. DEPRECATED WITH SLASH COMMANDS
-    # next if input_valid(@event_roll) == false
+    # next if input_valid(event) == false
 
     check_request_option(event)
     @input = alias_input_pass(@event_roll) # Do alias pass as soon as we get the message
@@ -162,7 +162,7 @@ inc_cmd = ->(event) do
       else
         event.respond(content:"#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`")
       end
-    elsif (e.message.include? "undefined method `join' for nil:NilClass") || (e.message.include? "The bot doesn't have the required permission to do this!") || (e.message.include? '500: Internal Server Error')
+    elsif (e.message.include? "undefined method `join' for nil:NilClass") || (e.message.include? "The bot doesn't have the required permission to do this!") || (e.message.include? '500: Internal Server Error') || (e.message.include? '500 Internal Server Error')
       time = Time.now.getutc
       File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} ERROR: #{e.message}" }
     else
