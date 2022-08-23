@@ -366,7 +366,9 @@ def check_purge(event)
     if event.user.defined_permission?(:manage_messages) == true ||
        event.user.defined_permission?(:administrator) == true ||
        event.user.permission?(:manage_messages, event.channel) == true
+      event.defer
       event.channel.prune(amount)
+      event.send_message(content: "`#{@user}` deleted #{amount} messages from channel");
     else
       event.respond(content: "#{@user} does not have permissions for this command")
     end

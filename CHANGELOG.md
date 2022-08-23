@@ -1,6 +1,7 @@
 ## 8.1.0 - 2022-08-23
 ### Added
 - Added first unit test file
+- Added additional messaging for when purge commands are run
 
 ## 8.0.2 - 2022-08-23
 ### Added
