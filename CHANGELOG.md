@@ -1,3 +1,7 @@
+## 8.2.0 - 2022-08-23
+### Added
+- Resolved issue #148 related to single die dice rolls
+
 ## 8.1.0 - 2022-08-23
 ### Added
 - Added first unit test file

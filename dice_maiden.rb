@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.1.0
+# Version: 8.2.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -74,11 +74,8 @@ inc_cmd = lambda do |event|
     @roll_set = nil
     next unless roll_sets_valid(event)
 
-    if @input =~ /^\s*d/
-      roll_to_one = @input.lstrip
-      roll_to_one.prepend('1')
-      @input = roll_to_one
-    end
+    # check for single dice rolls
+    @input.gsub!(/(?<!\d)(^|[+-]\s?)d(\d+)/, '\11d\2') if @input.match?(/(?<!\d)(^|[+-]\s?)d(\d+)/)
 
     @roll = @input
     @check = @prefix + @roll
