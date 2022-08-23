@@ -1,8 +1,10 @@
 #!/usr/bin/ruby
 # frozen_string_literal: true
+
 # test various dice maiden commands
 
 # Test single die rolls
+
 [
   'd5 + d6',
   '1d6 + 2d8 d1',
