@@ -1,3 +1,7 @@
+## 8.1.0 - 2022-08-23
+### Added
+- Added first test units file
+
 ## 8.0.2 - 2022-08-23
 ### Added
 - Refactored some code to further support slash commands
