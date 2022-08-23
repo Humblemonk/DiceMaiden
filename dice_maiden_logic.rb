@@ -87,17 +87,17 @@ def check_roll(event)
     @dice_check = dice_request.scan(/d(\d+)/i).first.join.to_i
 
     if @dice_check < 2
-      event.respond(content:'Please roll a dice value 2 or greater')
+      event.respond(content: 'Please roll a dice value 2 or greater')
       return true
     end
     if @dice_check > 100
-      event.respond(content:'Please roll dice up to d100')
+      event.respond(content: 'Please roll dice up to d100')
       return true
     end
     # Check for too large of dice pools
     @dice_check = dice_request.scan(/(\d+)d/i).first.join.to_i
     if @dice_check > 500
-      event.respond(content:'Please keep the dice pool below 500')
+      event.respond(content: 'Please keep the dice pool below 500')
       return true
     end
   end
@@ -262,11 +262,11 @@ def do_roll(event)
   begin
     roll_result = process_rpn_token_queue(convert_input_to_rpn_queue(event, @roll))
   rescue RuntimeError => e
-    event.respond(content:'Error: ' + e.message)
+    event.respond(content: 'Error: ' + e.message)
     return true
   end
 
-  @dice_result = "Result: #{roll_result}"
+  @dice_result = "Result: `#{roll_result}`"
 end
 
 def log_roll(event)
@@ -285,7 +285,7 @@ end
 
 def check_fury(event)
   if (@special_check == 10) && (@tally.include? '10') && (@dh == true)
-    event.send_message(content:'`Righteous Fury Activated!` Purge the Heretic!')
+    event.send_message(content: '`Righteous Fury Activated!` Purge the Heretic!')
   end
 end
 
@@ -324,18 +324,18 @@ end
 
 def respond_wrath(event, dnum)
   if @roll == '0d6'
-    event.respond(content:"#{@user} Roll Wrath: `#{@wrath_value}`")
+    event.respond(content: "#{@user} Roll Wrath: `#{@wrath_value}`")
   else
     check_icons
     if dnum.to_s.empty? || dnum.to_s.nil?
     else
       check_dn(dnum)
     end
-    event.respond(content:"#{@user} Roll: `#{@tally}` Wrath: `#{@wrath_value}` | #{@test_status} TOTAL - Icons: `#{@icons}` Exalted Icons: `#{@exalted_icons} (Value:#{@exalted_total})`")
+    event.respond(content: "#{@user} Roll: `#{@tally}` Wrath: `#{@wrath_value}` | #{@test_status} TOTAL - Icons: `#{@icons}` Exalted Icons: `#{@exalted_icons} (Value:#{@exalted_total})`")
     if @wresult_convert.include? '6'
-      event.send_message(content:'Combat critical hit and one point of Glory!')
+      event.send_message(content: 'Combat critical hit and one point of Glory!')
     elsif @wresult_convert.include? '1'
-      event.send_message(content:'Complication!')
+      event.send_message(content: 'Complication!')
     end
   end
 end
@@ -343,14 +343,14 @@ end
 def check_donate(event)
   # this is jank right now due to a bug I need to fix
   if @check =~ /^\s*(#{@prefix}1donate)\s*$/i
-    event.respond(content:"\n Care to support the bot? You can donate via Patreon https://www.patreon.com/dicemaiden \n You can also do a one time donation via donate bot located here https://donatebot.io/checkout/534632036569448458")
+    event.respond(content: "\n Care to support the bot? You can donate via Patreon https://www.patreon.com/dicemaiden \n You can also do a one time donation via donate bot located here https://donatebot.io/checkout/534632036569448458")
     true
   end
 end
 
 def check_help(event)
   if @check =~ /^\s*(help)\s*$/i
-      event.respond(content:"``` Synopsis:\n\t/roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tie# : The indefinite explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tir# : Indefinite reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n !roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```")
+    event.respond(content: "``` Synopsis:\n\t/roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tie# : The indefinite explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tir# : Indefinite reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n /roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```")
     true
   end
 end
@@ -360,7 +360,7 @@ def check_purge(event)
     @roll.slice! 'purge'
     amount = @input.to_i
     if (amount < 2) || (amount > 100)
-      event.respond(content:'Amount must be between 2-100')
+      event.respond(content: 'Amount must be between 2-100')
       return false
     end
     if event.user.defined_permission?(:manage_messages) == true ||
@@ -368,7 +368,7 @@ def check_purge(event)
        event.user.permission?(:manage_messages, event.channel) == true
       event.channel.prune(amount)
     else
-      event.respond(content:"#{@user} does not have permissions for this command")
+      event.respond(content: "#{@user} does not have permissions for this command")
     end
   end
 end
@@ -380,7 +380,7 @@ def check_bot_info(event)
       return true
     end
     servers = $db.execute 'select sum(server_count) from shard_stats;'
-    event.respond(content:"| Dice Maiden | - #{servers.join.to_i} active servers")
+    event.respond(content: "| Dice Maiden | - #{servers.join.to_i} active servers")
     true
   end
 end
@@ -412,10 +412,10 @@ def handle_prefix(event)
   if @prefix_setcmd =~ /^(!dm prefix check)\s*$/i
     @prefix_check = $db.execute "select prefix from prefixes where server = #{@server}"
     if @prefix_check.empty?
-      event.respond(content:'This servers prefix is set to:  !roll')
+      event.respond(content: 'This servers prefix is set to:  !roll')
       return true
     else
-      event.respond(content:"This servers prefix is set to:  #{@prefix_check[0].join(', ')}")
+      event.respond(content: "This servers prefix is set to:  #{@prefix_check[0].join(', ')}")
       return true
     end
   end
@@ -425,10 +425,10 @@ def handle_prefix(event)
        event.user.defined_permission?(:administrator) == true ||
        event.user.permission?(:manage_messages, event.channel) == true
       $db.execute "delete from prefixes where server = #{@server}"
-      event.respond(content:'Prefix has been reset to !roll')
+      event.respond(content: 'Prefix has been reset to !roll')
       return true
     else
-      event.respond(content:"#{@user} does not have permissions for this command")
+      event.respond(content: "#{@user} does not have permissions for this command")
       return true
     end
   end
@@ -446,15 +446,15 @@ def handle_prefix(event)
       end
 
       if @prefix_setcmd.size > 10
-        event.respond(content:'Prefix too large. Keep it under 10 characters')
+        event.respond(content: 'Prefix too large. Keep it under 10 characters')
         return true
       end
       @prefix_prune = @prefix_setcmd.delete(' ')
       $db.execute "insert or replace into prefixes(server,prefix,timestamp) VALUES (#{@server},\"!#{@prefix_prune}\",CURRENT_TIMESTAMP)"
-      event.respond(content:"Prefix is now set to:  !#{@prefix_prune}")
+      event.respond(content: "Prefix is now set to:  !#{@prefix_prune}")
       true
     else
-      event.respond(content:"#{@user} does not have permissions for this command")
+      event.respond(content: "#{@user} does not have permissions for this command")
       true
     end
   end
@@ -505,14 +505,14 @@ def set_show_request(event)
   end
 end
 
-def check_request_option(event)
-  #deprecating old code and forcing request option to always be true due to slash command implementation
+def check_request_option(_event)
+  # deprecating old code and forcing request option to always be true due to slash command implementation
   # if event.channel.pm? || @launch_option == 'lite'
   # @request_option = false
   # return
   # end
-  #server = event.server.id
-  #@request_option = $db.execute "select show_requests from server_options where server = #{server}"
+  # server = event.server.id
+  # @request_option = $db.execute "select show_requests from server_options where server = #{server}"
   @request_option = true
 end
 
@@ -557,7 +557,7 @@ def roll_sets_valid(event)
   @roll_set = @input.scan(/^\s?(\d+)\s/i).first.join.to_i if @input.match(/^\s?(\d+)\s/i)
 
   if !@roll_set.nil? && ((@roll_set <= 1) || (@roll_set > 20))
-    event.respond(content:'Roll set must be between 2-20')
+    event.respond(content: 'Roll set must be between 2-20')
     return false
   end
 

@@ -29,7 +29,7 @@ def replace_earthdawn(event)
   if step.between?(1, 20)
     @input.sub!('ed' + roll[1], @earthdawn_replacements[step])
   else
-    event.respond(content:'Only steps 1-20 are implemented')
+    event.respond(content: 'Only steps 1-20 are implemented')
     false
   end
 end

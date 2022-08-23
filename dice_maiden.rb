@@ -17,7 +17,7 @@ Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
 @bot = Discordrb::Commands::CommandBot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i,
-                          intents: %i[servers], ignore_bots: true, fancy_log: true
+                                           intents: %i[servers], ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
 @launch_option = ARGV[1].to_s
@@ -38,19 +38,19 @@ mutex = Mutex.new
 if @shard == 0
   puts "Shard #{@shard} is registering commands"
   @bot.register_application_command(:roll, 'Ask Dice Maiden to roll some dice!') do |cmd|
-    cmd.string('message', 'Roll syntax sent to Dice Maiden')
+    cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands')
   end
 
   @bot.register_application_command(:r, 'Ask Dice Maiden to roll some dice!') do |cmd|
-    cmd.string('message', 'Roll syntax sent to Dice Maiden')
+    cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands')
   end
 end
 
-inc_cmd = ->(event) do
+inc_cmd = lambda do |event|
   # Locking the thread to prevent messages going to the wrong server
   mutex.lock
   begin
-    @event_roll = event.options.values.join("")
+    @event_roll = event.options.values.join('')
     # handle !dm <command>. DEPRECATED WITH SLASH COMMANDS
     # next if check_server_options(event) == true
 
@@ -85,7 +85,7 @@ inc_cmd = ->(event) do
     @comment = ''
     @test_status = ''
     # check user
-    check_user_or_nick(event) if !event.channel.pm?
+    check_user_or_nick(event) unless event.channel.pm?
     # check for comment
     check_comment
     # check for modifiers that should apply to everything
@@ -127,9 +127,9 @@ inc_cmd = ->(event) do
 
         log_roll(event) if @launch_option == 'debug'
         if @comment.to_s.empty? || @comment.to_s.nil?
-          event.respond(content:"#{@user} Rolls:\n#{@roll_set_results}")
+          event.respond(content: "#{@user} Rolls:\n#{@roll_set_results}")
         else
-          event.respond(content:"#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`")
+          event.respond(content: "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`")
         end
         next
       end
@@ -153,20 +153,20 @@ inc_cmd = ->(event) do
     next if check_help(event) == true
     next if check_bot_info(event) == true
     next if check_purge(event) == false
- rescue StandardError => e ## The worst that should happen is that we catch the error and return its message.
+  rescue StandardError => e ## The worst that should happen is that we catch the error and return its message.
     e.message = 'NIL MESSAGE!' if e.message.nil?
-     #Simplify roll and send it again if we error out due to character limit
+    # Simplify roll and send it again if we error out due to character limit
     if (e.message.include? 'Message over the character limit') || (e.message.include? 'Invalid Form Body')
       if @roll_set.nil?
-        event.respond(content:"#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`")
+        event.respond(content: "#{@user} Roll #{@dice_result} Reason: `Simplified roll due to character limit`")
       else
-        event.respond(content:"#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`")
+        event.respond(content: "#{@user} Rolls:\n#{@error_check_roll_set}Reason: `Simplified roll due to character limit`")
       end
     elsif (e.message.include? "undefined method `join' for nil:NilClass") || (e.message.include? "The bot doesn't have the required permission to do this!") || (e.message.include? '500: Internal Server Error') || (e.message.include? '500 Internal Server Error')
       time = Time.now.getutc
       File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} ERROR: #{e.message}" }
     else
-      event.respond(content:('Unexpected exception thrown! (' + e.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github."))
+      event.respond(content: ('Unexpected exception thrown! (' + e.message + ")\n\nPlease drop us a message in the #support channel on the dice maiden server, or create an issue on Github."))
     end
   end
   mutex.unlock
