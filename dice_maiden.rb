@@ -17,7 +17,7 @@ Dotenv.load
 @total_shards = ENV['SHARD'].to_i
 # Add API token
 @bot = Discordrb::Commands::CommandBot.new token: ENV['TOKEN'], num_shards: @total_shards, shard_id: ARGV[0].to_i,
-                          intents: %i[servers server_messages direct_messages], ignore_bots: true, fancy_log: true
+                          intents: %i[servers], ignore_bots: true, fancy_log: true
 @bot.gateway.check_heartbeat_acks = false
 @shard = ARGV[0].to_i
 @launch_option = ARGV[1].to_s

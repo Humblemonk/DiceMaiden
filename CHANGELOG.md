@@ -1,3 +1,7 @@
+## 8.0.2 - 2022-08-23
+### Added
+- Refactored some code to further support slash commands
+
 ## 8.0.1 - 2022-08-21
 ### Added
 - Resolved an issue with nickname checks for DMs. No longer going to check
