@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.2.1
+# Version: 8.2.2
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -38,11 +38,11 @@ mutex = Mutex.new
 if @shard == 0
   puts "Shard #{@shard} is registering commands"
   @bot.register_application_command(:roll, 'Ask Dice Maiden to roll some dice!') do |cmd|
-    cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands')
+    cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands', required: true)
   end
 
   @bot.register_application_command(:r, 'Ask Dice Maiden to roll some dice!') do |cmd|
-    cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands')
+    cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands', required: true)
   end
 end
 

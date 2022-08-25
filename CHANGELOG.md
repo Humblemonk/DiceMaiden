@@ -1,3 +1,7 @@
+## 8.2.2 - 2022-08-25
+### Added
+- Made roll message a requirement to improve the user experience
+
 ## 8.2.1 - 2022-08-23
 ### Added
 - Added error reporting when dice roll message is empty
