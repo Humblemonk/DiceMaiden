@@ -1,3 +1,7 @@
+## 8.3.0 - 2022-08-29
+### Added
+- Changed formatting of dice response string. Format should now be Request -> Tally -> Result
+
 ## 8.2.2 - 2022-08-25
 ### Added
 - Made roll message a requirement to improve the user experience

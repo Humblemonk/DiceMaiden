@@ -571,18 +571,19 @@ def roll_sets_valid(event)
   end
 end
 
+def get_request
+  # Alias parsed initial request
+  @request = @input.split('!')[0]
+end
+
 def build_response
-  response = "#{@user} Roll"
+  get_request
+  response = "#{@user} Request: `[#{@request.strip}]`"
   unless @simple_output
-    response += ": `#{@tally}`"
+    response += " Roll: `#{@tally}`"
     response += " Rerolls: `#{@reroll_count}`" if @show_rerolls
   end
   response += " #{@dice_result}"
   response += " Reason: `#{@comment}`" if @has_comment
-  if @request_option
-    # Alias parsed initial request
-    request = @input.split('!')[0]
-    response += " Request: `[#{request.strip}]`"
-  end
   response
 end

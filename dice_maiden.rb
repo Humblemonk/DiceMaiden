@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.2.2
+# Version: 8.3.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -58,8 +58,8 @@ inc_cmd = lambda do |event|
     # check_prefix(event)
     # check if input is even valid. DEPRECATED WITH SLASH COMMANDS
     # next if input_valid(event) == false
+    # check_request_option(event)
 
-    check_request_option(event)
     @input = alias_input_pass(@event_roll) # Do alias pass as soon as we get the message
     @simple_output = false
     @wng = false
@@ -128,8 +128,9 @@ inc_cmd = lambda do |event|
         next if error_encountered
 
         log_roll(event) if @launch_option == 'debug'
+        get_request
         if @comment.to_s.empty? || @comment.to_s.nil?
-          event.respond(content: "#{@user} Rolls:\n#{@roll_set_results}")
+          event.respond(content: "#{@user} Request: `[#{@request.strip}]` Rolls:\n#{@roll_set_results}")
         else
           event.respond(content: "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`")
         end
