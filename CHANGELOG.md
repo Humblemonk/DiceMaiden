@@ -1,3 +1,7 @@
+## 8.3.1 - 2022-09-01
+### Added
+- Removed ignoring heartbeat ack from discord API. No longer needed for stability
+
 ## 8.3.0 - 2022-08-29
 ### Added
 - Changed formatting of dice response string. Format should now be Request -> Tally -> Result
