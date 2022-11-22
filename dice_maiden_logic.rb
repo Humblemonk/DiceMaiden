@@ -350,10 +350,120 @@ end
 
 def check_help(event)
   if @check =~ /^\s*(help)\s*$/i
-    event.respond(content: "``` Synopsis:\n\t/roll xdx [OPTIONS]\n\n\tDescription:\n\n\t\txdx : Denotes how many dice to roll and how many sides the dice have.\n\n\tThe following options are available:\n\n\t\t+ - / * : Static modifier\n\n\t\te# : The explode value.\n\n\t\tie# : The indefinite explode value.\n\n\t\tk# : How many dice to keep out of the roll, keeping highest value.\n\n\t\tr# : Reroll value.\n\n\t\tir# : Indefinite reroll value.\n\n\t\tt# : Target number for a success.\n\n\t\tf# : Target number for a failure.\n\n\t\t! : Any text after ! will be a comment.\n\n /roll donate : Care to support the bot? Get donation information here. Thanks!\n\n Find more commands at https://github.com/Humblemonk/DiceMaiden\n```")
+    event.respond(content: "#{@basic_help}")
+    true
+  elsif @check =~ /^\s*(help)\s+(alias)\s*$/i
+    event.respond(content: "#{@alias_help}")
+    true
+  elsif @check =~ /^\s*(help)\s+(system)\s*$/i
+    event.respond(content: "#{@system_help}")
     true
   end
 end
+
+@basic_help="
+```
+Synopsis:
+\t/roll xdx [OPTIONS]
+
+\tDescription:
+\t\#d# : The number before 'd' denotes how many dice to roll and the number following how many sides the dice should have.
+
+\tThe following options are available:
+
+\t\t+ - / * : Static modifier
+
+\t\te# : The explode value.
+
+\t\tie# : The indefinite explode value.
+
+\t\tk# : How many dice to keep out of the roll, keeping highest value.
+
+\t\tr# : Reroll value.
+
+\t\tir# : Indefinite reroll value.
+
+\t\tt# : Target number for a success.
+
+\t\tf# : Target number for a failure.
+
+\t\t! : Any text after ! will be a comment.
+
+\tAdditional Help:
+
+\t\t/roll help alias: Show a list of basic dice aliases 
+
+\t\t/roll help system: Show a list of system-specific aliases and commands
+
+/roll donate : Care to support the bot? Get donation information here: https://www.patreon.com/dicemaiden Thanks!
+
+Find more commands at https://github.com/Humblemonk/DiceMaiden```
+"
+
+@alias_help="
+```
+Supported Aliases:
+
+\t/roll dd## — Double Digits
+\t\tRolls a die of the given size for each digit of the result.
+
+\t/roll +d# — Advantage
+\t\tRolls two dice of the given size and keeps the highest result.
+
+\t/roll -d# — Disadvantage
+\t\tRolls two dice of the given size and keeps the lowest result.
+
+\t/roll #d% — Percetile Roll
+\t\tRolls the given number of d100s.
+
+\t/roll +d% — Percentile Advantage
+\t\tRolls two d10s for the 10s digit and one for the ones digit keeping the lowest value tens digit.
+
+\t/roll -d% — Percentile Disadvantage
+\t\tRolls two d10s for the 10s digit and one for the ones digit keeping the highest value tens digit.
+```
+"
+
+@system_help="
+```
+Supported Systems:
+
+\t/roll age — AGE System Test
+\t\tRolls 2d6 plus one drama/dragon/stunt die.
+
+\t/roll #cod — Chronicles of Darkness
+\t\tRolls the given number of d10s, indefinitely exploding on tens, with a target of eight.
+
+\t/roll dndstats — D&D Stats
+\t\tRolls 4d6s dropping the lowest 6 times
+
+\t/roll d6s# — D6 System
+\t\tRolls the given number of d6s plus a wild die that indefinitely explodes on sixes.
+
+\t/roll #df — Fudge Dice Roll
+\t\tRolls the given number of fudge dice. Output shown as fudge faces: -/ /+
+
+\t/roll sr# — Shadowrun
+\t\tRolls the given number of d6s with a traget of five.
+
+\t/roll sp# — Storypath
+\t\tRolls the given number of d10s, indefinitely exploding on tens, with a target of eight.
+
+\t/roll snm# — Sunsails: New Milennium; Fourth Edition
+\t\tRolls the given number of d6s, indefinitely explodes on sixes, with a target of four.
+
+\t/roll #wh#+ — Warhammer (AoS/40k)
+\t\tRolls the first given number of d6s with a target of the second number.
+
+\t/roll #wod# — World of darkness 4th edition
+\t\tThe first number is the number of dice to roll and the second is the toughness of the check (does not currently explode).
+
+\t/roll #yz — Year Zero
+\t\tRolls the given number of d6s with a target of six.
+```
+"
+
+# [/\bdndstats\b/i, 'DnD Stat-roll', /\b(dndstats)\b/i, '6 4d6 k3'] # DnD character stats - 4d6 drop lowest 6 times
 
 def check_purge(event)
   if @check =~ /^\s*(purge)\s*\d*$/i
