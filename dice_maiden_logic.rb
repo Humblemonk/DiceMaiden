@@ -350,18 +350,18 @@ end
 
 def check_help(event)
   if @check =~ /^\s*(help)\s*$/i
-    event.respond(content: "#{@basic_help}")
+    event.respond(content: @basic_help.to_s)
     true
   elsif @check =~ /^\s*(help)\s+(alias)\s*$/i
-    event.respond(content: "#{@alias_help}")
+    event.respond(content: @alias_help.to_s)
     true
   elsif @check =~ /^\s*(help)\s+(system)\s*$/i
-    event.respond(content: "#{@system_help}")
+    event.respond(content: @system_help.to_s)
     true
   end
 end
 
-@basic_help="
+@basic_help = "
 ```
 Synopsis:
 \t/roll xdx [OPTIONS]
@@ -391,7 +391,7 @@ Synopsis:
 
 \tAdditional Help:
 
-\t\t/roll help alias: Show a list of basic dice aliases 
+\t\t/roll help alias: Show a list of basic dice aliases
 
 \t\t/roll help system: Show a list of system-specific aliases and commands
 
@@ -400,7 +400,7 @@ Synopsis:
 Find more commands at https://github.com/Humblemonk/DiceMaiden```
 "
 
-@alias_help="
+@alias_help = "
 ```
 Supported Aliases:
 
@@ -424,7 +424,7 @@ Supported Aliases:
 ```
 "
 
-@system_help="
+@system_help = "
 ```
 Supported Systems:
 
