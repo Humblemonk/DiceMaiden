@@ -113,6 +113,10 @@ Below are examples of the dice roll syntax.
 
 `/roll help` : Displays basic usage instructions.
 
+`/roll help alias` : Displays alias instructions.
+
+`/roll help system` : Displays game system instructions.
+
 `/roll donate` : Get donation information on how to help support the bot!
 
 These commands can be combined. For example:
