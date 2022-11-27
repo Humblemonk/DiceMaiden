@@ -341,8 +341,7 @@ def respond_wrath(event, dnum)
 end
 
 def check_donate(event)
-  # this is jank right now due to a bug I need to fix
-  if @check =~ /^\s*(#{@prefix}1donate)\s*$/i
+  if @check =~ /^\s*(donate)\s*$/i
     event.respond(content: "\n Care to support the bot? You can donate via Patreon https://www.patreon.com/dicemaiden \n You can also do a one time donation via donate bot located here https://donatebot.io/checkout/534632036569448458")
     true
   end
