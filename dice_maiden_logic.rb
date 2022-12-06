@@ -68,14 +68,15 @@ def check_user_or_nick(event)
 end
 
 def check_comment
-  if @input.include?('!')
-    @comment = @input.partition('!').last.lstrip
+  @comment = ''
+  if @event_roll.include?('!')
+    @comment = @event_roll.partition('!').last.lstrip
     # remove @ user ids from comments to prevent abuse
     @comment.gsub!(/<@!\d+>/, '')
     @do_tally_shuffle = true if @comment.include? 'unsort'
-    @roll = @input[/(^.*)!/]
-    @roll.slice! @comment
-    @roll.slice! '!'
+    @event_roll = @event_roll[/(^.*)!/]
+    @event_roll.slice! @comment
+    @event_roll.slice! '!'
   end
 end
 
@@ -680,14 +681,8 @@ def roll_sets_valid(event)
   end
 end
 
-def get_request
-  # Alias parsed initial request
-  @request = @input.split('!')[0]
-end
-
 def build_response
-  get_request
-  response = "#{@user} Request: `[#{@request.strip}]`"
+  response = "#{@user} Request: `[#{@roll_request.strip}]`"
   unless @simple_output
     response += " Roll: `#{@tally}`"
     response += " Rerolls: `#{@reroll_count}`" if @show_rerolls

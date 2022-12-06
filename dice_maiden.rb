@@ -59,6 +59,10 @@ inc_cmd = lambda do |event|
     # next if input_valid(event) == false
     # check_request_option(event)
 
+    # check for comment
+    check_comment
+    @roll_request = @event_roll.dup
+
     @input = alias_input_pass(@event_roll) # Do alias pass as soon as we get the message
     @simple_output = false
     @wng = false
@@ -78,7 +82,6 @@ inc_cmd = lambda do |event|
 
     @roll = @input
     @check = @prefix + @roll
-    @comment = ''
     @test_status = ''
     # check user
     check_user_or_nick(event) unless event.channel.pm?
@@ -87,8 +90,6 @@ inc_cmd = lambda do |event|
       event.respond(content: "#{@user} roll is empty! Please type a complete dice roll message")
       next
     end
-    # check for comment
-    check_comment
     # check for modifiers that should apply to everything
     check_universal_modifiers
 
@@ -127,9 +128,8 @@ inc_cmd = lambda do |event|
         next if error_encountered
 
         log_roll(event) if @launch_option == 'debug'
-        get_request
         if @comment.to_s.empty? || @comment.to_s.nil?
-          event.respond(content: "#{@user} Request: `[#{@request.strip}]` Rolls:\n#{@roll_set_results}")
+          event.respond(content: "#{@user} Request: `[#{@roll_request.strip}]` Rolls:\n#{@roll_set_results}")
         else
           event.respond(content: "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`")
         end
