@@ -60,6 +60,11 @@ def alias_output_pass(roll_tally)
 end
 
 def check_user_or_nick(event)
+  if event.channel.pm?
+    @ueser = nil
+    return
+  end
+
   @user = if !event.user.nick.nil?
             event.user.nick
           else

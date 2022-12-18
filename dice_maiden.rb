@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.3.1
+# Version: 8.4.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -81,7 +81,7 @@ inc_cmd = lambda do |event|
     @comment = ''
     @test_status = ''
     # check user
-    check_user_or_nick(event) unless event.channel.pm?
+    check_user_or_nick(event)
     # check for empty roll
     if @event_roll.empty?
       event.respond(content: "#{@user} roll is empty! Please type a complete dice roll message")

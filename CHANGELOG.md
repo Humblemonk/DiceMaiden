@@ -1,3 +1,7 @@
+## 8.4.0 - 2022-12-18
+### Added
+- Resolved an issue related to user names in direct messages to the bot
+
 ## 8.3.1 - 2022-09-01
 ### Added
 - Removed ignoring heartbeat ack from discord API. No longer needed for stability
