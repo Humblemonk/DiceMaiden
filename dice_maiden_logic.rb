@@ -61,7 +61,7 @@ end
 
 def check_user_or_nick(event)
   if event.channel.pm?
-    @ueser = nil
+    @user = nil
     return
   end
 
