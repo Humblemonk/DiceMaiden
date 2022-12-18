@@ -81,7 +81,10 @@ inc_cmd = lambda do |event|
     @comment = ''
     @test_status = ''
     # check user
-    check_user_or_nick(event) unless event.channel.pm?
+    if event.channel.pm?
+      @user = event.user.name
+    else
+      check_user_or_nick(event)
     # check for empty roll
     if @event_roll.empty?
       event.respond(content: "#{@user} roll is empty! Please type a complete dice roll message")
