@@ -395,6 +395,8 @@ Synopsis:
 
 \tAdditional Help:
 
+\t\t/roll 6 4d6 : Roll 6 sets of four six-sided dice. A size of a set can be between 2 and 20
+
 \t\t/roll help alias: Show a list of basic dice aliases
 
 \t\t/roll help system: Show a list of system-specific aliases and commands
