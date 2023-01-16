@@ -105,7 +105,7 @@ Below are examples of the dice roll syntax.
 
 `/roll 4d6 ! Hello World!`: Roll four six-sided dice and add comment to the roll.
 
-`/roll 6 4d6` : Roll 6 sets of four sixe-sided dice. A size of a set can be between 2 and 20.
+`/roll 6 4d6` : Roll 6 sets of four six-sided dice. A size of a set can be between 2 and 20.
 
 `/roll s 4d6` : Simplify roll output by not showing the tally.
 

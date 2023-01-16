@@ -60,6 +60,11 @@ def alias_output_pass(roll_tally)
 end
 
 def check_user_or_nick(event)
+  if event.channel.pm?
+    @user = nil
+    return
+  end
+
   @user = if !event.user.nick.nil?
             event.user.nick
           else
@@ -390,6 +395,8 @@ Synopsis:
 \t\t! : Any text after ! will be a comment.
 
 \tAdditional Help:
+
+\t\t/roll 6 4d6 : Roll 6 sets of four six-sided dice. A size of a set can be between 2 and 20
 
 \t\t/roll help alias: Show a list of basic dice aliases
 
