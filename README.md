@@ -176,7 +176,7 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 
 ## Earthdawn System:
 
-`/roll edX` where X can be a value of 1 to 20. Earthdawn system has a plethora of ways to roll the dice and the table below breaks down the various options:
+`/roll edX` where X can be a value of 1 to 50. Earthdawn system has a plethora of ways to roll the dice and the table below breaks down the various options:
 
 | Roll Command | Description|
 | --- | --- |
@@ -200,3 +200,37 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 | /roll ed18 | 1d12 ie + 1d10 ie + 1d8 ie |
 | /roll ed19 | 1d20 ie + 2d6 ie |
 | /roll ed20 | 1d20 ie + 1d8 ie + 1d6 ie |
+| /roll ed21 | 1d20 ie + 1d10 ie + 1d6 ie |
+| /roll ed22 | 1d20 ie + 1d10 ie + 1d8 ie |
+| /roll ed23 | 1d20 ie + 2d10 ie |
+| /roll ed24 | 1d20 ie + 1d12 ie + 1d10 ie |
+| /roll ed25 | 1d20 ie + 1d12 ie + 1d8 ie + 1d4 ie |
+| /roll ed26 | 1d20 ie + 1d12 ie + 1d8 ie + 1d6 ie |
+| /roll ed27 | 1d20 ie + 1d12 ie + 2d8 ie |
+| /roll ed28 | 1d20 ie + 2d10 ie + 1d8 ie |
+| /roll ed29 | 1d20 ie + 1d12 ie + 1d10 ie + 1d8 ie |
+| /roll ed30 | 1d20 ie + 1d12 ie + 1d10 ie + 1d8 ie |
+| /roll ed31 | 1d20 ie + 1d10 ie + 2d8 ie + 1d6 ie |
+| /roll ed32 | 1d20 ie + 2d10 ie + 1d8 ie + 1d6 ie |
+| /roll ed33 | 1d20 ie + 2d10 ie + 2d8 ie |
+| /roll ed34 | 1d20 ie + 3d10 ie + 1d8 ie |
+| /roll ed35 | 1d20 ie + 1d12 ie + 2d10 ie + 1d8 ie |
+| /roll ed36 | 2d20 ie + 1d10 ie + 1d8 ie + 1d4 ie |
+| /roll ed37 | 2d20 ie + 1d10 ie + 1d8 ie + 1d6 ie |
+| /roll ed38 | 2d20 ie + 1d10 ie + 2d8 ie |
+| /roll ed39 | 2d20 ie + 2d10 ie + 1d8 ie |
+| /roll ed40 | 2d20 ie + 1d12 ie + 1d10 ie + 1d8 ie |
+| /roll ed41 | 2d20 ie + 1d10 ie + 1d8 ie + 2d6 ie |
+| /roll ed42 | 2d20 ie + 1d10 ie + 2d8 ie + 1d6 ie |
+| /roll ed43 | 2d20 ie + 2d10 ie + 1d8 ie + 1d6 ie |
+| /roll ed44 | 2d20 ie + 3d10 ie + 1d8 ie |
+| /roll ed45 | 2d20 ie + 3d10 ie + 1d8 ie |
+| /roll ed46 | 2d20 ie + 1d12 ie + 2d10 ie + 1d8 ie |
+| /roll ed47 | 2d20 ie + 2d10 ie + 2d8 ie + 1d4 ie |
+| /roll ed48 | 2d20 ie + 2d10 ie + 2d8 ie + 1d6 ie |
+| /roll ed49 | 2d20 ie + 2d10 ie + 3d8 ie |
+| /roll ed50 | 2d20 ie + 3d10 ie + 2d8 ie |
+
+### Earthdawn 4th edition
+
+`/roll ed4eX` where X can be a value of 1 to 50. Earthdawn 4th edition roll steps can be found in the earthdawn_logic.rb. 
