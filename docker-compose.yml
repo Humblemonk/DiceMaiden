@@ -7,4 +7,4 @@ services:
     image: humblemonk/dicemaiden
     container_name: dicemaiden
     volumes:
-      - .env:/opt/DiceMaiden/.env
+      - .env:/opt/dicemaiden/.env

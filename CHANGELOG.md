@@ -1,3 +1,44 @@
+## 8.4.0 - 2022-12-18
+### Added
+- Resolved an issue related to user names in direct messages to the bot
+
+## 8.3.1 - 2022-09-01
+### Added
+- Removed ignoring heartbeat ack from discord API. No longer needed for stability
+
+## 8.3.0 - 2022-08-29
+### Added
+- Changed formatting of dice response string. Format should now be Request -> Tally -> Result
+
+## 8.2.2 - 2022-08-25
+### Added
+- Made roll message a requirement to improve the user experience
+
+## 8.2.1 - 2022-08-23
+### Added
+- Added error reporting when dice roll message is empty
+
+## 8.2.0 - 2022-08-23
+### Added
+- Resolved issue #148 related to single die dice rolls
+
+## 8.1.0 - 2022-08-23
+### Added
+- Added first unit test file
+- Added additional messaging for when purge commands are run
+
+## 8.0.2 - 2022-08-23
+### Added
+- Refactored some code to further support slash commands
+
+## 8.0.1 - 2022-08-21
+### Added
+- Resolved an issue with nickname checks for DMs. No longer going to check
+
+## 8.0.0 - 2022-08-21
+### Added
+- Moved to slash commands per discord requirements. More info in readme!
+
 ## 7.2.0 - 2021-12-19
 ### Added
 - Added alias support for general DnD stat rolls

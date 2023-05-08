@@ -1,7 +1,7 @@
 FROM ruby:2.7.2-alpine3.12
 
-COPY . /opt/DiceMaiden
-WORKDIR /opt/DiceMaiden
+COPY . /opt/dicemaiden
+WORKDIR /opt/dicemaiden
 
 RUN apk update
 RUN apk add --no-cache curl wget bash git ruby ruby-bundler sqlite-dev
