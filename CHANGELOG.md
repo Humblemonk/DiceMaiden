@@ -1,3 +1,7 @@
+## 8.5.0 - 2023-05-08
+### Added
+- Added Earth Dawn 4th edition as well as additional steps for previous editions
+
 ## 8.4.0 - 2022-12-18
 ### Added
 - Resolved an issue related to user names in direct messages to the bot
