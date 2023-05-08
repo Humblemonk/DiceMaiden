@@ -71,8 +71,7 @@ inc_cmd = lambda do |event|
     @ed = false
 
     check_roll_modes
-    next if @ed4e && !replace_earthdawn4(event)
-    next if @ed && !replace_earthdawn(event)
+    @ed = true if @input.match(/^\s?(ed\d+)/i) || @input.match(/^\s?(ed4e\d+)/i)
 
     @roll_set = nil
     next unless roll_sets_valid(event)

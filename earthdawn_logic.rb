@@ -98,23 +98,25 @@
 ]
 
 def replace_earthdawn(event)
-  roll = @input.match(/^\s*ed(\d+)/i)
-  step = roll[1].to_i
-  if step.between?(1, 50)
-    @input.sub!('ed (' + @earthdawn_replacements[step] + ')' + roll[1], @earthdawn_replacements[step])
-  else
-    event.respond(content: 'Only steps 1-50 are implemented')
-    false
-  end
-end
-
-def replace_earthdawn4(event)
-  roll = @input.match(/^\s*ed4e(\d+)/i)
-  step = roll[1].to_i
-  if step.between?(1, 40)
-    @input.sub!('ed4e (' + @earthdawn4_replacements[step] + ')' + roll[1], @earthdawn4_replacements[step])
-  else
-    event.respond(content: 'Only steps 1-40 are implemented')
-    false
+  # check for earth dawn 4th edition first
+  if (roll = @input.match(/^\s*ed4e(\d+)/i))
+    step = roll[1].to_i
+    if step.between?(1, 40)
+      @input.sub!('ed4e' + roll[1], @earthdawn4_replacements[step])
+      true
+    else
+      event.respond(content: 'Only steps 1-40 are implemented')
+      false
+    end
+  # check other earth dawn editions next
+  elsif (roll = @input.match(/^\s*ed(\d+)/i))
+    step = roll[1].to_i
+    if step.between?(1, 50)
+      @input.sub!('ed' + roll[1], @earthdawn_replacements[step])
+      true
+    else
+      event.respond(content: 'Only steps 1-50 are implemented')
+      false
+    end
   end
 end

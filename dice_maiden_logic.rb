@@ -672,7 +672,7 @@ def check_roll_modes
     @input.sub!('ul', '')
   end
 
-  @ed = true if @input.match(/^\s?(ed\d+)/i)
+  @ed = true if @input.match(/^\s?(ed\d+)/i) || @input.match(/^\s?(ed4e\d+)/i)
 end
 
 def roll_sets_valid(event)
