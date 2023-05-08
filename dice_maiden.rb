@@ -71,7 +71,7 @@ inc_cmd = lambda do |event|
     @ed = false
 
     check_roll_modes
-    next if @ed4 && !replace_earthdawn4(event)
+    next if @ed4e && !replace_earthdawn4(event)
     next if @ed && !replace_earthdawn(event)
 
     @roll_set = nil
