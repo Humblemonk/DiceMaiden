@@ -109,7 +109,7 @@ def replace_earthdawn(event)
 end
 
 def replace_earthdawn4(event)
-  roll = @input.match(/^\s*ed(\d+)/i)
+  roll = @input.match(/^\s*ed4e(\d+)/i)
   step = roll[1].to_i
   if step.between?(1, 40)
     @input.sub!('ed4e ('+@earthdawn4_replacements[step]+')' + roll[1], @earthdawn4_replacements[step])
