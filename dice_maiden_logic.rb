@@ -71,7 +71,7 @@ def check_user_or_nick(event)
   @user = if !event.user.nick.nil?
             event.user.nick
           else
-            event.user.name
+            event.user.display_name
           end
 end
 

@@ -1,3 +1,7 @@
+## 8.5.1 - 2023-07-03
+### Added
+- Resolved an issue related to display names in rolls
+
 ## 8.5.0 - 2023-05-08
 ### Added
 - Added Earth Dawn 4th edition as well as additional steps for previous editions
