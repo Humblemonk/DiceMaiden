@@ -1,3 +1,7 @@
+## 8.5.2 - 2023-07-13
+### Added
+- Minor changes to donate and help text prompts
+
 ## 8.5.1 - 2023-07-03
 ### Added
 - Resolved an issue related to display names in rolls
