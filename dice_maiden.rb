@@ -67,6 +67,7 @@ inc_cmd = lambda do |event|
     @simple_output = false
     @wng = false
     @dh = false
+    @godbound = false
     @do_tally_shuffle = false
     @ed = false
 
