@@ -1,3 +1,7 @@
+## 8.6.0 - 2023-09-22
+### Added
+- Resolved an issue where unsort comments would not work
+
 ## 8.5.2 - 2023-07-13
 ### Added
 - Minor changes to donate and help text prompts

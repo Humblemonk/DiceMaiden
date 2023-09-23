@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.5.2
+# Version: 8.6.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -67,7 +67,6 @@ inc_cmd = lambda do |event|
     @simple_output = false
     @wng = false
     @dh = false
-    @do_tally_shuffle = false
     @ed = false
 
     check_roll_modes
