@@ -60,6 +60,7 @@ inc_cmd = lambda do |event|
     # check_request_option(event)
 
     # check for comment
+    @do_tally_shuffle = false
     check_comment
     @roll_request = @event_roll.dup
 
