@@ -39,6 +39,15 @@ if @shard == 0
   @bot.register_application_command(:roll, 'Ask Dice Maiden to roll some dice!') do |cmd|
     cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands', required: true)
   end
+
+  @bot.register_application_command(:r, 'Ask Dice Maiden to roll some dice!') do |cmd|
+    cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands', required: true)
+  end
+
+  #log the command id for the above commands
+  @bot.get_application_commands.map(&:id).each do |id|
+    puts id
+  end
 end
 
 inc_cmd = lambda do |event|
@@ -170,6 +179,7 @@ inc_cmd = lambda do |event|
 end
 
 @bot.application_command(:roll, &inc_cmd)
+@bot.application_command(:r, &inc_cmd)
 
 if @launch_option == 'lite'
   @bot.run
