@@ -44,7 +44,7 @@ if @shard == 0
     cmd.string('message', 'roll syntax sent to Dice Maiden. Type help or visit github to view possible commands', required: true)
   end
 
-  #log the command id for the above commands
+  # log the command id for the above commands
   @bot.get_application_commands.map(&:id).each do |id|
     puts id
   end
