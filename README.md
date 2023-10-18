@@ -13,7 +13,7 @@ On August 31st 2022, Discord is enforcing new permission rules for large bots. T
 In an attempt to not have to rewrite the majority of Dice Maidens codebase, I applied for privileged intents and was denied. The Discord devteam recommended moving the bot to slash commands so here we are. What this means for users:
 
 * !roll and other prefixes have been retired. Sorry no custom prefixes
-* rolls can be initiated now by doing /roll or /r
+* rolls can be initiated now by doing /roll
 * Some new (and maybe old) bugs might crop up with this shift to slash command. We are working on ironing these out
 * Bot permissions may have broken for your server. Please update the permission for the bot or re add the bot to your server
 
