@@ -17,6 +17,8 @@ In an attempt to not have to rewrite the majority of Dice Maidens codebase, I ap
 * Some new (and maybe old) bugs might crop up with this shift to slash command. We are working on ironing these out
 * Bot permissions may have broken for your server. Please update the permission for the bot or re add the bot to your server
 
+**PLEASE DISABLE "Use the legacy chat input" UNDER USER SETTINGS > ACCESSIBILITY TO REDUCE POTENTIAL COMPATIBILITY ISSUES WITH THIS BOT!**
+
 # **USERS WILL NEED THE ROLE "USE APPLICATION COMMANDS" TO USE SLASH COMMANDS**
 
 # Quick Install
