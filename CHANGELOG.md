@@ -1,3 +1,9 @@
+## 8.6.2 - 2024-01-24
+### Added
+- Refactored sqlite usage
+- Updated dockerfile to ruby 3.3.0
+- Updated dockerfile to alpine linux 3.19
+
 ## 8.6.1 - 2024-01-24
 ### Added
 - Minor changes to command text outputs

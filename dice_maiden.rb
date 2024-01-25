@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.6.1
+# Version: 8.6.2
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -11,7 +11,6 @@ require 'discordrb'
 require 'dicebag'
 require 'dotenv'
 require 'rest-client'
-require 'sqlite3'
 
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
@@ -28,6 +27,7 @@ Dotenv.load
 if @launch_option == 'lite'
   # do nothing
 else
+  require 'sqlite3'
   $db = SQLite3::Database.new 'main.db'
   $db.busy_timeout = (10_000)
 end
