@@ -74,7 +74,7 @@ Found a bug? Have a feature request? Create an issue on github. Thanks!
 
 You can also join the Discord Support server: https://discord.gg/AYNcxc9NeU
 
-If you wish to support the bot and donate, you can do so via Patreon [here](https://patreon.com/dicemaiden) or paypal via donate bot [here](https://donatebot.io/checkout/534632036569448458?buyer=176097017926385664)!
+If you wish to support the bot and donate, you can do so via Patreon [here](https://patreon.com/dicemaiden)!
 
 # How to use
 Below are examples of the dice roll syntax.

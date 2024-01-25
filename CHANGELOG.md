@@ -1,3 +1,7 @@
+## 8.6.1 - 2024-01-24
+### Added
+- Minor changes to command text outputs
+
 ## 8.6.0 - 2023-09-22
 ### Added
 - Resolved an issue where unsort comments would not work

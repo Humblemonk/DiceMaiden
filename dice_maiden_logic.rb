@@ -351,8 +351,7 @@ end
 
 def check_donate(event)
   if @check =~ /^\s*(donate)\s*$/i
-    event.respond(content: "\n Care to support the bot? You can donate via Patreon https://www.patreon.com/dicemaiden \n You can also do a one time donation via donate bot located here https://donatebot.io/checkout/534632036569448458\n
- Another option is join the dedicated Dice Maiden Discord server and subscribe! https://discord.gg/4T3R5Cb")
+    event.respond(content: "\n Care to support the bot? You can donate via Patreon https://www.patreon.com/dicemaiden \n Another option is join the dedicated Dice Maiden Discord server and subscribe! https://discord.gg/4T3R5Cb")
     true
   end
 end
