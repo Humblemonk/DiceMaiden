@@ -1,3 +1,7 @@
+## 8.6.3 - 2024-01-26
+### Added
+- Refactored Gemfile 
+
 ## 8.6.2 - 2024-01-24
 ### Added
 - Refactored sqlite usage
