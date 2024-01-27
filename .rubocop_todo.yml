@@ -10,12 +10,12 @@
 # Configuration parameters: AllowComments.
 Lint/EmptyConditionalBody:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 1
 Lint/RescueException:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 3
 Lint/UselessAssignment:
@@ -56,7 +56,7 @@ Metrics/PerceivedComplexity:
 # Offense count: 1
 Naming/AccessorMethodName:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 2
 # Configuration parameters: IgnoredPatterns.
@@ -69,7 +69,7 @@ Naming/MethodName:
 # AllowedNames: at, by, db, id, in, io, ip, of, on, os, pp, to
 Naming/MethodParameterName:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 15
 # Configuration parameters: AllowedIdentifiers.
@@ -81,7 +81,7 @@ Naming/VariableName:
 # Cop supports --auto-correct.
 Style/CaseLikeIf:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 5
 # Cop supports --auto-correct.
@@ -91,33 +91,33 @@ Style/FrozenStringLiteralComment:
   Exclude:
     - 'Gemfile'
     - 'dice_maiden.rb'
-    - 'dice_maiden_logic.rb'
-    - 'earthdawn_logic.rb'
-    - 'scripts/dice_maiden_quota.rb'
+    - 'src/dice_maiden_logic.rb'
+    - 'src/earthdawn_logic.rb'
+    - 'tools/dice_maiden_quota.rb'
 
 # Offense count: 13
 # Configuration parameters: AllowedVariables.
 Style/GlobalVars:
   Exclude:
     - 'dice_maiden.rb'
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 7
 # Configuration parameters: MinBodyLength.
 Style/GuardClause:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 10
 Style/IdenticalConditionalBranches:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
 Style/IfUnlessModifier:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 10
 # Cop supports --auto-correct.
@@ -127,7 +127,7 @@ Style/NumericPredicate:
   Exclude:
     - 'spec/**/*'
     - 'dice_maiden.rb'
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 1
 # Cop supports --auto-correct.
@@ -135,21 +135,21 @@ Style/NumericPredicate:
 # SupportedStyles: short, verbose
 Style/PreferredHashMethods:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 7
 # Cop supports --auto-correct.
 Style/StringConcatenation:
   Exclude:
     - 'dice_maiden.rb'
-    - 'dice_maiden_logic.rb'
-    - 'earthdawn_logic.rb'
+    - 'src/dice_maiden_logic.rb'
+    - 'src/earthdawn_logic.rb'
 
 # Offense count: 6
 # Cop supports --auto-correct.
 Style/ZeroLengthPredicate:
   Exclude:
-    - 'dice_maiden_logic.rb'
+    - 'src/dice_maiden_logic.rb'
 
 # Offense count: 19
 # Cop supports --auto-correct.
