@@ -1,3 +1,8 @@
+## 8.6.4 - 2024-02-17
+### Added
+- Refactored Gemfile
+- Added base64 support
+
 ## 8.6.3 - 2024-01-26
 ### Added
 - Refactored Gemfile 

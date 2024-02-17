@@ -1,12 +1,13 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.6.3
+# Version: 8.6.4
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
 require_relative 'src/dice_maiden_logic'
 require_relative 'src/earthdawn_logic'
 
+require 'base64'
 require 'discordrb'
 require 'dicebag'
 require 'dotenv'
