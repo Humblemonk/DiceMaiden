@@ -275,7 +275,12 @@ def do_roll(event)
     return true
   end
 
-  @dice_result = "Result: `#{roll_result}`"
+  if @roll_set.nil?
+    @dice_result = "Result: `#{roll_result}`"
+  else
+    @roll_set_total += roll_result
+    @dice_result = "Result: `#{roll_result}`"
+  end
 end
 
 def log_roll(event)
@@ -287,7 +292,7 @@ def log_roll(event)
     end
   else
     File.open('dice_rolls.log', 'a') do |f|
-      f.puts "#{@time} Shard: #{@shard} | #{@server}| #{@user} Rolls:\n #{@roll_set_results}"
+      f.puts "#{@time} Shard: #{@shard} | #{@server}| #{@user} Rolls:\n #{@roll_set_results}Results Total:`#{@roll_set_total}`"
     end
   end
 end

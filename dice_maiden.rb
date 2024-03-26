@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.6.4
+# Version: 8.7.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -116,6 +116,7 @@ inc_cmd = lambda do |event|
         @roll_set_results = ''
         @error_check_roll_set = ''
         roll_count = 0
+        @roll_set_total = 0
         error_encountered = false
         while roll_count < @roll_set.to_i
           if do_roll(event) == true
@@ -135,9 +136,9 @@ inc_cmd = lambda do |event|
 
         log_roll(event) if @launch_option == 'debug'
         if @comment.to_s.empty? || @comment.to_s.nil?
-          event.respond(content: "#{@user} Request: `[#{@roll_request.strip}]` Rolls:\n#{@roll_set_results}")
+          event.respond(content: "#{@user} Request: `[#{@roll_request.strip}]` Rolls:\n#{@roll_set_results}Results Total: `#{@roll_set_total}`")
         else
-          event.respond(content: "#{@user} Rolls:\n#{@roll_set_results} Reason: `#{@comment}`")
+          event.respond(content: "#{@user} Rolls:\n#{@roll_set_results}Results Total: `#{@roll_set_total}`\nReason: `#{@comment}`")
         end
         next
       end

@@ -1,3 +1,9 @@
+## 8.7.0 - 2024-03-25
+### Added
+- Refactored Gemfile
+- Added total to roll set results
+- Added note to readme regarding time it takes for a new server to be cached by discord
+
 ## 8.6.4 - 2024-02-17
 ### Added
 - Refactored Gemfile
