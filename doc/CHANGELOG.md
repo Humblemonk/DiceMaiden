@@ -1,3 +1,7 @@
+## 8.7.1 - 2024-03-28
+### Added
+- Removed rest client API functionality
+
 ## 8.7.0 - 2024-03-25
 ### Added
 - Refactored Gemfile

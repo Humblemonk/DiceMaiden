@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.7.0
+# Version: 8.7.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -31,8 +31,6 @@ else
   $db = SQLite3::Database.new 'main.db'
   $db.busy_timeout = (10_000)
 end
-
-require 'rest-client' if @shard == 0
 
 mutex = Mutex.new
 
@@ -206,11 +204,5 @@ else
       # Bot died and cant connect to Discord. Kill the bot and have eye restart it
       exit!
     end
-    # Limit HTTP POST to shard 0. We do not need every shard hitting the discordbots API
-    next unless @shard == 0
-
-    servers = $db.execute 'select sum(server_count) from shard_stats;'
-    RestClient.post('https://top.gg/api/bots/377701707943116800/stats',
-                    { "shard_count": @total_shards, "server_count": servers.join.to_i }, 'Authorization': ENV['API'], 'Content-Type': :json)
   end
 end
