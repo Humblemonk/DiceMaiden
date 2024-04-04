@@ -1,3 +1,7 @@
+## 8.7.2 - 2024-04-03
+### Added
+- Introduced logic to better handle poorly crafted dice rolls
+
 ## 8.7.1 - 2024-03-28
 ### Added
 - Removed rest client API functionality

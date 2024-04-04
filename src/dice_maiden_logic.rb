@@ -146,6 +146,9 @@ def convert_input_to_rpn_queue(event, input)
   while input_queue.length > 0
     input_queue_peek = input_queue.last
 
+    # raise an error if input queue starts with a 0
+    raise 'Invalid dice format!' if input_queue_peek.match?(/\A0/)
+
     if input_queue_peek.match?(/\b\d+\b/) # If constant in string form
       output_queue.prepend(Integer(input_queue.pop))
 
