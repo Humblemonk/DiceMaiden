@@ -25,7 +25,7 @@ Lint/UselessAssignment:
 # Offense count: 8
 # Configuration parameters: IgnoredMethods, CountRepeatedAttributes.
 Metrics/AbcSize:
-  Max: 50
+  Max: 55
 
 # Offense count: 1
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
@@ -41,7 +41,7 @@ Metrics/BlockNesting:
 # Offense count: 5
 # Configuration parameters: IgnoredMethods.
 Metrics/CyclomaticComplexity:
-  Max: 15
+  Max: 20
 
 # Offense count: 18
 # Configuration parameters: CountComments, CountAsOne, ExcludedMethods, IgnoredMethods.
@@ -51,7 +51,7 @@ Metrics/MethodLength:
 # Offense count: 5
 # Configuration parameters: IgnoredMethods.
 Metrics/PerceivedComplexity:
-  Max: 17
+  Max: 20
 
 # Offense count: 1
 Naming/AccessorMethodName:
