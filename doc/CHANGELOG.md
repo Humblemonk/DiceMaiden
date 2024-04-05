@@ -1,3 +1,7 @@
+## 8.7.3 - 2024-04-04
+### Added
+- Updated D6 system alias to support single die rolls
+
 ## 8.7.2 - 2024-04-03
 ### Added
 - Introduced logic to better handle poorly crafted dice rolls
