@@ -1,3 +1,7 @@
+## 8.8..0 - 2024-04-07
+### Added
+- Added support for up to d1000 rolls
+
 ## 8.7.3 - 2024-04-04
 ### Added
 - Updated D6 system alias to support single die rolls
