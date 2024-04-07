@@ -100,8 +100,8 @@ def check_roll(event)
       event.respond(content: 'Please roll a dice value 2 or greater')
       return true
     end
-    if @dice_check > 100
-      event.respond(content: 'Please roll dice up to d100')
+    if @dice_check > 1000
+      event.respond(content: 'Please roll dice up to d1000')
       return true
     end
     # Check for too large of dice pools
