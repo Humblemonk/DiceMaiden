@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.8.0
+# Version: 8.8.1
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -74,6 +74,10 @@ inc_cmd = lambda do |event|
     @wng = false
     @dh = false
     @ed = false
+    @private_roll = false
+    @reroll_check = 0
+    @reroll_indefinite_check = 0
+    @reroll_count = 0
 
     check_roll_modes
     next if @ed && !replace_earthdawn(event)
@@ -151,6 +155,8 @@ inc_cmd = lambda do |event|
       @has_comment = !@comment.to_s.empty? && !@comment.to_s.nil?
       if check_wrath == true
         respond_wrath(event, dnum)
+      elsif @private_roll
+        event.respond(content: build_response, ephemeral: true)
       else
         event.respond(content: build_response)
         check_fury(event)

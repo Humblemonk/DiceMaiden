@@ -1,6 +1,11 @@
-## 8.8..0 - 2024-04-07
+## 8.8.1 - 2024-04-07
+### Added
+- Resolved an issue where reroll counts were not tallied accurately with multi dice roll
+
+## 8.8.0 - 2024-04-07
 ### Added
 - Added support for up to d1000 rolls
+- Added support for private rolls(p cmd) e.g. /roll p 4d10
 
 ## 8.7.3 - 2024-04-04
 ### Added

@@ -242,10 +242,10 @@ def process_roll_token(_event, token)
   end
   token_total = dice_roll.result.total
   # Check for reroll or indefinite reroll
-  reroll_check = dice_roll.result.sections[0].options[:reroll]
-  reroll_indefinite_check = dice_roll.result.sections[0].options[:reroll_indefinite]
-  if reroll_check > 0 || reroll_indefinite_check > 0
-    @reroll_count = dice_roll.result.sections[0].reroll_count
+  @reroll_check += dice_roll.result.sections[0].options[:reroll]
+  @reroll_indefinite_check += dice_roll.result.sections[0].options[:reroll_indefinite]
+  if @reroll_check > 0 || @reroll_indefinite_check > 0
+    @reroll_count += dice_roll.result.sections[0].reroll_count
     @show_rerolls = true
   else
     @show_rerolls = false
@@ -679,6 +679,12 @@ def check_roll_modes
   if @input.match(/\s?(ul)\s/i)
     @do_tally_shuffle = true
     @input.sub!('ul', '')
+  end
+
+  # check for private rolls
+  if @input.match(/\s?(p)\s/i)
+    @private_roll = true
+    @input.sub!('p', '')
   end
 
   @ed = true if @input.match(/^\s?(ed\d+)/i) || @input.match(/^\s?(ed4e\d+)/i)
