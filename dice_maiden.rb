@@ -7,7 +7,6 @@
 require_relative 'src/dice_maiden_logic'
 require_relative 'src/earthdawn_logic'
 
-require 'base64'
 require 'discordrb'
 require 'dicebag'
 require 'dotenv'
