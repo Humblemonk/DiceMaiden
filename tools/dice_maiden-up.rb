@@ -5,7 +5,7 @@
 eye = system('eye load')
 
 if eye
-  puts 'eye is loading dice maiden service'
+  puts 'eye is starting dice maiden shards!'
 else
-  puts 'eye failed to load dice maiden service!'
+  puts 'eye failed to start dice maiden shards!'
 end
