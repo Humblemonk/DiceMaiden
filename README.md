@@ -140,7 +140,7 @@ Dark Heresy 2nd edition syntaxes:
 
 `/roll dh 4d10` : Roll four ten-sided dice for dark heresy 2nd edition. If your roll contains a natural 10, you will be prompted with a righteous fury notification!
 
-Godbound system:
+Godbound system syntaxes:
 
 `/roll gb 1d12+4` : Roll 1d12, add 4, then compare against the game's damage chart
 
