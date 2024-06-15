@@ -14,7 +14,7 @@ Eye.app 'dice_maiden' do
   check :cpu, below: 100, every: 60.seconds, times: 3
 
   group 'shards' do
-    chain grace: 1.seconds
+    chain grace: 2.seconds
     
     240.times do |i|
       process "dice_maiden#{i}" do
