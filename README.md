@@ -178,6 +178,12 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 
 `dndstats` -> `6 4d6 k3` DnD stat roll (4d6 drop lowest). This is supported by DnD 2nd edition, 3.5e, 5e and pathfinder 1e.
 
+`attack` -> `1d20 x modifier` DnD attack roll (1d20) that supports modifiers e.g. /roll attack +10
+
+`skill` -> `1d20 x modifier` DnD skill check (1d20) that supports modifiers e.g. /roll skill -4
+
+`save` -> `1d20 x modifier` DnD saving throw (1d20) that supports modifiers e.g. /roll save +2
+
 ## Earthdawn System:
 
 `/roll edX` where X can be a value of 1 to 50. Earthdawn system has a plethora of ways to roll the dice and the table below breaks down the various options:

@@ -1,3 +1,7 @@
+## 8.9.0 - 2024-06-15
+### Added
+- Added dnd alias rolls for attack , skill checks and saving throws
+
 ## 8.8.1 - 2024-04-07
 ### Added
 - Resolved an issue where reroll counts were not tallied accurately with multi dice roll

@@ -24,7 +24,10 @@ def alias_input_pass(input)
     [/\b\d+d%\B/i, 'Percentile roll', /\b(\d+)d%\B/i, '\\1d100'], # Roll a d100
     [/\bsp\d+\b/i, 'Storypath', /\bsp(\d+)\b/i, 'ul \\1d10 ie10 t8'], # storypath system
     [/\b\d+yz\b/i, 'Year Zero', /\b(\d+)yz\b/i, '\\1d6 t6'], # year zero system
-    [/\bdndstats\b/i, 'DnD Stat-roll', /\b(dndstats)\b/i, '6 4d6 k3'] # DnD character stats - 4d6 drop lowest 6 times
+    [/\bdndstats\b/i, 'DnD Stat-roll', /\b(dndstats)\b/i, '6 4d6 k3'], # DnD character stats - 4d6 drop lowest 6 times
+    [/\battack\b/i, 'DnD attack roll', /\b(attack)\b/i, '1d20'], # DnD attack roll
+    [/\bskill\b/i, 'DnD skill check', /\b(skill)\b/i, '1d20'], # DnD skill check
+    [/\bsave\b/i, 'DnD saving throw', /\b(attack)\b/i, '1d20'] # DnD saving throw
   ]
 
   @alias_types = []
