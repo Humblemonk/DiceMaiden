@@ -72,6 +72,7 @@ inc_cmd = lambda do |event|
     @simple_output = false
     @wng = false
     @dh = false
+    @godbound = false
     @ed = false
     @private_roll = false
     @reroll_check = 0

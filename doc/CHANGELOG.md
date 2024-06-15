@@ -1,6 +1,7 @@
 ## 8.9.0 - 2024-06-15
 ### Added
 - Added dnd alias rolls for attack , skill checks and saving throws
+- Added godbound dice roll system
 
 ## 8.8.1 - 2024-04-07
 ### Added

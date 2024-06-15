@@ -1,4 +1,5 @@
 # All bot logic that is not handled by Dice-Bag lives here
+require_relative 'godbound_logic'
 
 # Returns an input string after it's been put through the aliases
 def alias_input_pass(input)
@@ -215,6 +216,8 @@ def process_rpn_token_queue(input_queue)
 
   raise 'Extra numbers detected!' if output_stack.length > 1
 
+  return godbound_damage_conversion(output_stack[0]) if @godbound == true # allow stuff like 1d12+4 to be summed before converting
+
   output_stack[0] # There can be only one!
 end
 
@@ -268,6 +271,15 @@ def process_roll_token(_event, token)
     roll_tally = String(roll_tally)
   end
   @tally += roll_tally
+
+  if @godbound == true
+    t = dice_roll.result.sections[0].tally
+    if t.length > 1
+      # for something like 5d8, just add it up and don't process afterwards
+      @godbound = false
+      return godbound_damage_total(t)
+    end
+  end
 
   token_total
 end
@@ -688,6 +700,12 @@ def check_roll_modes
   if @input.match(/\s?(p)\s/i)
     @private_roll = true
     @input.sub!('p', '')
+  end
+
+  # check for godbound game mode roll
+  if @input.match(/\s?(gb)\s/i)
+    @godbound = true
+    @input.sub!('gb', '')
   end
 
   @ed = true if @input.match(/^\s?(ed\d+)/i) || @input.match(/^\s?(ed4e\d+)/i)
