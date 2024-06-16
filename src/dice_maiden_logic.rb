@@ -28,7 +28,10 @@ def alias_input_pass(input)
     [/\bdndstats\b/i, 'DnD Stat-roll', /\b(dndstats)\b/i, '6 4d6 k3'], # DnD character stats - 4d6 drop lowest 6 times
     [/\battack\b/i, 'DnD attack roll', /\b(attack)\b/i, '1d20'], # DnD attack roll
     [/\bskill\b/i, 'DnD skill check', /\b(skill)\b/i, '1d20'], # DnD skill check
-    [/\bsave\b/i, 'DnD saving throw', /\b(attack)\b/i, '1d20'] # DnD saving throw
+    [/\bsave\b/i, 'DnD saving throw', /\b(attack)\b/i, '1d20'], # DnD saving throw
+    [/\b\d+hsn\b/i, 'Hero System Normal', /\b(\d+)hsn\b/i, 'hsn \\1d6 nr'], # Hero System 5e Normal Damage
+    [/\b\d+hsk\d*\b/i, 'Hero System Killing', /\b(\d+)hsk(\d*)\b/i, 'hsk\\2 \\1d6 nr'], # Hero System 5e Killing Damage
+    [/\b\d+hsh\b/i, 'Hero System to Hit', /\b(\d+)hsh\b/i, 'hsh 11+\\1 -3d6 nr'] # Hero System 5e to Hit
   ]
 
   @alias_types = []
@@ -50,7 +53,8 @@ def alias_output_pass(roll_tally)
   # Each entry is formatted "Alias Name":[[]/gsub replacement regex/, "replace with string", etc]
   # Not all aliases will have an output hash
   alias_output_hash = {
-    'Fudge' => [[/\b1\b/, '-'], [/\b2\b/, ' '], [/\b3\b/, '+']]
+    'Fudge' => [[/\b1\b/, '-'], [/\b2\b/, ' '], [/\b3\b/, '+']],
+    'Hero System Normal' => [[/\b1\b/, '1 (+0)'], [/\b([2-5])\b/, '\\1 (+1)'], [/\b6\b/, '6 (+2)']]
   }
 
   new_tally = roll_tally
@@ -708,6 +712,37 @@ def check_roll_modes
     @input.sub!('gb', '')
   end
 
+  # check for Hero System 5e normal damage mode for roll
+  if @input.match(/\s?(hsn)\s/i)
+    @hsn = true
+    @input.sub!('hsn', '')
+  end
+
+  # check for Hero System 5e killing damage mode for roll
+  if @input.match(/\s?(hsk)\s/i)
+    @hsk = true
+    if @input.match(/hsk\d+/i)
+      multiplier_string = @input.scan(/(hsk)\d+/i)
+      @hsk_multiplier_modifier = multiplier_string.scan(/\d+/).to_i
+      @input.sub!(/hsk\d+/i, '')
+    else
+      @hsk_multiplier_modifier = 0
+      @input.sub!('hsk', '')
+    end
+  end
+
+  # check for Hero System 5e to hit mode for roll
+  if @input.match(/\s?(hsh)\s?/i)
+    @hsh = true
+    @input.sub!('hsh', '')
+  end
+
+  # check for no total mode for roll
+  if @input.match(/\s?(nr)\s/i)
+    @no_result = true
+    @input.sub!('nr', '')
+  end
+
   @ed = true if @input.match(/^\s?(ed\d+)/i) || @input.match(/^\s?(ed4e\d+)/i)
 end
 
@@ -727,13 +762,44 @@ def roll_sets_valid(event)
   end
 end
 
+def hero_system_math
+  if @hsn
+    @hsn_body = 0
+    @hsn_body += @tally.scan(/\+2\D/).count
+    @hsn_body *= 2
+    @hsn_body += @tally.scan(/\+1\D/).count
+    @hsn_stun = @dice_result.scan(/\d+/)
+  end
+
+  if @hsk
+    @hsk_body = @dice_result.scan(/\d+/).to_i
+    @hsk_stun_roll = DiceBag::Roll.new('1d6').result.total
+    @hsk_multiplier = @hsk_stun_roll - 1 + @hsk_multiplier_modifier
+    if @hsk_multiplier.zero?
+      @hsk_multiplier = 1
+    end
+    @hsk_stun = @hsk_body * @hsk_multiplier
+  end
+end
+
 def build_response
   response = "#{@user} Request: `[#{@roll_request.strip}]`"
   unless @simple_output
     response += " Roll: `#{@tally}`"
     response += " Rerolls: `#{@reroll_count}`" if @show_rerolls
   end
-  response += " #{@dice_result}"
+  response += " #{@dice_result}" unless @no_result
+  if @hsn
+    response += " Body: #{@hsn_body}, Stun:#{@hsn_stun}"
+  end
+
+  if @hsk
+    response += " Body: #{@hsk_body}, Stun Multiplier: #{@hsk_multiplier}, Stun: #{@hsk_stun}"
+  end
+
+  if @hsh
+    response += " Hits DCV #{@dice_result.scan(/\d+/)}"
+  end
   response += " Reason: `#{@comment}`" if @has_comment
   response
 end

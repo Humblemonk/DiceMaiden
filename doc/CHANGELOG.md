@@ -1,3 +1,8 @@
+## 8.10.0 -2024-06-16
+### Added
+- Hero system support
+- no result modifier
+
 ## 8.9.0 - 2024-06-15
 ### Added
 - Added dnd alias rolls for attack , skill checks and saving throws

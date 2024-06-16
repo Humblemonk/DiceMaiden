@@ -111,6 +111,8 @@ Below are examples of the dice roll syntax.
 
 `/roll s 4d6` : Simplify roll output by not showing the tally.
 
+`/roll nr 4d6` : Simplify roll output by not showing the results. 
+
 `/roll p 4d6` : Private roll results. Roll four six-sided dice and return the results privately.
 
 `/roll 4d6 ! unsort` or `!roll ul 4d6`: Roll four six-sided dice and unsort the tally.
@@ -145,6 +147,14 @@ Godbound system syntaxes:
 `/roll gb 1d12+4` : Roll 1d12, add 4, then compare against the game's damage chart
 
 `/roll gb 8d8` : Roll 8d8, compare each die against the game's damage chart, and then sum
+
+Hero System 5th edition syntaxes:
+
+`/roll 2hsn` : Roll 2 six-sided dice for normal damage. In the tally, body modifiers are given in parentheses. Both body and stun are calculated.
+
+`/roll 5hsk1 +1d3` : Roll 5 1/2 six-sided dice for killing damage, with a plus one stun modifier. Stun modifier defaults to zero, meaning a roll of 1d6 -1, if no value is given. For partial dice, use +1 for a single pip, +1d3 for a half d6, and a whole d6 can either be added to the first number, or at the end with the partial dice. Calculates body, stun multiplier, and stun
+
+`/roll 3hsh` : Adds 11 to the number supplied, then subtracts the results of 3d6. e.g. 11 + 3 - 3d6
 
 ## Alias Rolls
 Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as

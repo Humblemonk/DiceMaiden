@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.9.0
+# Version: 8.10.0
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -74,6 +74,11 @@ inc_cmd = lambda do |event|
     @dh = false
     @godbound = false
     @ed = false
+    @hsn = false
+    @hsk = false
+    @hsh = false
+    @no_result = false
+
     @private_roll = false
     @reroll_check = 0
     @reroll_indefinite_check = 0
@@ -147,6 +152,9 @@ inc_cmd = lambda do |event|
 
       # Output aliasing
       @tally = alias_output_pass(@tally)
+
+      # Does calculation for Hero System stuff, if necessary
+      hero_system_math if @hsn || @hsk
 
       # Grab event user name, server name and timestamp for roll and log it
       log_roll(event) if @launch_option == 'debug'
