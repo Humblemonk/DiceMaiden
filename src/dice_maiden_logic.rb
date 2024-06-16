@@ -28,7 +28,7 @@ def alias_input_pass(input)
     [/\bdndstats\b/i, 'DnD Stat-roll', /\b(dndstats)\b/i, '6 4d6 k3'], # DnD character stats - 4d6 drop lowest 6 times
     [/\battack\b/i, 'DnD attack roll', /\b(attack)\b/i, '1d20'], # DnD attack roll
     [/\bskill\b/i, 'DnD skill check', /\b(skill)\b/i, '1d20'], # DnD skill check
-    [/\bsave\b/i, 'DnD saving throw', /\b(attack)\b/i, '1d20'], # DnD saving throw
+    [/\bsave\b/i, 'DnD saving throw', /\b(save)\b/i, '1d20'], # DnD saving throw
     [/\b\d+hsn\b/i, 'Hero System Normal', /\b(\d+)hsn\b/i, 'hsn \\1d6 nr'], # Hero System 5e Normal Damage
     [/\b\d+hsk\d*\b/i, 'Hero System Killing', /\b(\d+)hsk(\d*)\b/i, 'hsk\\2 \\1d6 nr'], # Hero System 5e Killing Damage
     [/\b\d+hsh\b/i, 'Hero System to Hit', /\b(\d+)hsh\b/i, 'hsh 11+\\1 -3d6 nr'] # Hero System 5e to Hit
@@ -385,13 +385,15 @@ def check_donate(event)
 end
 
 def check_help(event)
-  if @check =~ /^\s*(help)\s*$/i
+  case @check
+  when /^\s*(help)\s*$/i
     event.respond(content: @basic_help.to_s)
     true
-  elsif @check =~ /^\s*(help)\s+(alias)\s*$/i
+  # I do not know when this bug occurred where the p is stripped. Check for hel instea of help
+  when /^\s*hel\s+(alias)\s*$/i
     event.respond(content: @alias_help.to_s)
     true
-  elsif @check =~ /^\s*(help)\s+(system)\s*$/i
+  when /^\s*hel\s+(system)\s*$/i
     event.respond(content: @system_help.to_s)
     true
   end

@@ -1,3 +1,8 @@
+## 8.10.1 -2024-06-16
+### Added
+- fix help rolls
+- fix save roll
+
 ## 8.10.0 -2024-06-16
 ### Added
 - Hero system support
