@@ -1,3 +1,7 @@
+## 8.10.2 -2024-06-18
+### Added
+- removed deprecated code that is no longer used due to slash commands
+
 ## 8.10.1 -2024-06-16
 ### Added
 - fix help rolls

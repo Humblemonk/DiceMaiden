@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 8.10.1
+# Version: 8.10.2
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -54,16 +54,7 @@ inc_cmd = lambda do |event|
   mutex.lock
   begin
     @event_roll = event.options.values.join('')
-    # handle !dm <command>. DEPRECATED WITH SLASH COMMANDS
-    # next if check_server_options(event) == true
 
-    # check what prefix the server should be using. DEPRECATED WITH SLASH COMMANDS
-    # check_prefix(event)
-    # check if input is even valid. DEPRECATED WITH SLASH COMMANDS
-    # next if input_valid(event) == false
-    # check_request_option(event)
-
-    # check for comment
     @do_tally_shuffle = false
     check_comment
     @roll_request = @event_roll.dup
