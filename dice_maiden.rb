@@ -20,7 +20,6 @@ Dotenv.load
 @launch_option = ARGV[1].to_s
 @prefix = ''
 @check = ''
-@request_option = false
 
 # open connection to sqlite db and set timeout to 10s if the database is busy
 if @launch_option == 'lite'
