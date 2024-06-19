@@ -103,6 +103,8 @@ Below are examples of the dice roll syntax.
 
 `/roll 4d10 kl3` : Roll four ten-sided dice and keep the lowest three dice rolled.
 
+`/roll b1 4d6` : Botch rolls. Count the number of dice at or below the number following `b`. If no number follows `b`, this option is ignored.
+
 `/roll purge 10`: Purge the last 10 messages from channel. The purge value can be between 2 to 100 messages and requires the user to have the "manage messages" or "administrator" role.
 
 `/roll 4d6 ! Hello World!`: Roll four six-sided dice and add comment to the roll.
@@ -182,7 +184,7 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 
 `xd%` -> `d100` Simple shorthand for a d100 roll where x is the number of dice to roll.
 
-`snm5` -> `5d6 ie6 t4` Sunsails: New Millennium 4th edition. The number represents total dice rolled. Indefinitely explodes on sixes, with a target of four.
+`snm5` -> `5d6 ie6 br1 t4` Sunsails: New Millennium 4th edition. The number represents total dice rolled. Indefinitely explodes on sixes, with a target of four. Displays ratio of 1s to total dice rolled.
 
 `d6s4` -> `4d6 + 1d6 ie` The D6 System. The number must be 1 lower than the total size of the dice pool as the wild die is automatically added for you. If you have some pips to add put them on the end (i.e. `d6s4 +2` is the same as `4d6 + 1d6 ie + 2`).
 

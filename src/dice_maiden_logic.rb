@@ -150,7 +150,6 @@ def convert_input_to_rpn_queue(event, input)
 
   output_queue = []
   operator_stack = []
-
   # Use the shunting yard algorithm to get our order of operations right
   while input_queue.length > 0
     input_queue_peek = input_queue.last
@@ -188,13 +187,11 @@ def convert_input_to_rpn_queue(event, input)
       raise "Invalid token! (#{input_queue_peek})"
     end
   end
-
   while operator_stack.length > 0
     raise "Extra '(' found!" if operator_stack.last == '('
 
     output_queue.prepend(operator_stack.pop)
   end
-
   output_queue
 end
 
@@ -254,6 +251,8 @@ def process_roll_token(_event, token)
   # Check for reroll or indefinite reroll
   @reroll_check += dice_roll.result.sections[0].options[:reroll]
   @reroll_indefinite_check += dice_roll.result.sections[0].options[:reroll_indefinite]
+  @botch += dice_roll.result.sections[0].options[:botch]
+  @show_botch = @botch > 0
   if @reroll_check > 0 || @reroll_indefinite_check > 0
     @reroll_count += dice_roll.result.sections[0].reroll_count
     @show_rerolls = true
@@ -503,8 +502,6 @@ Supported Systems:
 ```
 "
 
-# [/\bdndstats\b/i, 'DnD Stat-roll', /\b(dndstats)\b/i, '6 4d6 k3'] # DnD character stats - 4d6 drop lowest 6 times
-
 def check_purge(event)
   if @check =~ /^\s*(purge)\s*\d*$/i
     @roll.slice! 'purge'
@@ -563,50 +560,29 @@ def input_valid(event)
 end
 
 def check_roll_modes
-  # check for wrath and glory game mode for roll
-  if @input.match(/^\s?(wng)\s/i)
+  case @input
+  when @input.match(/^\s?(wng)\s/i)
     @wng = true
     @input.sub!('wng', '')
-  end
-
-  # check for Dark heresy game mode for roll
-  if @input.match(/^\s?(dh)\s/i)
+  when @input.match(/^\s?(dh)\s/i)
     @dh = true
     @input.sub!('dh', '')
-  end
-
-  # check for simple mode for roll
-  if @input.match(/^\s?(s)\s/i)
+  when @input.match(/^\s?(s)\s/i)
     @simple_output = true
     @input.sub!('s', '')
-  end
-
-  # check for roll having an unsorted tally list
-  if @input.match(/\s?(ul)\s/i)
+  when @input.match(/\s?(ul)\s/i)
     @do_tally_shuffle = true
     @input.sub!('ul', '')
-  end
-
-  # check for private rolls
-  if @input.match(/\s?(p)\s/i)
+  when @input.match(/\s?(p)\s/i)
     @private_roll = true
     @input.sub!('p', '')
-  end
-
-  # check for godbound game mode roll
-  if @input.match(/\s?(gb)\s/i)
+  when @input.match(/\s?(gb)\s/i)
     @godbound = true
     @input.sub!('gb', '')
-  end
-
-  # check for Hero System 5e normal damage mode for roll
-  if @input.match(/\s?(hsn)\s/i)
+  when @input.match(/\s?(hsn)\s/i)
     @hsn = true
     @input.sub!('hsn', '')
-  end
-
-  # check for Hero System 5e killing damage mode for roll
-  if @input.match(/\s?(hsk)\s/i)
+  when @input.match(/\s?(hsk)\s/i)
     @hsk = true
     if @input.match(/hsk\d+/i)
       multiplier_string = @input.scan(/(hsk)\d+/i)
@@ -669,13 +645,24 @@ def hero_system_math
   end
 end
 
+def botch_counter
+  @botch_count = 0
+  while @botch > 0
+    @botch_count += @tally.scan(/\D#{@botch}\D/).count
+    @botch -= 1
+  end
+  " Botches: `#{@botch_count}`"
+end
+
 def build_response
   response = "#{@user} Request: `[#{@roll_request.strip}]`"
   unless @simple_output
     response += " Roll: `#{@tally}`"
     response += " Rerolls: `#{@reroll_count}`" if @show_rerolls
   end
+  response += botch_counter if @show_botch
   response += " #{@dice_result}" unless @no_result
+
   if @hsn
     response += " Body: #{@hsn_body}, Stun:#{@hsn_stun}"
   end
@@ -687,6 +674,7 @@ def build_response
   if @hsh
     response += " Hits DCV #{@dice_result.scan(/\d+/)}"
   end
+
   response += " Reason: `#{@comment}`" if @has_comment
   response
 end

@@ -1,3 +1,7 @@
+## 8.11.0 -2024-06-19
+### Added
+- Added botch support
+
 ## 8.10.2 -2024-06-18
 ### Added
 - removed deprecated code that is no longer used due to slash commands
