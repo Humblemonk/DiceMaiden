@@ -103,7 +103,7 @@ Below are examples of the dice roll syntax.
 
 `/roll 4d10 kl3` : Roll four ten-sided dice and keep the lowest three dice rolled.
 
-`/roll b1 4d6` : Botch rolls. Count the number of dice at or below the number following `b` and log these as botches. If no number follows `b`, this option is ignored.
+`/roll 4d6 b1` : Botch rolls. Count the number of dice at or below the number following `b` and log these as botches. If no number follows `b`, this option is ignored.
 
 `/roll purge 10`: Purge the last 10 messages from channel. The purge value can be between 2 to 100 messages and requires the user to have the "manage messages" or "administrator" role.
 
