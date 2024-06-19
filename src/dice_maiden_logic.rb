@@ -150,6 +150,7 @@ def convert_input_to_rpn_queue(event, input)
 
   output_queue = []
   operator_stack = []
+
   # Use the shunting yard algorithm to get our order of operations right
   while input_queue.length > 0
     input_queue_peek = input_queue.last
@@ -187,11 +188,13 @@ def convert_input_to_rpn_queue(event, input)
       raise "Invalid token! (#{input_queue_peek})"
     end
   end
+
   while operator_stack.length > 0
     raise "Extra '(' found!" if operator_stack.last == '('
 
     output_queue.prepend(operator_stack.pop)
   end
+
   output_queue
 end
 
