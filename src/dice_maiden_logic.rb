@@ -537,22 +537,6 @@ def check_bot_info(event)
   end
 end
 
-def check_prefix(event)
-  if event.channel.pm? || @launch_option == 'lite'
-    @prefix = '!roll'
-    return
-  end
-
-  begin
-    @server = event.server.id
-    @row = $db.execute "select prefix from prefixes where server = #{@server}"
-    @prefix = @row[0].join(', ')
-    @prefix = '!roll' if @row.empty? == true
-  rescue StandardError
-    @prefix = '!roll'
-  end
-end
-
 def input_valid(event)
   event_input = event.content
   if event_input =~ /\A^(#{@prefix}\s)/i
