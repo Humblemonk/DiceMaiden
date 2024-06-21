@@ -1,3 +1,8 @@
+## 8.11.1 -2024-06-21
+### Added
+- Fixed help rolls
+- Fixed game system rolls
+
 ## 8.11.0 -2024-06-19
 ### Added
 - Added botch support

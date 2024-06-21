@@ -392,10 +392,10 @@ def check_help(event)
     event.respond(content: @basic_help.to_s)
     true
   # I do not know when this bug occurred where the p is stripped. Check for hel instea of help
-  when /^\s*hel\s+(alias)\s*$/i
+  when /^\s*hel.\s*(alias)\s*$/i
     event.respond(content: @alias_help.to_s)
     true
-  when /^\s*hel\s+(system)\s*$/i
+  when /^\s*hel.\s*(system)\s*$/i
     event.respond(content: @system_help.to_s)
     true
   end
@@ -548,28 +548,28 @@ end
 
 def check_roll_modes
   case @input
-  when @input.match(/^\s?(wng)\s/i)
+  when /^\s?(wng)\s/i
     @wng = true
     @input.sub!('wng', '')
-  when @input.match(/^\s?(dh)\s/i)
+  when /^\s?(dh)\s/i
     @dh = true
     @input.sub!('dh', '')
-  when @input.match(/^\s?(s)\s/i)
+  when /^\s?(s)\s/i
     @simple_output = true
     @input.sub!('s', '')
-  when @input.match(/\s?(ul)\s/i)
+  when /\s?(ul)\s/i
     @do_tally_shuffle = true
     @input.sub!('ul', '')
-  when @input.match(/\s?(p)\s/i)
+  when /\s?(p)\s/i
     @private_roll = true
     @input.sub!('p', '')
-  when @input.match(/\s?(gb)\s/i)
+  when /\s?(gb)\s/i
     @godbound = true
     @input.sub!('gb', '')
-  when @input.match(/\s?(hsn)\s/i)
+  when /\s?(hsn)\s/i
     @hsn = true
     @input.sub!('hsn', '')
-  when @input.match(/\s?(hsk)\s/i)
+  when /\s?(hsk)\s/i
     @hsk = true
     if @input.match(/hsk\d+/i)
       multiplier_string = @input.scan(/(hsk)\d+/i)
