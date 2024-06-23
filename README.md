@@ -109,8 +109,6 @@ Below are examples of the dice roll syntax.
 
 `/roll 4d6 ! Hello World!`: Roll four six-sided dice and add comment to the roll.
 
-`/roll 6 4d6` : Roll 6 sets of four six-sided dice. A size of a set can be between 2 and 20.
-
 `/roll s 4d6` : Simplify roll output by not showing the tally.
 
 `/roll nr 4d6` : Simplify roll output by not showing the results. 
@@ -127,9 +125,20 @@ Below are examples of the dice roll syntax.
 
 `/roll donate` : Get donation information on how to help support the bot!
 
-These commands can be combined. For example:
+# Combining Rolls
+These commands can be combined into a single roll. For example:
 
-`/roll 10d6 e6 k8 +4` : Roll ten six-sided dice , explode on sixes and keep eight of the highest rolls and add four.
+`/roll 10d6 e6 k8 +4` : Roll ten six-sided dice, explode on sixes and keep eight of the highest rolls and add four.
+
+A roll set is possible. Below is an example of the command:
+
+`/roll 6 4d6` : Roll 6 sets of four six-sided dice. A size of a set can be between 2 and 20.
+
+Or you can combine multiple unique rolls in a single request. The max unique rolls here is **four** due to Discord API limitations. Example roll is as follows:
+
+`/roll 4d100 / 10d6 e6 k8 +4/ 3d10 k2/ ul 3d100`
+
+**Note:** Multi roll support is in a "beta feature" stage and some more complicated rolls may cause issues. Please report on github if you run into a problem!
 
 # Game Systems Specific Rolls
 Warhammer 40k Wrath and Glory example syntaxes:
