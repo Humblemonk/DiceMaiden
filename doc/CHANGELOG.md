@@ -1,3 +1,8 @@
+## 9.0.0  -2024-06-23
+### Added
+- Added support for rolling up to 4 unique dice rolls per command
+- Fixed some bugs with Hero system hsk roll 
+
 ## 8.11.1 -2024-06-21
 ### Added
 - Fixed help rolls

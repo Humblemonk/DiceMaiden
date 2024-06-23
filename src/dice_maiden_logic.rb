@@ -29,9 +29,9 @@ def alias_input_pass(input)
     [/\battack\b/i, 'DnD attack roll', /\b(attack)\b/i, '1d20'], # DnD attack roll
     [/\bskill\b/i, 'DnD skill check', /\b(skill)\b/i, '1d20'], # DnD skill check
     [/\bsave\b/i, 'DnD saving throw', /\b(save)\b/i, '1d20'], # DnD saving throw
-    [/\b\d+hsn\b/i, 'Hero System Normal', /\b(\d+)hsn\b/i, 'hsn \\1d6 nr'], # Hero System 5e Normal Damage
-    [/\b\d+hsk\d*\b/i, 'Hero System Killing', /\b(\d+)hsk(\d*)\b/i, 'hsk\\2 \\1d6 nr'], # Hero System 5e Killing Damage
-    [/\b\d+hsh\b/i, 'Hero System to Hit', /\b(\d+)hsh\b/i, 'hsh 11+\\1 -3d6 nr'] # Hero System 5e to Hit
+    [/\b\d+hsn\b/i, 'Hero System Normal', /\b(\d+)hsn\b/i, 'hsn nr \\1d6'], # Hero System 5e Normal Damage
+    [/\b\d+hsk\d*\b/i, 'Hero System Killing', /\b(\d+)hsk(\d*)\b/i, 'nr hsk\\2 \\1d6'], # Hero System 5e Killing Damage
+    [/\b\d+hsh\b/i, 'Hero System to Hit', /\b(\d+)hsh\b/i, 'hsh nr 11+\\1 -3d6'] # Hero System 5e to Hit
   ]
 
   @alias_types = []
@@ -84,16 +84,16 @@ def check_user_or_nick(event)
           end
 end
 
-def check_comment
+def check_comment(event_roll)
   @comment = ''
-  if @event_roll.include?('!')
-    @comment = @event_roll.partition('!').last.lstrip
+  if event_roll.include?('!')
+    @comment = event_roll.partition('!').last.lstrip
     # remove @ user ids from comments to prevent abuse
     @comment.gsub!(/<@!\d+>/, '')
     @do_tally_shuffle = true if @comment.include? 'unsort'
-    @event_roll = @event_roll[/(^.*)!/]
-    @event_roll.slice! @comment
-    @event_roll.slice! '!'
+    event_roll = event_roll[/(^.*)!/]
+    event_roll.slice! @comment
+    event_roll.slice! '!'
   end
 end
 
@@ -569,11 +569,11 @@ def check_roll_modes
   when /\s?(hsn)\s/i
     @hsn = true
     @input.sub!('hsn', '')
-  when /\s?(hsk)\s/i
+  when /\s?(hsk)\s?/i
     @hsk = true
     if @input.match(/hsk\d+/i)
-      multiplier_string = @input.scan(/(hsk)\d+/i)
-      @hsk_multiplier_modifier = multiplier_string.scan(/\d+/).to_i
+      multiplier_string = @input.scan(/hsk\d+/i).join.to_s
+      @hsk_multiplier_modifier = multiplier_string.scan(/\d+/).join.to_i
       @input.sub!(/hsk\d+/i, '')
     else
       @hsk_multiplier_modifier = 0
@@ -622,13 +622,13 @@ def hero_system_math
   end
 
   if @hsk
-    @hsk_body = @dice_result.scan(/\d+/).to_i
+    @hsk_body = @dice_result.scan(/\d+/)
     @hsk_stun_roll = DiceBag::Roll.new('1d6').result.total
     @hsk_multiplier = @hsk_stun_roll - 1 + @hsk_multiplier_modifier
     if @hsk_multiplier.zero?
       @hsk_multiplier = 1
     end
-    @hsk_stun = @hsk_body * @hsk_multiplier
+    @hsk_stun = @hsk_body.join.to_i * @hsk_multiplier
   end
 end
 
@@ -651,15 +651,15 @@ def build_response
   response += " #{@dice_result}" unless @no_result
 
   if @hsn
-    response += " Body: #{@hsn_body}, Stun:#{@hsn_stun}"
+    response += " Body: `#{@hsn_body}`, Stun: `#{@hsn_stun}`"
   end
 
   if @hsk
-    response += " Body: #{@hsk_body}, Stun Multiplier: #{@hsk_multiplier}, Stun: #{@hsk_stun}"
+    response += " Body: `#{@hsk_body}`, Stun Multiplier: `#{@hsk_multiplier}`, Stun: `#{@hsk_stun}`"
   end
 
   if @hsh
-    response += " Hits DCV #{@dice_result.scan(/\d+/)}"
+    response += " Hits DCV `#{@dice_result.scan(/\d+/)}`"
   end
 
   response += " Reason: `#{@comment}`" if @has_comment
