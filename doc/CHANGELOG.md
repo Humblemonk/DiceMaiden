@@ -1,3 +1,7 @@
+## 9.0.1 -2024-06-23
+### Added
+- Resolved an issue with storypath alias rolls not exploding
+
 ## 9.0.0  -2024-06-23
 ### Added
 - Added support for rolling up to 4 unique dice rolls per command
