@@ -445,7 +445,9 @@ Find more commands at https://github.com/Humblemonk/DiceMaiden or join the Dice 
 
 @alias_help = "
 ```
-Supported Aliases:
+  Full list of aliases can be found on github.
+
+  Example Supported Aliases:
 
 \t/roll dd## — Double Digits
 \t\tRolls a die of the given size for each digit of the result.
@@ -469,7 +471,9 @@ Supported Aliases:
 
 @system_help = "
 ```
-Supported Systems:
+  Full list of game systems can be found on github.
+
+  Example Supported Game Systems:
 
 \t/roll age — AGE System Test
 \t\tRolls 2d6 plus one drama/dragon/stunt die.
