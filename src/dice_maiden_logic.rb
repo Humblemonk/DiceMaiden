@@ -95,6 +95,7 @@ def check_comment(event_roll)
     event_roll.slice! @comment
     event_roll.slice! '!'
   end
+  @parsed_event_roll = event_roll
 end
 
 def check_roll(event)

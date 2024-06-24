@@ -1,3 +1,7 @@
+## 9.0.2 -2024-06-24
+### Added
+- Resolved an issue where numbers in comments broke rolls
+
 ## 9.0.1 -2024-06-23
 ### Added
 - Resolved an issue with storypath alias rolls not exploding
