@@ -1,6 +1,6 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 9.0.2
+# Version: 9.0.3
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
@@ -54,7 +54,7 @@ inc_cmd = lambda do |event|
   response_array = []
   begin
     inc_event_roll = event.options.values.join('')
-    rolls_array = inc_event_roll.split(%r{\s*/\s*}).take(4)
+    rolls_array = inc_event_roll.split(/\s*;\s*/).take(4)
     rolls_array.each do |event_roll|
       @do_tally_shuffle = false
       check_comment(event_roll)

@@ -134,9 +134,9 @@ A roll set is possible. Below is an example of the command:
 
 `/roll 6 4d6` : Roll 6 sets of four six-sided dice. A size of a set can be between 2 and 20.
 
-Or you can combine multiple unique rolls in a single request. The max unique rolls here is **four** due to Discord API limitations. Example roll is as follows:
+Or you can combine multiple unique rolls in a single request. The max unique rolls here is **four** due to Discord API limitations. Rolls are separated with a semicolon. Example roll is as follows:
 
-`/roll 4d100 / 10d6 e6 k8 +4/ 3d10 k2/ ul 3d100`
+`/roll 4d100 ; 10d6 e6 k8 +4; 3d10 k2; ul 3d100`
 
 **Note:** Multi roll support is in a "beta feature" stage and some more complicated rolls may cause issues. Please report on github if you run into a problem!
 
