@@ -1,3 +1,7 @@
+## 9.0.4 -2024-06-29
+### Added
+- Resolved an issue with wrath and glory difficulty rolls
+
 ## 9.0.3 -2024-06-27
 ### Added
 - Updated multi roll logic to use semi colons to break between roll sets.
