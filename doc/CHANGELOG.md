@@ -1,3 +1,7 @@
+## 9.0.5 -2024-07-02
+### Added
+- Added additional info to the bot info command
+
 ## 9.0.4 -2024-06-29
 ### Added
 - Resolved an issue with wrath and glory difficulty rolls
