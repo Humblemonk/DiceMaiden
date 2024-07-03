@@ -10,6 +10,7 @@ require_relative 'src/earthdawn_logic'
 require 'discordrb'
 require 'dicebag'
 require 'dotenv'
+require 'get_process_mem'
 
 Dotenv.load
 @total_shards = ENV['SHARD'].to_i
@@ -211,10 +212,11 @@ else
     time = Time.now.getutc
     if @bot.connected? == true
       server_parse = @bot.servers.count
-      $db.execute "update shard_stats set server_count = #{server_parse}, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
-      File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} Server Count: #{server_parse}" }
+      mem = GetProcessMem.new
+      $db.execute "update shard_stats set server_count= #{server_parse}, mem = #{mem.mb}, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
+      File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} Server Count: #{server_parse} Memory: #{mem.mb}" }
     else
-      $db.execute "update shard_stats set server_count = 0, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
+      $db.execute "update shard_stats set server_count = 0, mem = 0, timestamp = CURRENT_TIMESTAMP where shard_id = #{@shard}"
       File.open('dice_rolls.log', 'a') { |f| f.puts "#{time} Shard: #{@shard} bot not ready!" }
       # Bot died and cant connect to Discord. Kill the bot and have eye restart it
       exit!
