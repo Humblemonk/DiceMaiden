@@ -539,7 +539,8 @@ def check_bot_info(event)
     servers = $db.execute 'select sum(server_count) from shard_stats;'
     shards = $db.execute 'select sum(shard_id) from shard_stats;'
     total_shards = shards.join.to_i + 1
-    event.respond(content: "| Dice Maiden | - #{servers.join.to_i} active servers across #{total_shards} shards")
+    total_mem = $db.execute 'select sum(mem) from shard_stats;'
+    event.respond(content: "| Dice Maiden | - #{servers.join.to_i} active servers across #{total_shards} shards using #{total_mem.join.to_i.round / 1024}GB of ram")
     true
   end
 end
