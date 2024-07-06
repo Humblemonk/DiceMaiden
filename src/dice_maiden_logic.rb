@@ -648,28 +648,3 @@ def botch_counter
   end
   " Botches: `#{@botch_count}`"
 end
-
-def build_response
-  response = "#{@user} Request: `[#{@roll_request.strip}]`"
-  unless @simple_output
-    response += " Roll: `#{@tally}`"
-    response += " Rerolls: `#{@reroll_count}`" if @show_rerolls
-  end
-  response += botch_counter if @show_botch
-  response += " #{@dice_result}" unless @no_result
-
-  if @hsn
-    response += " Body: `#{@hsn_body}`, Stun: `#{@hsn_stun}`"
-  end
-
-  if @hsk
-    response += " Body: `#{@hsk_body}`, Stun Multiplier: `#{@hsk_multiplier}`, Stun: `#{@hsk_stun}`"
-  end
-
-  if @hsh
-    response += " Hits DCV `#{@dice_result.scan(/\d+/)}`"
-  end
-
-  response += " Reason: `#{@comment}`" if @has_comment
-  response
-end

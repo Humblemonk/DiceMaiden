@@ -1,3 +1,7 @@
+## 9.0.6 -2024-07-
+### Added
+- Updated multi roll logic to support roll sets
+
 ## 9.0.5 -2024-07-02
 ### Added
 - Added additional info to the bot info command

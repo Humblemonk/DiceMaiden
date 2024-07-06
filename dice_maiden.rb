@@ -1,11 +1,12 @@
 # Dice bot for Discord
 # Author: Humblemonk
-# Version: 9.0.5
+# Version: 9.0.6
 # Copyright (c) 2017. All rights reserved.
 # !/usr/bin/ruby
 # If you wish to run a single instance of this bot, please follow the "Manual Install" section of the readme!
 require_relative 'src/dice_maiden_logic'
 require_relative 'src/earthdawn_logic'
+require_relative 'src/respond_logic'
 
 require 'discordrb'
 require 'dicebag'
@@ -52,7 +53,7 @@ end
 inc_cmd = lambda do |event|
   # Locking the thread to prevent messages going to the wrong server
   mutex.lock
-  response_array = []
+  @response_array = []
   begin
     inc_event_roll = event.options.values.join('')
     rolls_array = inc_event_roll.split(/\s*;\s*/).take(4)
@@ -136,15 +137,9 @@ inc_cmd = lambda do |event|
             roll_count += 1
           end
           next if error_encountered
-
-          log_roll(event) if @launch_option == 'debug'
-          if @comment.to_s.empty? || @comment.to_s.nil?
-            event.respond(content: "#{@user} Request: `[#{@roll_request.strip}]` Rolls:\n#{@roll_set_results}Results Total: `#{@roll_set_total}`")
-          else
-            event.respond(content: "#{@user} Rolls:\n#{@roll_set_results}Results Total: `#{@roll_set_total}`\nReason: `#{@comment}`")
-          end
-          next
         end
+
+        log_roll(event) if @launch_option == 'debug'
 
         # Output aliasing
         @tally = alias_output_pass(@tally)
@@ -157,7 +152,7 @@ inc_cmd = lambda do |event|
 
         @has_comment = !@comment.to_s.empty? && !@comment.to_s.nil?
 
-        response_array.push(build_response)
+        @response_array.push(build_response)
       end
       next if check_donate(event) == true
       next if check_help(event) == true
@@ -180,18 +175,7 @@ inc_cmd = lambda do |event|
       end
     end
   end
-  # Print dice results to Discord channel
-  # reduce noisy errors by checking if response array is empty due to responding earlier
-  if response_array.empty?
-    # do nothing
-  elsif check_wrath == true
-    respond_wrath(event, @dnum)
-  elsif @private_roll
-    event.respond(content: response_array.join("\n").to_s, ephemeral: true)
-  else
-    event.respond(content: response_array.join("\n").to_s)
-    check_fury(event)
-  end
+  send_response(event)
   mutex.unlock
 end
 
