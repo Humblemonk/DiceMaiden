@@ -31,7 +31,8 @@ def alias_input_pass(input)
     [/\bsave\b/i, 'DnD saving throw', /\b(save)\b/i, '1d20'], # DnD saving throw
     [/\b\d+hsn\b/i, 'Hero System Normal', /\b(\d+)hsn\b/i, 'hsn nr \\1d6'], # Hero System 5e Normal Damage
     [/\b\d+hsk\d*\b/i, 'Hero System Killing', /\b(\d+)hsk(\d*)\b/i, 'nr hsk\\2 \\1d6'], # Hero System 5e Killing Damage
-    [/\b\d+hsh\b/i, 'Hero System to Hit', /\b(\d+)hsh\b/i, 'hsh nr 11+\\1 -3d6'] # Hero System 5e to Hit
+    [/\b\d+hsh\b/i, 'Hero System to Hit', /\b(\d+)hsh\b/i, 'hsh nr 11+\\1 -3d6'], # Hero System 5e to Hit
+    [/\bex\d+\b/i, 'Exalted', /\bex(\d+)\b/i, '\\1d10 t7 t10'], # Exalted
   ]
 
   @alias_types = []
@@ -139,6 +140,7 @@ end
 def convert_input_to_rpn_queue(event, input)
   split_input = input.scan(%r{\b(?:\d+d\d+(?:\s?[a-z]+\d+|\s?e+\d*|\s?[ie]+\d*)*)|[+\-*/]|(?:\b\d+\b)|[()]}i) # This is the tokenization string for our input
   # change to read left to right order
+  
   input_queue = []
   input_queue.push(split_input.pop) while split_input.length > 0
 
@@ -264,6 +266,7 @@ def process_roll_token(_event, token)
     @show_rerolls = false
   end
   # Parse the roll and grab the total tally
+  p dice_roll.tree
   parse_roll = dice_roll.tree
   parsed = parse_roll.inspect
   roll_tally = parsed.scan(/tally=\[.*?, @/)
