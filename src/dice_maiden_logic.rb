@@ -33,7 +33,7 @@ def alias_input_pass(input)
     [/\b\d+hsk\d*\b/i, 'Hero System Killing', /\b(\d+)hsk(\d*)\b/i, 'nr hsk\\2 \\1d6'], # Hero System 5e Killing Damage
     [/\b\d+hsh\b/i, 'Hero System to Hit', /\b(\d+)hsh\b/i, 'hsh nr 11+\\1 -3d6'], # Hero System 5e to Hit
     [/\bex\d+\b/i, 'Exalted', /\bex(\d+)\b/i, '\\1d10 t7 t10'], # Exalted
-    [/\bex\d+t\d+\b/i, 'Exalted modified target', /\bex(\d+)t(\d+)\b/i, '\\1d10 t\\2 t10'], # Exalted
+    [/\bex\d+t\d+\b/i, 'Exalted modified target', /\bex(\d+)t(\d+)\b/i, '\\1d10 t\\2 t10'] # Exalted
   ]
 
   @alias_types = []
