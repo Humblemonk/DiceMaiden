@@ -141,7 +141,6 @@ end
 def convert_input_to_rpn_queue(event, input)
   split_input = input.scan(%r{\b(?:\d+d\d+(?:\s?[a-z]+\d+|\s?e+\d*|\s?[ie]+\d*)*)|[+\-*/]|(?:\b\d+\b)|[()]}i) # This is the tokenization string for our input
   # change to read left to right order
-  
   input_queue = []
   input_queue.push(split_input.pop) while split_input.length > 0
 
@@ -267,7 +266,6 @@ def process_roll_token(_event, token)
     @show_rerolls = false
   end
   # Parse the roll and grab the total tally
-  p dice_roll.tree
   parse_roll = dice_roll.tree
   parsed = parse_roll.inspect
   roll_tally = parsed.scan(/tally=\[.*?, @/)

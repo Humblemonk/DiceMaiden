@@ -211,6 +211,10 @@ in most cases. Below is the complete list of aliases , with example rolls, curre
 
 `save` -> `1d20 x modifier` DnD saving throw (1d20) that supports modifiers e.g. /roll save +2
 
+`ex5` -> `5d10 t7 t10` Exalted system.  The number represents number of d10 rolled.
+
+`ex5t8` -> `5d10 t8 t10` Exalted system modified target.  The first number represents number of d10 rolled.  The second number modifies the target.
+
 ## Earthdawn System:
 
 `/roll edX` where X can be a value of 1 to 50. Earthdawn system has a plethora of ways to roll the dice and the table below breaks down the various options:
