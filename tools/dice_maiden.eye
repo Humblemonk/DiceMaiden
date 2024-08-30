@@ -1,6 +1,12 @@
 # Ruby gem Eye config for process monitoring of Dice Maiden
 
+require 'dotenv'
+
 cwd = File.expand_path(File.join(File.dirname(__FILE__), %w[../]))
+
+Dotenv.load("#{cwd}/.env")
+
+total_shards = ENV['SHARD'].to_i
 
 Eye.config do
   logger "/tmp/eye.log"
@@ -15,8 +21,8 @@ Eye.app 'dice_maiden' do
 
   group 'shards' do
     chain grace: 5.seconds
-    
-    240.times do |i|
+
+    total_shards.times do |i|
       process "dice_maiden#{i}" do
         pid_file "/tmp/dice_maiden#{i}.pid"
         start_command "bundle exec ruby dice_maiden.rb #{i}"
