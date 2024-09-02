@@ -7,6 +7,7 @@ cwd = File.expand_path(File.join(File.dirname(__FILE__), %w[../]))
 Dotenv.load("#{cwd}/.env")
 
 total_shards = ENV['SHARD'].to_i
+shard_mem = ENV['MEM'].to_i
 
 Eye.config do
   logger "/tmp/eye.log"
@@ -16,7 +17,7 @@ Eye.app 'dice_maiden' do
   working_dir cwd
   env 'BUNDLE_GEMFILE' => "Gemfile"
   trigger :flapping, times: 10, within: 1.minute, retry_in: 10.minutes
-  check :memory, :below => 512.megabytes, :every => 60.seconds, :times => 3
+  check :memory, :below => shard_mem.megabytes, :every => 60.seconds, :times => 3
   check :cpu, below: 100, every: 60.seconds, times: 3
 
   group 'shards' do
