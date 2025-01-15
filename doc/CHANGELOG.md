@@ -1,3 +1,7 @@
+## 9.2.0 - 01/14/2025
+### Added
+- Updated WoD command to support exploding dice
+
 ## 9.1.0 - 08-17-2024
 ### Added 
 -  Exalted alias

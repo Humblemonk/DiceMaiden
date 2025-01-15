@@ -8,7 +8,7 @@ def alias_input_pass(input)
     [/\b\d+dF\b/i, 'Fudge', /\b(\d+)dF\b/i, '\\1d3 f1 t3'], # Fate fudge dice
     [/\bSNM\d+\b/i, 'Sunsails', /\bSNM(\d+)\b/i, '\\1d6 ie6 t4'], # Sunsails: New Milennium; Fourth Edition
     [/\b\d+wh\d+\+/i, 'Warhammer', /\b(\d+)wh(\d+)\+/i, '\\1d6 t\\2'], # Warhammer (AoS/40k)
-    [/\b\d+WoD\d+\b/i, 'WoD', /\b(\d+)WoD(\d+)\b/i, '\\1d10 f1 t\\2'], # World of Darkness 4th edition (note: explosions are left off for now)
+    [/\b\d+WoD\d+\b/i, 'WoD', /\b(\d+)WoD(\d+)\b/i, '\\1d10 f1 ie10 t\\2'], # World of Darkness 4th edition
     [/\bdd\d\d\b/i, 'Double Digit', /\bdd(\d)(\d)\b/i, '(1d\\1 * 10) + 1d\\2'], # Rolling one dice for each digit
     [/\bage\b/i, 'AGE System Test', /\b(age)\b/i, '2d6 + 1d6'], # 2d6 plus one drama/dragon/stunt die
     [/\B\+d\d+\b/i, 'Advantage', /\B\+d(\d+)\b/i, '2d\\1 d1'], # Roll two dice of the specified size and keep the highest
