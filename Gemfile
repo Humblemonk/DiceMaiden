@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'bigdecimal'
 gem 'base64'
+gem 'bigdecimal'
 gem 'dicebag', git: 'https://github.com/Humblemonk/Dice-Bag.git', branch: 'pre-3.3'
 gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'
 gem 'dotenv', '~> 2.5'
