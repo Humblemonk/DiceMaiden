@@ -50,7 +50,7 @@
     '2d20 ie + 2d10 ie + 2d8 ie + 1d4 ie', # Step 47
     '2d20 ie + 2d10 ie + 2d8 ie + 1d6 ie', # Step 48
     '2d20 ie + 2d10 ie + 3d8 ie',          # Step 49
-    '2d20 ie + 3d10 ie + 2d8 ie',          # Step 50
+    '2d20 ie + 3d10 ie + 2d8 ie' # Step 50
 ]
 
 @earthdawn4_replacements = Array[
