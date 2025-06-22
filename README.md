@@ -8,6 +8,14 @@
 <br>A simple to use dice rolling bot perfect for any TTRPG sessions!
 </p>
 
+
+> **⚠️ Important Development Notice**
+> 
+> Active development for this Ruby version of Dice Maiden has entered **maintenance mode**. Future development and new features will focus on the **Rust version** found at [https://github.com/Humblemonk/dicemaiden-rs](https://github.com/Humblemonk/dicemaiden-rs).
+> 
+> This transition is due to scaling issues with the Ruby Discord library. The Ruby version will continue to receive critical bug fixes and security updates, but new features will be developed for the Rust implementation. These include the existing feature requests in this repo.
+
+
 ## Table of Contents
 
 - [Quick Start](#quick-start)
