@@ -86,7 +86,7 @@ See the [Self-Hosting](#self-hosting) section below for detailed instructions.
 | `/roll XdY nr` | No results shown | `/roll 4d6 nr` |
 | `/roll XdY p` | Private roll | `/roll 4d6 p` |
 | `/roll XdY ! comment` | Add comment | `/roll 4d6 ! Damage roll` |
-| `/roll XdY unsort` | Unsorted results | `/roll 4d6 ! unsort` |
+| `/roll XdY ul` | Unsorted results | `/roll 4d6 ! unsort` |
 
 ### Utility Commands
 
@@ -191,7 +191,7 @@ Aliases are shorthand commands for common game systems:
 | `3df` | `3d3 t3 f1` | Fate (Fudge dice) |
 | `3wh4+` | `3d6 t4` | Warhammer 40k/AoS |
 | `age` | `2d6 + 1d6` | AGE System |
-| `6sr` | `6d6 t5` | Shadowrun |
+| `sr6` | `6d6 t5` | Shadowrun |
 | `dndstats` | `6 4d6 k3` | D&D stat generation |
 
 ### D&D 5e Quick Rolls
