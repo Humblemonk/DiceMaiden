@@ -1,277 +1,368 @@
 # Dice Maiden
+
 <p align="center">
 <a href="https://top.gg/bot/377701707943116800">
     <img src="https://top.gg/api/widget/377701707943116800.svg" alt="Dice Maiden" />
 </a>
-<br>Dice Bot for Discord
-<br>Dice Maiden is a simple to use dice rolling bot perfect for any trpg sessions!
+<br><strong>Dice Bot for Discord</strong>
+<br>A simple to use dice rolling bot perfect for any TTRPG sessions!
 </p>
 
-# Slash Command Update
-On August 31st 2022, Discord is enforcing new permission rules for large bots. This includes Dice Maiden. These updates restricts access to certain APIs for privacy reasons. One is the message content from users which Dice Maiden has used for years. More info about these changes can be found [here](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Privileged-Intent-FAQ)
+## Table of Contents
 
-In an attempt to not have to rewrite the majority of Dice Maidens codebase, I applied for privileged intents and was denied. The Discord devteam recommended moving the bot to slash commands so here we are. What this means for users:
+- [Quick Start](#quick-start)
+- [Important Updates](#important-updates)
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+- [Advanced Rolling Options](#advanced-rolling-options)
+- [Game System Support](#game-system-support)
+- [Alias Commands](#alias-commands)
+- [Self-Hosting](#self-hosting)
+- [Support & Contributing](#support--contributing)
 
-* !roll and other prefixes have been retired. Sorry no custom prefixes
-* rolls can be initiated now by doing /roll or /r
-* Some new (and maybe old) bugs might crop up with this shift to slash command. We are working on ironing these out
-* Bot permissions may have broken for your server. Please update the permission for the bot or re add the bot to your server
+## Quick Start
 
-**PLEASE DISABLE "Use the legacy chat input" UNDER USER SETTINGS > ACCESSIBILITY TO REDUCE POTENTIAL COMPATIBILITY ISSUES WITH THIS BOT!**
+**[Add Dice Maiden to your server →](https://discord.com/api/oauth2/authorize?client_id=572301609305112596&permissions=274878000128&scope=bot%20applications.commands)**
 
-# **USERS WILL NEED THE ROLE "USE APPLICATION COMMANDS" TO USE SLASH COMMANDS**
+Once added, try these commands:
+- `/roll 2d6` - Roll two six-sided dice
+- `/roll 1d20+5` - Roll a d20 and add 5
+- `/roll help` - See more options
 
-# Quick Install
-Follow the link to add the bot to your discord server :
+## Important Updates
 
-https://discord.com/api/oauth2/authorize?client_id=572301609305112596&permissions=274878000128&scope=bot%20applications.commands
+### Slash Command Migration (August 2022)
 
-This will authorize the bot for your server and you should see it in your default public channel. The bot will have permissions to read, send and manage messages.
+Due to Discord's new permission rules, Dice Maiden has migrated to slash commands:
 
- **NOTE: When you first add the bot to your server, it may show up as offline. This is normal! It can take some time for your server to be cached by the bot and Discord API backend.**
+- ❌ **Old**: `!roll 2d6` (no longer works)
+- ✅ **New**: `/roll 2d6` or `/r 2d6`
 
-# Manual Install
-If you wish to host this yourself, Dice Maiden requires ruby version 2.4 or higher. Please check the Gemfile for the various gems required. To manage these gems, it is recommended to utilize [Bundler](https://bundler.io/).You will also need to create a bot which can be done at the [discord developer section](https://discordapp.com/developers/applications/me). 
+**Required Setup:**
+1. **Disable legacy chat input**: Go to User Settings > Accessibility > Turn OFF "Use the legacy chat input"
+2. **Check permissions**: Users need the "USE APPLICATION COMMANDS" role
+3. **Update bot permissions**: Re-add the bot if needed
 
-An ENV file (.env) must be created for storing your bots secret token and current shard count. Single instance bots will have a shard count of 1. This file must exist in the bots root directory. Example ENV file:
+> **Note**: When first added, the bot may appear offline while Discord caches your server. This is normal!
+
+## Installation
+
+### Quick Install (Recommended)
+
+[**Click here to add Dice Maiden to your server**](https://discord.com/api/oauth2/authorize?client_id=572301609305112596&permissions=274878000128&scope=bot%20applications.commands)
+
+The bot will have permissions to read, send, and manage messages.
+
+### Self-Hosting
+
+See the [Self-Hosting](#self-hosting) section below for detailed instructions.
+
+## Basic Usage
+
+### Simple Rolls
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/roll XdY` | Roll X dice with Y sides | `/roll 2d6` |
+| `/roll XdY + Z` | Add static modifier | `/roll 3d6 + 5` |
+| `/roll XdY - Z` | Subtract modifier | `/roll 1d20 - 2` |
+| `/roll XdY * Z` | Multiply result | `/roll 2d4 * 3` |
+| `/roll XdY / Z` | Divide result | `/roll 4d6 / 2` |
+
+### Multiple Rolls
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/roll N XdY` | Roll N sets of XdY | `/roll 6 4d6` (roll 6 sets of 4d6) |
+| `/roll A; B; C` | Multiple different rolls | `/roll 1d20; 2d6; 1d4` |
+
+*Note: Maximum of 4 different rolls per command, sets can be 2-20.*
+
+### Roll Modifiers
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `/roll XdY s` | Simplified output | `/roll 4d6 s` |
+| `/roll XdY nr` | No results shown | `/roll 4d6 nr` |
+| `/roll XdY p` | Private roll | `/roll 4d6 p` |
+| `/roll XdY ! comment` | Add comment | `/roll 4d6 ! Damage roll` |
+| `/roll XdY unsort` | Unsorted results | `/roll 4d6 ! unsort` |
+
+### Utility Commands
+
+| Command | Description |
+|---------|-------------|
+| `/roll help` | Basic usage instructions |
+| `/roll help alias` | Alias command help |
+| `/roll help system` | Game system help |
+| `/roll donate` | Support the bot |
+| `/roll purge N` | Delete last N messages (2-100)* |
+
+*Requires "manage messages" or "administrator" role
+
+## Advanced Rolling Options
+
+### Exploding Dice
+
+**Single Explosion:**
+- `/roll 3d6 e6` - Explode on 6s (roll again once if you roll a 6)
+- `/roll 3d6 e` - Explode on max value (same as `e6` for d6)
+
+**Infinite Explosion:**
+- `/roll 3d6 ie6` - Keep exploding on 6s (capped at 100 rolls)
+- `/roll 3d6 ie` - Explode on max value indefinitely
+
+### Keep/Drop Dice
+
+**Keep Highest:**
+- `/roll 4d6 k3` - Roll 4d6, keep the highest 3
+
+**Keep Lowest:**
+- `/roll 4d6 kl3` - Roll 4d6, keep the lowest 3
+
+**Drop Lowest:**
+- `/roll 4d6 d1` - Roll 4d6, drop the lowest 1
+
+*Note: Drop happens before keep (roll → drop → keep)*
+
+### Rerolls
+
+**Single Reroll:**
+- `/roll 4d6 r2` - Reroll any dice ≤ 2 (once)
+
+**Infinite Reroll:**
+- `/roll 4d6 ir2` - Keep rerolling dice ≤ 2 (capped at 100 per die)
+
+### Success/Failure Systems
+
+**Target Numbers:**
+- `/roll 6d10 t7` - Count successes (7+ = success)
+- `/roll 5d10 t8 f1` - Successes (8+) minus failures (1)
+
+**Botches:**
+- `/roll 4d6 b1` - Count botches (dice showing 1 or less)
+
+### Complex Example
+
 ```
-TOKEN: foobar
-SHARD: 1
+/roll 10d6 e6 k8 +4
 ```
-A single instance of Dice Maiden does not require a sqlite database to operate. Passing the command 'lite' at runtime will tell the bot to ignore any database requirement. 
+*Roll 10d6, explode on 6s, keep highest 8, add 4*
 
-Example runtime command for a single bot instance: `bundle exec ruby dice_maiden.rb 0 lite`
+## Game System Support
 
-## Single instance Docker install
+### Warhammer 40k: Wrath and Glory
 
-Another way to run a single instance of Dice Maiden is via docker. Before utilizing the docker image included with Dice Maiden, please make sure both `docker` and `docker-compose` are installed. Follow the steps below:
+| Command | Description |
+|---------|-------------|
+| `/roll wng 4d6` | Roll with wrath dice |
+| `/roll wng dn2 4d6` | Difficulty test (DN 2) |
+| `/roll wng 4d6 !soak` | No wrath dice |
+| `/roll wng 4d6 !exempt` | No wrath dice |
+| `/roll wng 4d6 !dmg` | No wrath dice |
 
-1. Run `git clone https://github.com/Humblemonk/DiceMaiden.git` in your /opt directory. This may require sudo powers.
-2. run `vim /opt/DiceMaiden/.env` and add the following to the env file:
+### Dark Heresy 2nd Edition
 
+- `/roll dh 4d10` - Includes righteous fury notifications
+
+### Godbound
+
+- `/roll gb 1d12+4` - Single die vs damage chart
+- `/roll gb 8d8` - Multiple dice vs damage chart
+
+### Hero System 5th Edition
+
+| Command | Description |
+|---------|-------------|
+| `/roll 2hsn` | Normal damage (2d6) |
+| `/roll 5hsk1 +1d3` | Killing damage with stun modifier |
+| `/roll 3hsh` | Healing (11 + 3 - 3d6) |
+
+## Alias Commands
+
+Aliases are shorthand commands for common game systems:
+
+### Popular Systems
+
+| Alias | Equivalent | System |
+|-------|------------|--------|
+| `4cod` | `4d10 t8 ie10` | Chronicles of Darkness |
+| `4wod8` | `4d10 f1 ie10 t8` | World of Darkness |
+| `3df` | `3d3 t3 f1` | Fate (Fudge dice) |
+| `3wh4+` | `3d6 t4` | Warhammer 40k/AoS |
+| `age` | `2d6 + 1d6` | AGE System |
+| `6sr` | `6d6 t5` | Shadowrun |
+| `dndstats` | `6 4d6 k3` | D&D stat generation |
+
+### D&D 5e Quick Rolls
+
+| Alias | Description |
+|-------|-------------|
+| `attack +5` | `1d20 + 5` (Attack roll) |
+| `skill -2` | `1d20 - 2` (Skill check) |
+| `save +3` | `1d20 + 3` (Saving throw) |
+
+### Advantage/Disadvantage
+
+| Alias | Equivalent | Description |
+|-------|------------|-------------|
+| `+d20` | `2d20 d1` | Advantage |
+| `-d20` | `2d20 kl1` | Disadvantage |
+| `+d%` | `((2d10kl1-1)*10)+1d10` | Advantage percentile |
+| `-d%` | `((2d10k1-1)*10)+1d10` | Disadvantage percentile |
+
+### Specialty Dice
+
+| Alias | Description |
+|-------|-------------|
+| `dd34` | `(1d3*10)+1d4` (Double digit d66 style) |
+| `2d%` | `2d100` (Multiple percentile) |
+
+### Complete Alias List
+
+<details>
+<summary>Click to expand full alias list</summary>
+
+**World of Darkness Variants:**
+- `cod8`, `cod9`, `codr` - 8-again, 9-again, rote quality
+
+**Exalted:**
+- `ex5` → `5d10 t7 t10`
+- `ex5t8` → `5d10 t8 t10` (modified target)
+
+**Other Systems:**
+- `snm5` → `5d6 ie6 t4` (Sunsails: New Millennium)
+- `d6s4` → `4d6 + 1d6 ie` (D6 System)
+- `sp4` → `4d10 t8 ie10` (Storypath)
+- `6yz` → `6d6 t6` (Year Zero)
+
+</details>
+
+### Earthdawn System
+
+Special step-dice system with commands `ed1` through `ed50`:
+
+<details>
+<summary>Earthdawn Step Table (ed1-ed50)</summary>
+
+| Step | Roll | Step | Roll | Step | Roll |
+|------|------|------|------|------|------|
+| ed1 | 1d4ie-2 | ed18 | 1d12ie+1d10ie+1d8ie | ed35 | 1d20ie+1d12ie+2d10ie+1d8ie |
+| ed2 | 1d4ie-1 | ed19 | 1d20ie+2d6ie | ed36 | 2d20ie+1d10ie+1d8ie+1d4ie |
+| ed3 | 1d4ie | ed20 | 1d20ie+1d8ie+1d6ie | ed37 | 2d20ie+1d10ie+1d8ie+1d6ie |
+| ed4 | 1d6ie | ed21 | 1d20ie+1d10ie+1d6ie | ed38 | 2d20ie+1d10ie+2d8ie |
+| ed5 | 1d8ie | ed22 | 1d20ie+1d10ie+1d8ie | ed39 | 2d20ie+2d10ie+1d8ie |
+| ... | ... | ... | ... | ... | ... |
+
+*Complete table available in source code*
+
+**Earthdawn 4th Edition:** Use `ed4eX` format (ed4e1 through ed4e50)
+
+</details>
+
+## Self-Hosting
+
+### Requirements
+
+- Ruby 2.4 or higher
+- Bundler gem manager
+- Discord bot token
+
+### Manual Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Humblemonk/DiceMaiden.git
+   cd DiceMaiden
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   bundle install
+   ```
+
+3. **Create environment file:**
+   Create `.env` in the root directory:
+   ```
+   TOKEN: your_bot_token_here
+   SHARD: 1
+   ```
+
+4. **Run the bot:**
+   ```bash
+   bundle exec ruby dice_maiden.rb 0 lite
+   ```
+
+### Docker Installation
+
+1. **Clone to /opt directory:**
+   ```bash
+   sudo git clone https://github.com/Humblemonk/DiceMaiden.git /opt/DiceMaiden
+   ```
+
+2. **Create environment file:**
+   ```bash
+   sudo vim /opt/DiceMaiden/.env
+   ```
+   Add:
+   ```
+   TOKEN: your_bot_token_here
+   SHARD: 1
+   ```
+
+3. **Build and run:**
+   ```bash
+   cd /opt/DiceMaiden
+   sudo docker-compose up -d
+   ```
+
+### Docker Management
+
+**View logs:**
+```bash
+sudo docker logs -f dicemaiden
 ```
-TOKEN: token obtained from your discord developer application
-SHARD: 1
+
+**Access container:**
+```bash
+sudo docker exec -it dicemaiden bash
 ```
 
-The `docker-compose` file created by this repo expects to find the `.env` file in `/opt` directory. This can be changed by editing the `docker-compose` file.
+**Start/Stop/Restart:**
+```bash
+sudo docker start dicemaiden
+sudo docker stop dicemaiden
+sudo docker restart dicemaiden
+```
 
-3. Once the env file is created, make sure you are in the DiceMaiden directory by typing `cd /opt/dicemaiden`. Once in the DiceMaiden directory, run `docker-compose up -d` or `docker compose up -d` to build the docker container. 
+**Update bot:**
+```bash
+cd /opt/dicemaiden
+git pull origin master
+sudo docker-compose up -d --build
+```
 
-**NOTE:** The initial run can take a bit as the container needs to download and install all the ruby gems and their dependencies. This isnt required again unless you rebuild the container.
+## Support & Contributing
 
-If everything was successful, your Dice Maiden docker container should now be running! A couple helpful commands for docker newbies:
+### Getting Help
 
-1. View dicemaiden container logs: `sudo docker logs -f dicemaiden`
-2. Run commands inside dicemaiden container: `sudo docker exec -it dicemaiden bash`
-3. Start/stop/restart dicemaiden container: `sudo docker start dicemaiden; sudo docker stop dicemaiden; sudo docker restart dicemaiden`
+- **Bug reports & feature requests:** [Create an issue on GitHub](https://github.com/Humblemonk/DiceMaiden/issues)
+- **Discord support server:** [Join here](https://discord.gg/AYNcxc9NeU)
+- **Documentation:** Check this README and the help commands
 
-If you wish to rebuild the container so that your bot is running the latest changes, run the following commands:
+### Support the Project
 
-1. Update the bot by running `git pull origin master` in the `/opt/dicemaiden` directory
-2. Rebuild the docker container `sudo docker-compose up -d --build`
+If you find Dice Maiden useful, consider supporting development:
 
-# Support
-Found a bug? Have a feature request? Create an issue on github. Thanks!
+**[Support on Patreon](https://patreon.com/dicemaiden)**
 
-You can also join the Discord Support server: https://discord.gg/AYNcxc9NeU
+### Contributing
 
-If you wish to support the bot and donate, you can do so via Patreon [here](https://patreon.com/dicemaiden)!
+Contributions are welcome! Please:
+1. Fork the repository
+2. Create a feature branch
+3. Submit a pull request
 
-# How to use
-Below are examples of the dice roll syntax.
+---
 
-`/roll 2d6 + 3d10` : Roll two six-sided dice and three ten-sided dice.
-
-`/roll 3d6 + 5` : Roll three six-sided dice and add five. Other supported static modifiers are add (+), subtract (-), multiply (*), and divide (/).
-
-`/roll 3d6 e6` : Roll three six-sided dice and explode on sixes. Some game systems call this 'open ended' dice. If the number rolled is greater than or equal to the value given for this option, the die is rolled again and added to the total. If no number is given for this option, it is assumed to be the same as the number of sides on the die. Thus, '3d6 e' is the same as '3d6 e6'. The dice will only explode once with this command. Use "ie" for indefinite explosions.
-
-`/roll 3d6 ie6` : Roll three six-sided dice and explode on sixes indefinitely within reason. We will cap explosions at 100 rolls to prevent abuse.
-
-`/roll 3d10 d1` : Roll three ten-sided dice and drop one die. The lowest value will be dropped first.  **NOTE:** These dice are dropped before any dice are kept with the following `k` command. Order of operations is : roll dice, drop dice, keep dice
-
-`/roll 3d10 k2` : Roll three ten-sided dice and keep two. The highest value rolled will be kept.
-
-`/roll 4d6 r2` : Roll four six-sided dice and reroll any that are equal to or less than two once. Use ir for indefinite rerolls.
-
-`/roll 4d6 ir2` : Roll four six-sided dice and reroll any that are equal to or less than two (and do the same to those dice). This is capped at 100 rerolls per die to prevent abuse.
-
-`/roll 6d10 t7` : Roll six ten-sided dice and any that are seven or higher are counted as a success. The dice in the roll are not added together for a total. Any die that meets or exceeds the target number is added to a total of successes.
-
-`/roll 5d10 t8 f1` : f# denotes a failure number that each dice must match or be beneath in order to count against successes. These work as a sort of negative success and are totaled together as described above. In the example roll, roll five ten-sided dice and each dice that is 8 or higher is a success and subtract each one. The total may be negative. If the option is given a 0 value, that is the same as not having the option at all thus a normal sum of all dice in the roll is performed instead.
-
-`/roll 4d10 kl3` : Roll four ten-sided dice and keep the lowest three dice rolled.
-
-`/roll 4d6 b1` : Botch rolls. Count the number of dice at or below the number following `b` and log these as botches. If no number follows `b`, this option is ignored.
-
-`/roll purge 10`: Purge the last 10 messages from channel. The purge value can be between 2 to 100 messages and requires the user to have the "manage messages" or "administrator" role.
-
-`/roll 4d6 ! Hello World!`: Roll four six-sided dice and add comment to the roll.
-
-`/roll s 4d6` : Simplify roll output by not showing the tally.
-
-`/roll nr 4d6` : Simplify roll output by not showing the results. 
-
-`/roll p 4d6` : Private roll results. Roll four six-sided dice and return the results privately.
-
-`/roll 4d6 ! unsort` or `!roll ul 4d6`: Roll four six-sided dice and unsort the tally.
-
-`/roll help` : Displays basic usage instructions.
-
-`/roll help alias` : Displays alias instructions.
-
-`/roll help system` : Displays game system instructions.
-
-`/roll donate` : Get donation information on how to help support the bot!
-
-# Combining Rolls
-These commands can be combined into a single roll. For example:
-
-`/roll 10d6 e6 k8 +4` : Roll ten six-sided dice, explode on sixes and keep eight of the highest rolls and add four.
-
-A roll set is possible. Below is an example of the command:
-
-`/roll 6 4d6` : Roll 6 sets of four six-sided dice. A size of a set can be between 2 and 20.
-
-Or you can combine multiple unique rolls in a single request. The max unique rolls here is **four** due to Discord API limitations. Rolls are separated with a semicolon. Example roll is as follows:
-
-`/roll 4d100 ; 10d6 e6 k8 +4; 3d10 k2; ul 3d100`
-
-**Note:** Multi roll support is in a "beta feature" stage and some more complicated rolls may cause issues. Please report on github if you run into a problem!
-
-# Game Systems Specific Rolls
-Warhammer 40k Wrath and Glory example syntaxes:
-
-`/roll wng 4d6` : Roll four six-sided dice with a wrath dice.
-
-`/roll wng dn2 4d6`: Roll four six-sided dice with a wrath dice and a difficulty test of 2. The bot will append the test pass/fail status to the roll result!
-
-`/roll wng 4d6 !soak` or `!roll wng 4d6 !exempt` or `!roll wng 4d6 !dmg` : Roll four six-sided dice without a wrath dice.
-
-Dark Heresy 2nd edition syntaxes:
-
-`/roll dh 4d10` : Roll four ten-sided dice for dark heresy 2nd edition. If your roll contains a natural 10, you will be prompted with a righteous fury notification!
-
-Godbound system syntaxes:
-
-`/roll gb 1d12+4` : Roll 1d12, add 4, then compare against the game's damage chart
-
-`/roll gb 8d8` : Roll 8d8, compare each die against the game's damage chart, and then sum
-
-Hero System 5th edition syntaxes:
-
-`/roll 2hsn` : Roll 2 six-sided dice for normal damage. In the tally, body modifiers are given in parentheses. Both body and stun are calculated.
-
-`/roll 5hsk1 +1d3` : Roll 5 1/2 six-sided dice for killing damage, with a plus one stun modifier. Stun modifier defaults to zero, meaning a roll of 1d6 -1, if no value is given. For partial dice, use +1 for a single pip, +1d3 for a half d6, and a whole d6 can either be added to the first number, or at the end with the partial dice. Calculates body, stun multiplier, and stun
-
-`/roll 3hsh` : Adds 11 to the number supplied, then subtracts the results of 3d6. e.g. 11 + 3 - 3d6
-
-## Alias Rolls
-Alias rolls are commands that are shorthand for a longer, more complex comand. They can also change what the dice faces appear as
-in most cases. Below is the complete list of aliases , with example rolls, currently supported by Dice Maiden. Have a game system that you want turned into an alias? Create an issue on github to get it added to this list!
-
-`4cod` -> `4d10 t8 ie10` Chronicles of Darkness. The first number is the number of dice to roll (use cod8, cod9 and codr for 8-again, 9-again and rote quality rolls).
-
-`4wod8` -> `4d10 f1 ie10 t8` World of darkness 4th edition. The first number is the number of dice to roll and the second is the toughness of the check.
-
-`3df` -> `3d3 t3 f1` Fudge dice from the fate RPG system. The number represents total dice rolled. This alias also outputs the dice faces as `+`/` `/`-`.
-
-`3wh4+` -> `3d6 t4` Warhammer Age of Sigmar/40k style rolls. The first number is the amount of dice rolled and the second number is the target number.
-
-`dd34` -> `(1d3 * 10) + 1d4` Double digit rolls. Uses the first number for the first digit and the second number for the second digit. This is sometimes used in warhammer as a "d66".
-
-`age` -> `2d6 + 1d6` AGE system roll. The AGE system games use 3d6 for ability tests, with 1 of them typically being represented as a drama die, stunt die, dragon die etc. It is important that all three dice be rolled together but the drama die is able to be distinguished from the others. Example games include Fantasy Age, Dragon Age, Modern Age, Blue Rose, and The Expanse RPG.
-
-`+dX` -> `2dX d1`  Advantage roll where X is the dice sides value. Roll two dice and keep the highest.
-
-`-dX` -> `2dX kl1` Disadvantage roll where X the dice sides value. Roll two dice and keep the lowest.
-
-`+d%` -> `((2d10kl1-1) *10) + 1d10` Advantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the lowest.
-
-`-d%` -> `((2d10k1-1) *10) + 1d10` Disadvantage roll for a percentile dice in a roll-under system. Rolls two tens and keeps the highest.
-
-`xd%` -> `d100` Simple shorthand for a d100 roll where x is the number of dice to roll.
-
-`snm5` -> `5d6 ie6 t4` Sunsails: New Millennium 4th edition. The number represents total dice rolled. Indefinitely explodes on sixes, with a target of four. Displays ratio of 1s to total dice rolled.
-
-`d6s4` -> `4d6 + 1d6 ie` The D6 System. The number must be 1 lower than the total size of the dice pool as the wild die is automatically added for you. If you have some pips to add put them on the end (i.e. `d6s4 +2` is the same as `4d6 + 1d6 ie + 2`).
-
-`sr6` -> `6d6 t5` Shadowrun System. The number represents total dice rolled. Target to hit is 5 or higher.
-
-`sp4` -> `4d10 t8 ie10` Storypath system. The number represents total dice rolled. A d10 system with a target set to 8 and infinite explosion on 10.
-
-`6yz` -> `6d6 t6` Year Zero system. The number represents the total dice rolled. A d6 system with a target set to 6.
-
-`dndstats` -> `6 4d6 k3` DnD stat roll (4d6 drop lowest). This is supported by DnD 2nd edition, 3.5e, 5e and pathfinder 1e.
-
-`attack` -> `1d20 x modifier` DnD attack roll (1d20) that supports modifiers e.g. /roll attack +10
-
-`skill` -> `1d20 x modifier` DnD skill check (1d20) that supports modifiers e.g. /roll skill -4
-
-`save` -> `1d20 x modifier` DnD saving throw (1d20) that supports modifiers e.g. /roll save +2
-
-`ex5` -> `5d10 t7 t10` Exalted system.  The number represents number of d10 rolled.
-
-`ex5t8` -> `5d10 t8 t10` Exalted system modified target.  The first number represents number of d10 rolled.  The second number modifies the target.
-
-## Earthdawn System:
-
-`/roll edX` where X can be a value of 1 to 50. Earthdawn system has a plethora of ways to roll the dice and the table below breaks down the various options:
-
-| Roll Command | Description|
-| --- | --- |
-| /roll ed1 | 1d4 ie - 2 |
-| /roll ed2 | 1d4 ie - 1 |
-| /roll ed3 | 1d4 ie | 
-| /roll ed4 | 1d6 ie |
-| /roll ed5 | 1d8 ie |
-| /roll ed6 | 1d10 ie |
-| /roll ed7 | 1d12 ie |
-| /roll ed8 | 2d6 ie |
-| /roll ed9 | 1d8 ie + 1d6 ie |
-| /roll ed10 | 2d8 ie |
-| /roll ed11 | 1d10 ie + 1d8 ie |
-| /roll ed12 | 2d10 ie |
-| /roll ed13 | 1d12 ie + 1d10 ie |
-| /roll ed14 | 2d12 ie |
-| /roll ed15 | 1d12 ie + 2d6 ie |
-| /roll ed16 | 1d12 ie + 1d8 ie + 1d6 ie |
-| /roll ed17 | 1d12 ie + 2d8 ie |
-| /roll ed18 | 1d12 ie + 1d10 ie + 1d8 ie |
-| /roll ed19 | 1d20 ie + 2d6 ie |
-| /roll ed20 | 1d20 ie + 1d8 ie + 1d6 ie |
-| /roll ed21 | 1d20 ie + 1d10 ie + 1d6 ie |
-| /roll ed22 | 1d20 ie + 1d10 ie + 1d8 ie |
-| /roll ed23 | 1d20 ie + 2d10 ie |
-| /roll ed24 | 1d20 ie + 1d12 ie + 1d10 ie |
-| /roll ed25 | 1d20 ie + 1d12 ie + 1d8 ie + 1d4 ie |
-| /roll ed26 | 1d20 ie + 1d12 ie + 1d8 ie + 1d6 ie |
-| /roll ed27 | 1d20 ie + 1d12 ie + 2d8 ie |
-| /roll ed28 | 1d20 ie + 2d10 ie + 1d8 ie |
-| /roll ed29 | 1d20 ie + 1d12 ie + 1d10 ie + 1d8 ie |
-| /roll ed30 | 1d20 ie + 1d12 ie + 1d10 ie + 1d8 ie |
-| /roll ed31 | 1d20 ie + 1d10 ie + 2d8 ie + 1d6 ie |
-| /roll ed32 | 1d20 ie + 2d10 ie + 1d8 ie + 1d6 ie |
-| /roll ed33 | 1d20 ie + 2d10 ie + 2d8 ie |
-| /roll ed34 | 1d20 ie + 3d10 ie + 1d8 ie |
-| /roll ed35 | 1d20 ie + 1d12 ie + 2d10 ie + 1d8 ie |
-| /roll ed36 | 2d20 ie + 1d10 ie + 1d8 ie + 1d4 ie |
-| /roll ed37 | 2d20 ie + 1d10 ie + 1d8 ie + 1d6 ie |
-| /roll ed38 | 2d20 ie + 1d10 ie + 2d8 ie |
-| /roll ed39 | 2d20 ie + 2d10 ie + 1d8 ie |
-| /roll ed40 | 2d20 ie + 1d12 ie + 1d10 ie + 1d8 ie |
-| /roll ed41 | 2d20 ie + 1d10 ie + 1d8 ie + 2d6 ie |
-| /roll ed42 | 2d20 ie + 1d10 ie + 2d8 ie + 1d6 ie |
-| /roll ed43 | 2d20 ie + 2d10 ie + 1d8 ie + 1d6 ie |
-| /roll ed44 | 2d20 ie + 3d10 ie + 1d8 ie |
-| /roll ed45 | 2d20 ie + 3d10 ie + 1d8 ie |
-| /roll ed46 | 2d20 ie + 1d12 ie + 2d10 ie + 1d8 ie |
-| /roll ed47 | 2d20 ie + 2d10 ie + 2d8 ie + 1d4 ie |
-| /roll ed48 | 2d20 ie + 2d10 ie + 2d8 ie + 1d6 ie |
-| /roll ed49 | 2d20 ie + 2d10 ie + 3d8 ie |
-| /roll ed50 | 2d20 ie + 3d10 ie + 2d8 ie |
-
-### Earthdawn 4th edition
-
-`/roll ed4eX` where X can be a value of 1 to 50. Earthdawn 4th edition roll steps can be found in the earthdawn_logic.rb. 
+*Dice Maiden - Making TTRPG sessions more fun, one roll at a time!*
