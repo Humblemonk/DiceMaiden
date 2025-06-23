@@ -90,11 +90,11 @@ See the [Self-Hosting](#self-hosting) section below for detailed instructions.
 
 | Command | Description | Example |
 |---------|-------------|---------|
-| `/roll XdY s` | Simplified output | `/roll 4d6 s` |
-| `/roll XdY nr` | No results shown | `/roll 4d6 nr` |
-| `/roll XdY p` | Private roll | `/roll 4d6 p` |
+| `/roll s XdY` | Simplified output | `/roll 4d6 s` |
+| `/roll nr XdY` | No results shown | `/roll 4d6 nr` |
+| `/roll p XdY` | Private roll | `/roll 4d6 p` |
 | `/roll XdY ! comment` | Add comment | `/roll 4d6 ! Damage roll` |
-| `/roll XdY ul` | Unsorted results | `/roll 4d6 ! unsort` |
+| `/roll ul XdY` | Unsorted results | `/roll 4d6 ! unsort` |
 
 ### Utility Commands
 
