@@ -82,7 +82,7 @@ See the [Self-Hosting](#self-hosting) section below for detailed instructions.
 | Command | Description | Example |
 |---------|-------------|---------|
 | `/roll N XdY` | Roll N sets of XdY | `/roll 6 4d6` (roll 6 sets of 4d6) |
-| `/roll A; B; C` | Multiple different rolls | `/roll 1d20; 2d6; 1d4` |
+| `/roll A; B; C` | Multiple different rolls | `/roll 4d100 ; 10d6 e6 k8 +4; 3d10 k2; ul 3d100` |
 
 *Note: Maximum of 4 different rolls per command, sets can be 2-20.*
 
