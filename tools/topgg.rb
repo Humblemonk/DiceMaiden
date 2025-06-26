@@ -18,6 +18,7 @@ db = SQLite3::Database.new "#{cwd}/main.db"
 db.busy_timeout = (10_000)
 
 servers = db.execute 'select sum(server_count) from shard_stats;'
+puts "Current server count being submitted to topgg - #{servers}"
 
 RestClient.post('https://top.gg/api/bots/377701707943116800/stats', { "shard_count": total_shards, "server_count": servers.join.to_i }.to_json, { Authorization: ENV['API'], content_type: :json }) do |response, _request, _result, &block|
   case response.code
